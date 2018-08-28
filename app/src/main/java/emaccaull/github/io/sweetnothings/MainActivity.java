@@ -1,4 +1,4 @@
-package emaccaull.github.io.sweetthings;
+package emaccaull.github.io.sweetnothings;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

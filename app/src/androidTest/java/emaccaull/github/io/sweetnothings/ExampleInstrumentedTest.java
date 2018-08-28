@@ -1,4 +1,4 @@
-package emaccaull.github.io.sweetthings;
+package emaccaull.github.io.sweetnothings;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
