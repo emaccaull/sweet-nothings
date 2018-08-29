@@ -41,7 +41,7 @@ dependencies {
 
     // Logging
     implementation "org.slf4j:slf4j-api:$slf4j_version"
-    implementation "com.noveogroup.android:android-logger:$slf4j_novogroup_version"
+    implementation "com.noveogroup.android:android-logger:$slf4j_noveogroup_version"
     testImplementation "org.slf4j:slf4j-simple:$slf4j_version"
 
     // General Testing
