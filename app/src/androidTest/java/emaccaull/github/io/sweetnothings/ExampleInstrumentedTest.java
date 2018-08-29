@@ -17,11 +17,11 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
 
-  @Test
-  public void useAppContext() {
-    // Context of the app under test.
-    Context appContext = InstrumentationRegistry.getTargetContext();
+    @Test
+    public void useAppContext() {
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getTargetContext();
 
-    assertEquals("emaccaull.github.io.sweetthings", appContext.getPackageName());
-  }
+        assertEquals("emaccaull.github.io.sweetthings", appContext.getPackageName());
+    }
 }
