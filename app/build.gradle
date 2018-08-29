@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
 
     defaultConfig {
-        applicationId "emaccaull.github.io.sweetthings"
+        applicationId "io.github.emaccaull.sweetnothings"
         minSdkVersion 17
         targetSdkVersion 27
         versionCode 1

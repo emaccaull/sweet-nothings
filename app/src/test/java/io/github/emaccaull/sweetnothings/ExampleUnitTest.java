@@ -1,4 +1,4 @@
-package emaccaull.github.io.sweetnothings;
+package io.github.emaccaull.sweetnothings;
 
 import org.junit.Test;
 
