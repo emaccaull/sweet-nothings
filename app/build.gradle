@@ -1,8 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    signingConfigs {
+        config {
+        }
+    }
 
+    compileSdkVersion 27
     defaultConfig {
         applicationId "io.github.emaccaull.sweetnothings"
         minSdkVersion 17
@@ -14,7 +18,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -26,7 +30,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // Support Libraries
     implementation "com.android.support:appcompat-v7:$support_version"
