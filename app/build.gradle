@@ -1,11 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-        }
-    }
-
     compileSdkVersion 27
     defaultConfig {
         applicationId "io.github.emaccaull.sweetnothings"
@@ -26,6 +21,15 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    signingConfigs {
+        config {
+        }
     }
 }
 
