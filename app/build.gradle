@@ -47,6 +47,10 @@ dependencies {
     implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
     testImplementation "android.arch.core:core-testing:$lifecycle_version"
 
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+
     // Logging
     implementation "org.slf4j:slf4j-api:$slf4j_version"
     implementation "com.noveogroup.android:android-logger:$slf4j_noveogroup_version"
@@ -54,6 +58,7 @@ dependencies {
 
     // General Testing
     testImplementation "junit:junit:$espresso_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "com.android.support.test:runner:$test_runner_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
 }

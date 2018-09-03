@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings;
+package io.github.emaccaull.sweetnothings.ui;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.databinding.ActivityMainBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

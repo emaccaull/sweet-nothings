@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="io.github.emaccaull.sweetnothings.MainActivity">
+    tools:context="io.github.emaccaull.sweetnothings.ui.MainActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/container"
