@@ -34,8 +34,8 @@ public class LocalMessageStore implements MessageDataSource {
     private static final int COUNT = 5;
     private static final List<MessageEntry> messages = new ArrayList<>();
     static {
-        for (int i = 0; i < COUNT; ++i) {
-            MessageEntry me = new MessageEntry("message " + i, false, false);
+        for (int i = 1; i <= COUNT; ++i) {
+            MessageEntry me = new MessageEntry(String.valueOf(i), "message " + i, false, false);
             messages.add(me);
         }
     }

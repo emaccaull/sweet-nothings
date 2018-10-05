@@ -56,9 +56,13 @@ dependencies {
     implementation "com.noveogroup.android:android-logger:$slf4j_noveogroup_version"
     testImplementation "org.slf4j:slf4j-simple:$slf4j_version"
 
+    // Utilities
+    implementation "com.google.guava:guava:$guava_version"
+
     // General Testing
     testImplementation "junit:junit:$espresso_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "nl.jqno.equalsverifier:equalsverifier:$equalsverifier_version"
     androidTestImplementation "com.android.support.test:runner:$test_runner_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
 }
