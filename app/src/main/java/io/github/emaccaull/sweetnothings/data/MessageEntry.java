@@ -19,18 +19,23 @@ package io.github.emaccaull.sweetnothings.data;
 import android.support.annotation.NonNull;
 
 /**
- * A sweet nothing.
+ * Database representation of a sweet nothing.
  */
 public class MessageEntry {
-
+    private final String id;
     private final String message;
     private final boolean blacklisted;
     private final boolean used;
 
-    public MessageEntry(@NonNull String message, boolean blacklisted, boolean used) {
+    public MessageEntry(@NonNull String id, @NonNull String message, boolean blacklisted, boolean used) {
+        this.id = id;
         this.message = message;
         this.blacklisted = blacklisted;
         this.used = used;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getMessage() {

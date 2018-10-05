@@ -19,7 +19,7 @@ package io.github.emaccaull.sweetnothings.data;
 import android.support.annotation.NonNull;
 import io.reactivex.Single;
 
-import static io.github.emaccaull.sweetnothings.util.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Application access to stored messages.
@@ -35,6 +35,6 @@ public class MessageRepository {
     public Single<MessageEntry> getRandomMessage() {
         // TODO: Switch on empty to network
         return dataSource.fetchRandomMessage()
-                .toSingle(new MessageEntry("", false, false));
+                .toSingle(new MessageEntry("r", "", false, false));
     }
 }
