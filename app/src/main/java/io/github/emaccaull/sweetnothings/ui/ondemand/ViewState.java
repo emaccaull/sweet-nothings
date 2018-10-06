@@ -24,10 +24,12 @@ import com.google.common.base.Objects;
 public final class ViewState {
     private final boolean loading;
     private final String message;
+    private final boolean notFound;
 
-    public ViewState(boolean loading, String message) {
+    public ViewState(boolean loading, String message, boolean notFound) {
         this.loading = loading;
         this.message = message;
+        this.notFound = notFound;
     }
 
     public boolean isLoading() {
@@ -36,6 +38,10 @@ public final class ViewState {
 
     public String getMessage() {
         return message;
+    }
+
+    public boolean isNotFound() {
+        return notFound;
     }
 
     @Override
@@ -48,12 +54,13 @@ public final class ViewState {
 
         ViewState viewState = (ViewState) o;
         return loading == viewState.loading &&
+                notFound == viewState.notFound &&
                 Objects.equal(message, viewState.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(loading, message);
+        return Objects.hashCode(loading, message, notFound);
     }
 
     @Override
@@ -61,6 +68,7 @@ public final class ViewState {
         return "ViewState{" +
                 "loading=" + loading +
                 ", message='" + message + '\'' +
+                ", notFound=" + notFound +
                 '}';
     }
 }
