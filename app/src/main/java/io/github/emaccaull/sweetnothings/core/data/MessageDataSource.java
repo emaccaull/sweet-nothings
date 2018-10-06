@@ -31,9 +31,17 @@ public interface MessageDataSource {
      * Fetches a random {@link SweetNothing} from storage according the {@code filter}.
      *
      * @param filter determines which SweetNothings to exclude from the random result.
-     * @return a SweetNothing if one could be found for the given {@code filter}.
+     * @return a {@code SweetNothing} if one could be found for the given {@code filter}.
      */
     Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter);
+
+    /**
+     * Fetches the {@link SweetNothing} with the given {@code id}, if it exists.
+     *
+     * @param id the ID of the message to fetch.
+     * @return a {@code SweetNothing} if one could be found for the given {@code id}.
+     */
+    Maybe<SweetNothing> fetchMessage(@NonNull String id);
 
     /**
      * Marks the SweetNothing with the given {@code id} as used. Once a SweetNothing is used, it can
