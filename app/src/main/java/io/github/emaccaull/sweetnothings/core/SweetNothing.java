@@ -96,7 +96,7 @@ public final class SweetNothing {
         private boolean blacklisted;
         private boolean used;
 
-        protected Builder(@NonNull String id) {
+        Builder(@NonNull String id) {
             this.id = checkNotNull(id, "id is null");
         }
 
