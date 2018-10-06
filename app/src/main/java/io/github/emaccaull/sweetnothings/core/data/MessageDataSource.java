@@ -27,7 +27,20 @@ import io.reactivex.Maybe;
  */
 public interface MessageDataSource {
 
+    /**
+     * Fetches a random {@link SweetNothing} from storage according the {@code filter}.
+     *
+     * @param filter determines which SweetNothings to exclude from the random result.
+     * @return a SweetNothing if one could be found for the given {@code filter}.
+     */
     Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter);
 
+    /**
+     * Marks the SweetNothing with the given {@code id} as used. Once a SweetNothing is used, it can
+     * be excluded from subsequent queries by using the appropriate {@link MessageFilter}.
+     *
+     * @param id the ID of the SweetNothing to mark.
+     * @return a Completable that completes successfully when marking as used is successful.
+     */
     Completable markUsed(@NonNull String id);
 }
