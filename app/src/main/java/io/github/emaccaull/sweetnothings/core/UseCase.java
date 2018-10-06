@@ -24,6 +24,10 @@ import java.lang.annotation.Target;
 
 /**
  * Marks a class as a use case.
+ * <p>
+ * A use case is a single action that can be applied to a set of data sources. By convention, each
+ * use case has a single public method called {@code apply} which is used to construct an RxJava
+ * stream which transforms data source operations to a higher level action.
  */
 @Documented
 @Retention(RetentionPolicy.CLASS)
