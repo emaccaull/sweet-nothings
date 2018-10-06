@@ -14,27 +14,20 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.data;
+package io.github.emaccaull.sweetnothings.core.data;
 
 import android.support.annotation.NonNull;
-import io.reactivex.Single;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import io.github.emaccaull.sweetnothings.core.SweetNothing;
+import io.reactivex.Completable;
+import io.reactivex.Maybe;
 
 /**
- * Application access to stored messages.
+ * Retrieves a {@link io.github.emaccaull.sweetnothings.core.SweetNothing} from type of persistent
+ * storage. Can be local or network.
  */
-public class MessageRepository {
+public interface MessageDataSource {
 
-    private final MessageDataSource dataSource;
+    Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter);
 
-    public MessageRepository(@NonNull MessageDataSource dataSource) {
-        this.dataSource = checkNotNull(dataSource, "dataSource is null");
-    }
-
-    public Single<MessageEntry> getRandomMessage() {
-        // TODO: Switch on empty to network
-        return dataSource.fetchRandomMessage()
-                .toSingle(new MessageEntry("r", "", false, false));
-    }
+    Completable markUsed(@NonNull String id);
 }

@@ -73,8 +73,7 @@ public final class SweetNothing {
         private boolean blacklisted;
         private boolean used;
 
-        protected Builder() {
-        }
+        protected Builder() {}
 
         public Builder message(String message) {
             this.message = message;
