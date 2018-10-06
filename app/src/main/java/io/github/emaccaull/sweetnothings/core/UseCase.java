@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.data;
+package io.github.emaccaull.sweetnothings.core;
 
-import io.reactivex.Maybe;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Message persistence and retrieval.
+ * Marks a class as a use case.
  */
-public interface MessageDataSource {
-
-    Maybe<MessageEntry> fetchRandomMessage();
+@Documented
+@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.TYPE)
+public @interface UseCase {
 }
