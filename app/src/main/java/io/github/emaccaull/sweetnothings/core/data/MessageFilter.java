@@ -22,7 +22,10 @@ import com.google.common.base.Objects;
  * Allows retrieving a subset of SweetNothings based on some criteria.
  */
 public final class MessageFilter {
-    public static final MessageFilter SELECT_ALL = builder().build();
+
+    static class SelectAllHolder {
+        static final MessageFilter FILTER = builder().build();
+    }
 
     private final boolean includeUsed;
 
@@ -49,6 +52,10 @@ public final class MessageFilter {
     @Override
     public int hashCode() {
         return Objects.hashCode(includeUsed);
+    }
+
+    public static MessageFilter selectAll() {
+        return SelectAllHolder.FILTER;
     }
 
     public static Builder builder() {

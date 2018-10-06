@@ -45,7 +45,7 @@ public class MessageFilterTest {
 
     @Test
     public void selectAll_IncludesAll() {
-        MessageFilter filter = MessageFilter.SELECT_ALL;
+        MessageFilter filter = MessageFilter.selectAll();
 
         assertThat(filter.includeUsed(), is(true));
     }
