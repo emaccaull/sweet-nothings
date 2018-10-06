@@ -20,13 +20,15 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
-import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Generate/fetch a Random SweetNothing on demand.
  */
 public class GeneratorViewModel extends ViewModel {
+    private static final Logger logger = LoggerFactory.getLogger(GeneratorViewModel.class);
 
     private final GetRandomSweetNothing getRandomSweetNothing;
     private final MutableLiveData<ViewState> viewState = new MutableLiveData<>();
@@ -37,10 +39,12 @@ public class GeneratorViewModel extends ViewModel {
 
     public void requestNewMessage() {
         getRandomSweetNothing.apply()
-                .doOnSubscribe(__ -> viewState.postValue(new ViewState(true, null)))
+                .doOnSubscribe(__ -> viewState.postValue(new ViewState(true, null, false)))
+                .map(sweetNothing -> new ViewState(false, sweetNothing.getMessage(), false))
                 .subscribe(
-                        (SweetNothing sn) ->
-                                viewState.postValue(new ViewState(false, sn.getMessage()))
+                        state -> viewState.postValue(state),
+                        throwable -> logger.error("Couldn't load sweet nothing", throwable),
+                        () -> viewState.postValue(new ViewState(false, null, true))
                 );
     }
 

@@ -21,6 +21,7 @@ import android.arch.lifecycle.Observer;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.reactivex.Maybe;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,27 +44,46 @@ public class GeneratorViewModelTest {
     @Mock
     private Observer<ViewState> observer;
 
-    @Test
-    public void requestNewMessage() {
-        withRandomSweetNothing();
+    private GeneratorViewModel viewModel;
 
-        // Given that a ViewModel exists
-        GeneratorViewModel viewModel = new GeneratorViewModel(getRandomSweetNothing);
-
-        // And there is a view observing changes
+    @Before
+    public void setUp() {
+        viewModel = new GeneratorViewModel(getRandomSweetNothing);
         viewModel.getViewState().observeForever(observer);
+    }
+
+    @Test
+    public void requestNewMessage_whenAnItemIsFound_showsMessage() {
+        withRandomSweetNothing();
 
         // When requesting a new sweet nothing
         viewModel.requestNewMessage();
 
         // Then the view should get the appropriate update
         InOrder inOrder = Mockito.inOrder(observer);
-        inOrder.verify(observer).onChanged(new ViewState(true, null));
-        inOrder.verify(observer).onChanged(new ViewState(false, "<3<3"));
+        inOrder.verify(observer).onChanged(new ViewState(true, null, false));
+        inOrder.verify(observer).onChanged(new ViewState(false, "<3<3", false));
+    }
+
+    @Test
+    public void requestNewMessage_whenNoItemCouldBeFound_showsError() {
+        withNoSweetNothing();
+
+        // When requesting a new sweet nothing
+        viewModel.requestNewMessage();
+
+        // Then the view should display an error
+        InOrder inOrder = Mockito.inOrder(observer);
+        inOrder.verify(observer).onChanged(new ViewState(true, null, false));
+        inOrder.verify(observer).onChanged(new ViewState(false, null, true));
     }
 
     private void withRandomSweetNothing() {
         SweetNothing sweetNothing = SweetNothing.builder("id1").message("<3<3").build();
         when(getRandomSweetNothing.apply()).thenReturn(Maybe.just(sweetNothing));
+    }
+
+    private void withNoSweetNothing() {
+        when(getRandomSweetNothing.apply()).thenReturn(Maybe.empty());
     }
 }
