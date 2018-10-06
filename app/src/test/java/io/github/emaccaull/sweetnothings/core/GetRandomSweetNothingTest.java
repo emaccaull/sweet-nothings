@@ -45,7 +45,7 @@ public class GetRandomSweetNothingTest {
     public void apply() {
         // Given that the data source will return a SweetNothing for our filter
         MessageFilter filter = MessageFilter.builder().includeUsed(false).build();
-        SweetNothing message = SweetNothing.builder().message("howdy").build();
+        SweetNothing message = SweetNothing.builder("id123").message("howdy").build();
         when(messageDataSource.fetchRandomMessage(filter)).thenReturn(Maybe.just(message));
 
         // When applying the use case
