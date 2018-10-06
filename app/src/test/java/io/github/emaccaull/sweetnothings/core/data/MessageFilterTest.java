@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.core.data;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -47,5 +48,10 @@ public class MessageFilterTest {
         MessageFilter filter = MessageFilter.SELECT_ALL;
 
         assertThat(filter.includeUsed(), is(true));
+    }
+
+    @Test
+    public void equals() {
+        EqualsVerifier.forClass(MessageFilter.class).verify();
     }
 }

@@ -16,10 +16,12 @@
 
 package io.github.emaccaull.sweetnothings.core.data;
 
+import com.google.common.base.Objects;
+
 /**
  * Allows retrieving a subset of SweetNothings based on some criteria.
  */
-public class MessageFilter {
+public final class MessageFilter {
     public static final MessageFilter SELECT_ALL = builder().build();
 
     private final boolean includeUsed;
@@ -30,6 +32,23 @@ public class MessageFilter {
 
     public boolean includeUsed() {
         return includeUsed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof MessageFilter))
+            return false;
+
+        MessageFilter filter = (MessageFilter) o;
+        return includeUsed == filter.includeUsed;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(includeUsed);
     }
 
     public static Builder builder() {
