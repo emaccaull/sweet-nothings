@@ -18,6 +18,7 @@ package io.github.emaccaull.sweetnothings.core.usecase;
 
 import android.support.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
+import io.github.emaccaull.sweetnothings.core.UseCase;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.reactivex.Maybe;
 
@@ -26,6 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Retrieve a {@link io.github.emaccaull.sweetnothings.core.SweetNothing} by ID.
  */
+@UseCase
 public class GetSweetNothing {
 
     private final MessageDataSource dataSource;
