@@ -22,8 +22,7 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 
 /**
- * Retrieves a {@link io.github.emaccaull.sweetnothings.core.SweetNothing} from type of persistent
- * storage. Can be local or network.
+ * Retrieves a {@link SweetNothing} from type of persistent storage. Can be local or network.
  */
 public interface MessageDataSource {
 
@@ -33,7 +32,7 @@ public interface MessageDataSource {
      * @param filter determines which SweetNothings to exclude from the random result.
      * @return a {@code SweetNothing} if one could be found for the given {@code filter}.
      */
-    Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter);
+    Maybe<SweetNothing> fetchRandomMessage(@NonNull MessageFilter filter);
 
     /**
      * Fetches the {@link SweetNothing} with the given {@code id}, if it exists.
