@@ -14,30 +14,31 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.core;
+package io.github.emaccaull.sweetnothings.core.usecase;
 
 import android.support.annotation.NonNull;
+import io.github.emaccaull.sweetnothings.core.SweetNothing;
+import io.github.emaccaull.sweetnothings.core.UseCase;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
-import io.reactivex.Maybe;
+import io.reactivex.Completable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Retrieves a random {@link SweetNothing} from a data source.
+ * Marks that a particular SweetNothing has been sent to someone.
+ *
+ * This helps the user ensure that they don't send the same message twice.
+ * Future enhancement -- mark used for a particular contact.
  */
 @UseCase
-public class GetRandomSweetNothing {
-
+public class MarkUsed {
     private final MessageDataSource dataSource;
-    private final MessageFilter filter;
 
-    public GetRandomSweetNothing(@NonNull MessageDataSource dataSource) {
+    public MarkUsed(@NonNull MessageDataSource dataSource) {
         this.dataSource = checkNotNull(dataSource, "dataSource is null");
-        this.filter = MessageFilter.builder().includeUsed(false).build();
     }
 
-    public Maybe<SweetNothing> apply() {
-        return dataSource.fetchRandomMessage(filter);
+    public Completable apply(@NonNull SweetNothing sweetNothing) {
+        return dataSource.markUsed(sweetNothing.getId());
     }
 }

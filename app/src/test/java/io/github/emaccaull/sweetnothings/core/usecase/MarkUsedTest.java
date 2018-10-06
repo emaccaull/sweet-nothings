@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.core;
+package io.github.emaccaull.sweetnothings.core.usecase;
 
+import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
-import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
-import io.reactivex.Maybe;
+import io.reactivex.Completable;
 import io.reactivex.observers.TestObserver;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,30 +29,28 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GetRandomSweetNothingTest {
+public class MarkUsedTest {
 
     @Mock
     private MessageDataSource messageDataSource;
 
-    private GetRandomSweetNothing getRandomSweetNothing;
+    private MarkUsed markUsed;
 
     @Before
     public void setUp() {
-        getRandomSweetNothing = new GetRandomSweetNothing(messageDataSource);
+        markUsed = new MarkUsed(messageDataSource);
     }
 
     @Test
     public void apply() {
-        // Given that the data source will return a SweetNothing for our filter
-        MessageFilter filter = MessageFilter.builder().includeUsed(false).build();
-        SweetNothing message = SweetNothing.builder("id123").message("howdy").build();
-        when(messageDataSource.fetchRandomMessage(filter)).thenReturn(Maybe.just(message));
+        // Given that the data source will complete successfully when an item is marked as used.
+        when(messageDataSource.markUsed("theId")).thenReturn(Completable.complete());
+        SweetNothing message = SweetNothing.builder("theId").message("hi").build();
 
         // When applying the use case
-        TestObserver<SweetNothing> observer =
-                getRandomSweetNothing.apply().test();
+        TestObserver<Void> observer = markUsed.apply(message).test();
 
-        // Then the observer should have received the given sweet nothing
-        observer.assertValue(message);
+        // Then the observer should complete
+        observer.assertComplete();
     }
 }
