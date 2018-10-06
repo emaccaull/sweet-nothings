@@ -29,29 +29,45 @@ public class SweetNothingTest {
 
     @Test
     public void getMessage() {
-        SweetNothing sn = SweetNothing.builder().message("hi").build();
+        SweetNothing sn = SweetNothing.builder("9923").message("hi").build();
         assertThat(sn.getMessage(), is("hi"));
     }
 
     @Test(expected = IllegalStateException.class)
     public void builder_whenNullMessage_throwsException() {
         // When building a sweet nothing that doesn't have a message
-        SweetNothing.builder().build();
+        SweetNothing.builder("123").message(null).build();
         // Then an exception should be thrown
     }
 
     @Test(expected = IllegalStateException.class)
     public void builder_whenEmptyMessage_throwsException() {
         // When building a sweet nothing that doesn't have a message
-        SweetNothing.builder()
+        SweetNothing.builder("6473")
                 .message("")
                 .build();
         // Then an exception should be thrown
     }
 
+    @Test(expected = NullPointerException.class)
+    public void builder_whenIdEmpty_throwsException() {
+        // When building a sweet nothing that doesn't have an ID
+        SweetNothing.builder(null).message("foo").build();
+        // Then an exception should be thrown
+    }
+
+    @Test
+    public void id() {
+        // When constructing SweetNothing with a valid ID
+        SweetNothing sn = SweetNothing.builder("foobar").message("hello").build();
+
+        // Then it should have that ID
+        assertThat(sn.getId(), is("foobar"));
+    }
+
     @Test
     public void isBlacklisted() {
-        SweetNothing sn = SweetNothing.builder()
+        SweetNothing sn = SweetNothing.builder("aaa")
                 .message("a")
                 .blacklisted(true)
                 .build();
@@ -60,7 +76,7 @@ public class SweetNothingTest {
 
     @Test
     public void isUsed() {
-        SweetNothing sn = SweetNothing.builder()
+        SweetNothing sn = SweetNothing.builder("bbb")
                 .message("b")
                 .used(true)
                 .build();
