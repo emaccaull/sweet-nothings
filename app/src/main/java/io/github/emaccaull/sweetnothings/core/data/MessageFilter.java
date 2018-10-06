@@ -58,7 +58,7 @@ public final class MessageFilter {
     public static class Builder {
         private boolean includeUsed = true;
 
-        protected Builder() {}
+        Builder() {}
 
         public Builder includeUsed(boolean includeUsed) {
             this.includeUsed = includeUsed;
