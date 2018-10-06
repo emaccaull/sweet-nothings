@@ -45,9 +45,7 @@ public class GeneratorViewModelTest {
 
     @Test
     public void requestNewMessage() {
-        // Given that a sweet nothing will be returned
-        SweetNothing sweetNothing = SweetNothing.builder("id1").message("<3<3").build();
-        when(getRandomSweetNothing.apply()).thenReturn(Maybe.just(sweetNothing));
+        withRandomSweetNothing();
 
         // Given that a ViewModel exists
         GeneratorViewModel viewModel = new GeneratorViewModel(getRandomSweetNothing);
@@ -62,5 +60,10 @@ public class GeneratorViewModelTest {
         InOrder inOrder = Mockito.inOrder(observer);
         inOrder.verify(observer).onChanged(new ViewState(true, null));
         inOrder.verify(observer).onChanged(new ViewState(false, "<3<3"));
+    }
+
+    private void withRandomSweetNothing() {
+        SweetNothing sweetNothing = SweetNothing.builder("id1").message("<3<3").build();
+        when(getRandomSweetNothing.apply()).thenReturn(Maybe.just(sweetNothing));
     }
 }
