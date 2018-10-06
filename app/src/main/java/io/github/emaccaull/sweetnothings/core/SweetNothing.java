@@ -64,6 +64,15 @@ public final class SweetNothing {
         return Objects.hashCode(message, blacklisted, used);
     }
 
+    @Override
+    public String toString() {
+        return "SweetNothing{" +
+                "message='" + message + '\'' +
+                ", blacklisted=" + blacklisted +
+                ", used=" + used +
+                '}';
+    }
+
     public static Builder builder() {
         return new Builder();
     }
