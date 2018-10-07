@@ -34,7 +34,7 @@ android {
 }
 
 // Remove the android-logger from unit tests
-configurations.findAll {it.name.contains("test")}.each { conf ->
+configurations.findAll { it.name.contains("test") }.each { conf ->
     conf.exclude group: 'com.noveogroup.android', module: 'android-logger'
 }
 
