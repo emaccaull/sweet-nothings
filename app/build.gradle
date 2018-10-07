@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "io.github.emaccaull.sweetnothings"
+        minSdkVersion 17
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    signingConfigs {
+        config {
+        }
+    }
+}
+
+// Remove the android-logger from unit tests
+configurations.findAll {it.name.contains("test")}.each { conf ->
+    conf.exclude group: 'com.noveogroup.android', module: 'android-logger'
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // Support Libraries
+    implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.android.support:design:$support_version"
+    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    implementation "com.android.support:support-vector-drawable:$support_version"
+
+    // Arch Components / Jetpack
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
+    testImplementation "android.arch.core:core-testing:$lifecycle_version"
+
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+
+    // Logging
+    implementation "org.slf4j:slf4j-api:$slf4j_version"
+    runtimeOnly "com.noveogroup.android:android-logger:$slf4j_noveogroup_version"
+    testImplementation "org.slf4j:slf4j-simple:$slf4j_version"
+
+    // Utilities
+    implementation "com.google.guava:guava:$guava_version"
+
+    // General Testing
+    testImplementation "junit:junit:$espresso_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "nl.jqno.equalsverifier:equalsverifier:$equalsverifier_version"
+    testImplementation "android.arch.core:core-testing:$lifecycle_version"
+    androidTestImplementation "com.android.support.test:runner:$test_runner_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+}
