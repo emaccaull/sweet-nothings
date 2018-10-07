@@ -35,9 +35,11 @@ public class GeneratorViewModel extends ViewModel {
 
     public GeneratorViewModel(@NonNull GetRandomSweetNothing getRandomSweetNothing) {
         this.getRandomSweetNothing = getRandomSweetNothing;
+        viewState.setValue(new ViewState(false, null, false));
     }
 
     public void requestNewMessage() {
+        logger.info("Requesting a new sweet nothing");
         getRandomSweetNothing.apply()
                 .doOnSubscribe(__ -> viewState.postValue(new ViewState(true, null, false)))
                 .map(sweetNothing -> new ViewState(false, sweetNothing.getMessage(), false))
