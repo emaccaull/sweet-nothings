@@ -30,6 +30,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -50,6 +51,13 @@ public class GeneratorViewModelTest {
     public void setUp() {
         viewModel = new GeneratorViewModel(getRandomSweetNothing);
         viewModel.getViewState().observeForever(observer);
+    }
+
+    @Test
+    public void getViewState_whenSubscribed_emitsDefaultViewState() {
+        // When a new ViewModel is created and it has an observer, then the observer should get its
+        // view contents from the ViewModel
+        verify(observer).onChanged(new ViewState(false, null, false));
     }
 
     @Test
