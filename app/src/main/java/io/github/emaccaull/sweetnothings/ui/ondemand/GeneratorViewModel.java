@@ -21,6 +21,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +32,10 @@ import org.slf4j.LoggerFactory;
 public class GeneratorViewModel extends ViewModel {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorViewModel.class);
 
-    private final GetRandomSweetNothing getRandomSweetNothing;
     private final MutableLiveData<ViewState> viewState = new MutableLiveData<>();
+
+    final CompositeDisposable disposables = new CompositeDisposable();
+    private final GetRandomSweetNothing getRandomSweetNothing;
 
     public GeneratorViewModel(@NonNull GetRandomSweetNothing getRandomSweetNothing) {
         this.getRandomSweetNothing = getRandomSweetNothing;
@@ -40,17 +44,24 @@ public class GeneratorViewModel extends ViewModel {
 
     public void requestNewMessage() {
         logger.info("Requesting a new sweet nothing");
-        getRandomSweetNothing.apply()
+        Disposable d = getRandomSweetNothing.apply()
                 .doOnSubscribe(__ -> viewState.postValue(new ViewState(true, null, false)))
                 .map(sweetNothing -> new ViewState(false, sweetNothing.getMessage(), false))
                 .subscribe(
-                        state -> viewState.postValue(state),
+                        viewState::postValue,
                         throwable -> logger.error("Couldn't load sweet nothing", throwable),
                         () -> viewState.postValue(new ViewState(false, null, true))
                 );
+
+        disposables.add(d);
     }
 
     public LiveData<ViewState> getViewState() {
         return viewState;
+    }
+
+    @Override
+    protected void onCleared() {
+        disposables.clear();
     }
 }

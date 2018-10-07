@@ -21,6 +21,7 @@ import android.arch.lifecycle.Observer;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.reactivex.Maybe;
+import io.reactivex.disposables.Disposable;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,6 +31,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -54,10 +57,27 @@ public class GeneratorViewModelTest {
     }
 
     @Test
+    public void init_noStreamsOpen() {
+        // When a new instance is created, then it shouldn't have any RxJava streams open
+        assertThat(viewModel.disposables.size(), is(0));
+    }
+
+    @Test
     public void getViewState_whenSubscribed_emitsDefaultViewState() {
         // When a new ViewModel is created and it has an observer, then the observer should get its
         // view contents from the ViewModel
         verify(observer).onChanged(new ViewState(false, null, false));
+    }
+
+    @Test
+    public void requestNewMessage_registersDisposable() {
+        withRandomSweetNothing();
+
+        // When requesting a new message
+        viewModel.requestNewMessage();
+
+        // Then a disposable should be added to the list
+        assertThat(viewModel.disposables.size(), is(1));
     }
 
     @Test
@@ -84,6 +104,20 @@ public class GeneratorViewModelTest {
         InOrder inOrder = Mockito.inOrder(observer);
         inOrder.verify(observer).onChanged(new ViewState(true, null, false));
         inOrder.verify(observer).onChanged(new ViewState(false, null, true));
+    }
+
+    @Test
+    public void onCleared_clearsDisposables() {
+        // Given that a disposable is registered
+        Disposable d = Mockito.mock(Disposable.class);
+        viewModel.disposables.add(d);
+        assertThat(viewModel.disposables.size(), is(1));
+
+        // When the view models is cleared
+        viewModel.onCleared();
+
+        // Then the contained disposables should be cleared
+        assertThat(viewModel.disposables.size(), is(0));
     }
 
     private void withRandomSweetNothing() {
