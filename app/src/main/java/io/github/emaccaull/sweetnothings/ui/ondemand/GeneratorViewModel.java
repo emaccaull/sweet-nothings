@@ -44,9 +44,11 @@ public class GeneratorViewModel extends ViewModel {
 
     public void requestNewMessage() {
         logger.info("Requesting a new sweet nothing");
+
         Disposable d = getRandomSweetNothing.apply()
                 .doOnSubscribe(__ -> viewState.postValue(new ViewState(true, null, false)))
                 .map(sweetNothing -> new ViewState(false, sweetNothing.getMessage(), false))
+                .onErrorComplete()
                 .subscribe(
                         viewState::postValue,
                         throwable -> logger.error("Couldn't load sweet nothing", throwable),

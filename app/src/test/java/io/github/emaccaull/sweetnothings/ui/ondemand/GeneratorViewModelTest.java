@@ -107,6 +107,19 @@ public class GeneratorViewModelTest {
     }
 
     @Test
+    public void requestNewMessage_onError_showsError() {
+        withErrorSweetNothing();
+
+        // When requesting a new sweet nothing
+        viewModel.requestNewMessage();
+
+        // Then the view should display an error
+        InOrder inOrder = Mockito.inOrder(observer);
+        inOrder.verify(observer).onChanged(new ViewState(true, null, false));
+        inOrder.verify(observer).onChanged(new ViewState(false, null, true));
+    }
+
+    @Test
     public void onCleared_clearsDisposables() {
         // Given that a disposable is registered
         Disposable d = Mockito.mock(Disposable.class);
@@ -127,5 +140,9 @@ public class GeneratorViewModelTest {
 
     private void withNoSweetNothing() {
         when(getRandomSweetNothing.apply()).thenReturn(Maybe.empty());
+    }
+
+    private void withErrorSweetNothing() {
+        when(getRandomSweetNothing.apply()).thenReturn(Maybe.error(new Exception()));
     }
 }
