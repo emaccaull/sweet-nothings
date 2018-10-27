@@ -16,7 +16,6 @@
 
 package io.github.emaccaull.sweetnothings.core;
 
-import android.support.annotation.NonNull;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
@@ -26,8 +25,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Represents a sweet saying to send.
  */
 public final class SweetNothing {
-    private final @NonNull String id;
-    private final @NonNull String message;
+    private final String id;
+    private final String message;
     private final boolean blacklisted;
     private final boolean used;
 
@@ -38,12 +37,10 @@ public final class SweetNothing {
         this.used = builder.used;
     }
 
-    @NonNull
     public String getId() {
         return id;
     }
 
-    @NonNull
     public String getMessage() {
         return message;
     }
@@ -86,7 +83,7 @@ public final class SweetNothing {
                 '}';
     }
 
-    public static Builder builder(@NonNull String id) {
+    public static Builder builder(String id) {
         return new Builder(id);
     }
 
@@ -96,7 +93,7 @@ public final class SweetNothing {
         private boolean blacklisted;
         private boolean used;
 
-        Builder(@NonNull String id) {
+        Builder(String id) {
             this.id = checkNotNull(id, "id is null");
         }
 

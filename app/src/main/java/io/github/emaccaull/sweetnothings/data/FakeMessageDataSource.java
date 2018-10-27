@@ -16,7 +16,6 @@
 
 package io.github.emaccaull.sweetnothings.data;
 
-import android.support.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
@@ -35,7 +34,7 @@ public class FakeMessageDataSource implements MessageDataSource {
     private final Map<String, SweetNothing> store = new HashMap<>();
 
     @Override
-    public Maybe<SweetNothing> fetchRandomMessage(@NonNull MessageFilter filter) {
+    public Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter) {
         SweetNothing message = null;
         Collection<SweetNothing> items = store.values();
 
@@ -62,12 +61,12 @@ public class FakeMessageDataSource implements MessageDataSource {
     }
 
     @Override
-    public Maybe<SweetNothing> fetchMessage(@NonNull String id) {
+    public Maybe<SweetNothing> fetchMessage(String id) {
         return null;
     }
 
     @Override
-    public Completable markUsed(@NonNull String id) {
+    public Completable markUsed(String id) {
         return null;
     }
 
