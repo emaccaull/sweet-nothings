@@ -22,7 +22,7 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 
 /**
- * Retrieves a {@link SweetNothing} from type of persistent storage. Can be local or network.
+ * Retrieves a {@link SweetNothing} from some type of persistent storage. Can be local or network.
  */
 public interface MessageDataSource {
 
