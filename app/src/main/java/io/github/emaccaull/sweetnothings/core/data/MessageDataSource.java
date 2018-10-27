@@ -16,7 +16,6 @@
 
 package io.github.emaccaull.sweetnothings.core.data;
 
-import android.support.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
@@ -32,7 +31,7 @@ public interface MessageDataSource {
      * @param filter determines which SweetNothings to exclude from the random result.
      * @return a {@code SweetNothing} if one could be found for the given {@code filter}.
      */
-    Maybe<SweetNothing> fetchRandomMessage(@NonNull MessageFilter filter);
+    Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter);
 
     /**
      * Fetches the {@link SweetNothing} with the given {@code id}, if it exists.
@@ -40,7 +39,7 @@ public interface MessageDataSource {
      * @param id the ID of the message to fetch.
      * @return a {@code SweetNothing} if one could be found for the given {@code id}.
      */
-    Maybe<SweetNothing> fetchMessage(@NonNull String id);
+    Maybe<SweetNothing> fetchMessage(String id);
 
     /**
      * Marks the SweetNothing with the given {@code id} as used. Once a SweetNothing is used, it can
@@ -49,5 +48,5 @@ public interface MessageDataSource {
      * @param id the ID of the SweetNothing to mark.
      * @return a Completable that completes successfully when marking as used is successful.
      */
-    Completable markUsed(@NonNull String id);
+    Completable markUsed(String id);
 }

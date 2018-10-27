@@ -16,7 +16,6 @@
 
 package io.github.emaccaull.sweetnothings.core.usecase;
 
-import android.support.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.UseCase;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
@@ -32,11 +31,11 @@ public class GetSweetNothing {
 
     private final MessageDataSource dataSource;
 
-    public GetSweetNothing(@NonNull MessageDataSource dataSource) {
+    public GetSweetNothing(MessageDataSource dataSource) {
         this.dataSource = checkNotNull(dataSource, "dataSource is null");
     }
 
-    public Maybe<SweetNothing> apply(@NonNull String id) {
+    public Maybe<SweetNothing> apply(String id) {
         return dataSource.fetchMessage(id);
     }
 }
