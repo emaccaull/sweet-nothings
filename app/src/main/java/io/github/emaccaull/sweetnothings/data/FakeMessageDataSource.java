@@ -22,7 +22,6 @@ import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,29 +34,15 @@ public class FakeMessageDataSource implements MessageDataSource {
 
     @Override
     public Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter) {
-        SweetNothing message = null;
-        Collection<SweetNothing> items = store.values();
-
-        if (filter.includeUsed() && items.size() > 0) {
-            return Maybe.just(items.iterator().next());
-        }
 
         for (SweetNothing sweetNothing : store.values()) {
-            if (filter.includeUsed()) {
-                message = sweetNothing;
-                break;
-            } else {
-                if (!sweetNothing.isUsed()) {
-                    message = sweetNothing;
-                }
+            if (!filter.includeUsed() && sweetNothing.isUsed()) {
+                continue;
             }
+            return Maybe.just(sweetNothing);
         }
 
-        if (message == null) {
-            return Maybe.empty();
-        }
-
-        return Maybe.just(message);
+        return Maybe.empty();
     }
 
     @Override
