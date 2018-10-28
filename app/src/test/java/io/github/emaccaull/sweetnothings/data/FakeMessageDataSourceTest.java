@@ -25,10 +25,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class FakeMessageDataSourceTest {
 
+    private FakeMessageDataSource dataSource = new FakeMessageDataSource();
+
     @Test
     public void fetchRandomMessage() {
         // Given that there is one SweetNothing available
-        FakeMessageDataSource dataSource = new FakeMessageDataSource();
         SweetNothing message = SweetNothing.builder("abc").message("hello").build();
         dataSource.insert(message);
 
@@ -42,7 +43,6 @@ public class FakeMessageDataSourceTest {
     @Test
     public void fetchRandomMessage_whenMessages() {
         // Given that there are no sweet nothings
-        FakeMessageDataSource dataSource = new FakeMessageDataSource();
 
         // When requesting a random one
         dataSource.fetchRandomMessage(MessageFilter.selectAll())
@@ -55,7 +55,6 @@ public class FakeMessageDataSourceTest {
     @Test
     public void fetchRandomMessage_whenAllItemsUsed() {
         // Given that there are no unused sweet nothings
-        FakeMessageDataSource dataSource = new FakeMessageDataSource();
         SweetNothing message = SweetNothing.builder("abc").message("hello").used(true).build();
         dataSource.insert(message);
 
@@ -65,5 +64,28 @@ public class FakeMessageDataSourceTest {
                 .test()
                 .assertNoValues()
                 .assertComplete();
+    }
+
+    @Test
+    public void fetchMessage() {
+        // Given that there is a sweet nothing with the given id
+        SweetNothing message = SweetNothing.builder("ID").message("foo").build();
+        dataSource.insert(message);
+
+        // When fetching the message
+        dataSource.fetchMessage("ID")
+                // Then the message should be returned
+                .test()
+                .assertValue(message);
+    }
+
+    @Test
+    public void fetchMessage_whenNotPresent() {
+        // When asking for a message that is not present
+        dataSource.fetchMessage("1211")
+                // Then the result should complete without an emission
+                .test()
+                .assertComplete()
+                .assertNoValues();
     }
 }
