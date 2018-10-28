@@ -47,7 +47,13 @@ public class FakeMessageDataSource implements MessageDataSource {
 
     @Override
     public Maybe<SweetNothing> fetchMessage(String id) {
-        return null;
+        SweetNothing sweetNothing = store.get(id);
+
+        if (sweetNothing == null) {
+            return Maybe.empty();
+        }
+
+        return Maybe.just(sweetNothing);
     }
 
     @Override
