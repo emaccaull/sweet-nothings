@@ -62,14 +62,11 @@ public class FakeMessageDataSource implements MessageDataSource {
 
     @Override
     public Completable markUsed(String id) {
-        return Completable.fromAction(() -> {
-            SweetNothing sweetNothing = store.get(id);
-
-            if (sweetNothing != null && !sweetNothing.isUsed()) {
-                sweetNothing = SweetNothing.builder(sweetNothing).used(true).build();
-                store.put(sweetNothing.getId(), sweetNothing);
-            }
-        });
+        return fetchMessage(id)
+                .filter(sweetNothing -> !sweetNothing.isUsed())
+                .map(sweetNothing -> SweetNothing.builder(sweetNothing).used(true).build())
+                .doOnSuccess(this::insert)
+                .flatMapCompletable(__ -> Completable.complete());
     }
 
     public void insert(SweetNothing message) {
