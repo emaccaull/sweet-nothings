@@ -87,6 +87,10 @@ public final class SweetNothing {
         return new Builder(id);
     }
 
+    public static Builder builder(SweetNothing seed) {
+        return new Builder(seed);
+    }
+
     public static class Builder {
         private String id;
         private String message;
@@ -95,6 +99,13 @@ public final class SweetNothing {
 
         Builder(String id) {
             this.id = checkNotNull(id, "id is null");
+        }
+
+        Builder(SweetNothing seed) {
+            id = seed.id;
+            message = seed.message;
+            blacklisted = seed.blacklisted;
+            used = seed.used;
         }
 
         public Builder message(String message) {

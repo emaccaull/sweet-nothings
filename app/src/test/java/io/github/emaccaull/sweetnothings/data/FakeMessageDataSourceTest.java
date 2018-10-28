@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.junit.Assert.assertTrue;
+
 @RunWith(MockitoJUnitRunner.class)
 public class FakeMessageDataSourceTest {
 
@@ -87,5 +89,19 @@ public class FakeMessageDataSourceTest {
                 .test()
                 .assertComplete()
                 .assertNoValues();
+    }
+
+    @Test
+    public void markUsed() {
+        // Given that there is a sweet nothing with the given id
+        SweetNothing message = SweetNothing.builder("1234").message("foo").build();
+        dataSource.insert(message);
+
+        // When marking the message as used
+        dataSource.markUsed("1234").test().assertComplete();
+
+        // Then the message should be modified
+        SweetNothing modified = dataSource.fetchMessage("1234").blockingGet();
+        assertTrue(modified.isUsed());
     }
 }

@@ -52,8 +52,24 @@ public class SweetNothingTest {
     @Test(expected = NullPointerException.class)
     public void builder_whenIdEmpty_throwsException() {
         // When building a sweet nothing that doesn't have an ID
-        SweetNothing.builder(null).message("foo").build();
+        SweetNothing.builder((String)null).message("foo").build();
         // Then an exception should be thrown
+    }
+
+    @Test
+    public void builder_canCopyAllData() {
+        // Given that there is an existing sweet nothing
+        SweetNothing sn = SweetNothing.builder("abc")
+                .message("hi")
+                .used(true)
+                .blacklisted(true)
+                .build();
+
+        // When making a copy of the sweet nothing
+        SweetNothing snCopy = SweetNothing.builder(sn).build();
+
+        // Then the two should be equal
+        assertThat(snCopy, is(sn));
     }
 
     @Test
