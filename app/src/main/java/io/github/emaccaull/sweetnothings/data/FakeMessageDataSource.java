@@ -58,7 +58,14 @@ public class FakeMessageDataSource implements MessageDataSource {
 
     @Override
     public Completable markUsed(String id) {
-        return null;
+        SweetNothing sweetNothing = store.get(id);
+
+        if (sweetNothing != null && !sweetNothing.isUsed()) {
+            sweetNothing = SweetNothing.builder(sweetNothing).used(true).build();
+            store.put(sweetNothing.getId(), sweetNothing);
+        }
+
+        return Completable.complete();
     }
 
     public void insert(SweetNothing message) {
