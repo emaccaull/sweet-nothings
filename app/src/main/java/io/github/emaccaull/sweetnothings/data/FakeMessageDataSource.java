@@ -22,50 +22,54 @@ import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * In-memory store of SweetNothings.
  */
 public class FakeMessageDataSource implements MessageDataSource {
 
-    private final Map<String, SweetNothing> store = new HashMap<>();
+    private final ConcurrentMap<String, SweetNothing> store = new ConcurrentHashMap<>();
 
     @Override
     public Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter) {
+        return Maybe.defer(() -> {
 
-        for (SweetNothing sweetNothing : store.values()) {
-            if (!filter.includeUsed() && sweetNothing.isUsed()) {
-                continue;
+            for (SweetNothing sweetNothing : store.values()) {
+                if (!filter.includeUsed() && sweetNothing.isUsed()) {
+                    continue;
+                }
+                return Maybe.just(sweetNothing);
             }
-            return Maybe.just(sweetNothing);
-        }
 
-        return Maybe.empty();
+            return Maybe.empty();
+        });
     }
 
     @Override
     public Maybe<SweetNothing> fetchMessage(String id) {
-        SweetNothing sweetNothing = store.get(id);
+        return Maybe.defer(() -> {
+            SweetNothing sweetNothing = store.get(id);
 
-        if (sweetNothing == null) {
-            return Maybe.empty();
-        }
+            if (sweetNothing == null) {
+                return Maybe.empty();
+            }
 
-        return Maybe.just(sweetNothing);
+            return Maybe.just(sweetNothing);
+        });
     }
 
     @Override
     public Completable markUsed(String id) {
-        SweetNothing sweetNothing = store.get(id);
+        return Completable.fromAction(() -> {
+            SweetNothing sweetNothing = store.get(id);
 
-        if (sweetNothing != null && !sweetNothing.isUsed()) {
-            sweetNothing = SweetNothing.builder(sweetNothing).used(true).build();
-            store.put(sweetNothing.getId(), sweetNothing);
-        }
-
-        return Completable.complete();
+            if (sweetNothing != null && !sweetNothing.isUsed()) {
+                sweetNothing = SweetNothing.builder(sweetNothing).used(true).build();
+                store.put(sweetNothing.getId(), sweetNothing);
+            }
+        });
     }
 
     public void insert(SweetNothing message) {
