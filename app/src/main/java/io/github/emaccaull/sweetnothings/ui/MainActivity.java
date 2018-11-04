@@ -18,48 +18,39 @@ package io.github.emaccaull.sweetnothings.ui;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import io.github.emaccaull.sweetnothings.R;
-import io.github.emaccaull.sweetnothings.databinding.ActivityMainBinding;
+import io.github.emaccaull.sweetnothings.databinding.MainActivityBinding;
+import io.github.emaccaull.sweetnothings.ui.ondemand.GeneratorFragment;
+import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MainActivity extends AppCompatActivity {
     private final Logger logger = LoggerFactory.getLogger(MainActivity.class);
-    private ActivityMainBinding binding;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    binding.message.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    binding.message.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    binding.message.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
+    private MainActivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        logger.info("+onCreate");
         super.onCreate(savedInstanceState);
+        logger.debug("app running");
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.navigation.setOnNavigationItemSelectedListener(bottomNavigationListener);
-        binding.navigation.setSelectedItemId(R.id.navigation_home);
+        binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
-        logger.info("-onCreate");
+        GeneratorFragment fragment = findOrInsertGeneratorFragment();
+
+        FragmentUtils.replace(getSupportFragmentManager(), fragment, R.id.fragment_container);
     }
 
+    private GeneratorFragment findOrInsertGeneratorFragment() {
+        GeneratorFragment fragment = (GeneratorFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+
+        if (fragment == null) {
+            fragment = GeneratorFragment.newInstance();
+        }
+
+        return fragment;
+    }
 }
