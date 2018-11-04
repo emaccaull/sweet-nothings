@@ -69,6 +69,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "nl.jqno.equalsverifier:equalsverifier:$equalsverifier_version"
     testImplementation "android.arch.core:core-testing:$lifecycle_version"
-    androidTestImplementation "com.android.support.test:runner:$test_runner_version"
+    androidTestImplementation "com.android.support.test:runner:$test_support_version"
+    androidTestImplementation "com.android.support.test:rules:$test_support_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
 }

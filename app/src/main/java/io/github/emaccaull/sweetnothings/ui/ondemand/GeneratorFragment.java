@@ -23,4 +23,7 @@ import android.support.v4.app.Fragment;
  */
 public class GeneratorFragment extends Fragment {
 
+    public static GeneratorFragment newInstance() {
+        return new GeneratorFragment();
+    }
 }

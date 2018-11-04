@@ -39,6 +39,6 @@ ext {
     junit_version = "4.12"
     mockito_version = "2.21.0"
     equalsverifier_version = "2.5.2"
-    test_runner_version = "1.0.2"
+    test_support_version = "1.0.2"
     espresso_version = "3.0.2"
 }
