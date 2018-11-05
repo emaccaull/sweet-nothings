@@ -6,4 +6,6 @@
 
     <string name="generate_phrase_title">Generate Now</string>
     <string name="generate_send">Send</string>
+    <string name="generate_found_message_title">Send this message?</string>
+    <string name="cancel">Cancel</string>
 </resources>

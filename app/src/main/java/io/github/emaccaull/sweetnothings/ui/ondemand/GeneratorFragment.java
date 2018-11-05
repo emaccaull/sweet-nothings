@@ -22,12 +22,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.databinding.GeneratorFragmentBinding;
+import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +35,8 @@ import org.slf4j.LoggerFactory;
  * Generate/fetch a Random SweetNothing on demand.
  */
 public class GeneratorFragment extends Fragment {
+    private static final String CONFIRMATION_TAG = "ui.ondemand.confirm";
+
     private final Logger logger = LoggerFactory.getLogger(GeneratorFragment.class);
 
     private GeneratorFragmentBinding binding;
@@ -65,8 +67,10 @@ public class GeneratorFragment extends Fragment {
     }
 
     public void onGenerateClicked(View view) {
-        new AlertDialog.Builder(requireContext())
-                .setPositiveButton(R.string.generate_send, (a, b) -> {})
-                .show();
+        MessageDialog dialog = MessageDialog.newInstance(
+                R.string.generate_found_message_title,
+                "A sweet nothing");
+
+        FragmentUtils.showDialog(requireFragmentManager(), dialog, CONFIRMATION_TAG);
     }
 }

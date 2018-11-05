@@ -17,6 +17,8 @@
 package io.github.emaccaull.sweetnothings.ui.util;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -39,5 +41,20 @@ public final class FragmentUtils {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(containerViewId, fragment);
         transaction.commit();
+    }
+
+    /**
+     * Removes any fragments with the given {@code tag}, then shows {@code dialog} with the given
+     * {@code tag}.
+     */
+    public static void showDialog(FragmentManager fragmentManager, DialogFragment dialog,
+            @Nullable String tag) {
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                    .remove(fragment)
+                    .commit();
+        }
+        dialog.show(fragmentManager, tag);
     }
 }
