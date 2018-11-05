@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.ui.ondemand;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class GeneratorFragment extends Fragment {
     private final Logger logger = LoggerFactory.getLogger(GeneratorFragment.class);
 
     private GeneratorFragmentBinding binding;
+    private GeneratorViewModel viewModel;
 
     public static GeneratorFragment newInstance() {
         return new GeneratorFragment();
@@ -57,6 +59,10 @@ public class GeneratorFragment extends Fragment {
             @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.generator_fragment, container, false);
         binding.generatePhraseBtn.setOnClickListener(this::onGenerateClicked);
+
+        viewModel = obtainViewModel();
+        viewModel.getViewState().observe(this, this::updateViewState);
+
         return binding.getRoot();
     }
 
@@ -66,11 +72,26 @@ public class GeneratorFragment extends Fragment {
         binding = null;
     }
 
-    public void onGenerateClicked(View view) {
+    private GeneratorViewModel obtainViewModel() {
+        return ViewModelProviders.of(this).get(GeneratorViewModel.class);
+    }
+
+    private void updateViewState(ViewState state) {
+        binding.generatePhraseBtn.setEnabled(!state.isLoading());
+
+        if (state.getMessage() != null) {
+            confirmSend(state.getMessage());
+        }
+    }
+
+    private void confirmSend(String message) {
         MessageDialog dialog = MessageDialog.newInstance(
-                R.string.generate_found_message_title,
-                "A sweet nothing");
+                R.string.generate_found_message_title, message);
 
         FragmentUtils.showDialog(requireFragmentManager(), dialog, CONFIRMATION_TAG);
+    }
+
+    public void onGenerateClicked(View view) {
+        viewModel.requestNewMessage();
     }
 }

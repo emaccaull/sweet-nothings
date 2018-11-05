@@ -17,6 +17,7 @@
 package io.github.emaccaull.sweetnothings.ui.ondemand;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -27,7 +28,7 @@ import io.github.emaccaull.sweetnothings.R;
 /**
  * Allows a user to choose an action for a given sweet nothing.
  */
-public class MessageDialog extends DialogFragment {
+public class MessageDialog extends DialogFragment implements DialogInterface.OnClickListener {
     private static final String ARG_TITLE_ID = "title";
     private static final String ARG_MESSAGE = "body";
 
@@ -58,8 +59,13 @@ public class MessageDialog extends DialogFragment {
         return new AlertDialog.Builder(requireContext())
                 .setTitle(titleId)
                 .setMessage(message)
-                .setPositiveButton(R.string.generate_send, (a, b) -> { })
-                .setNegativeButton(R.string.cancel, (a, b) -> { })
+                .setPositiveButton(R.string.generate_send, this)
+                .setNegativeButton(R.string.cancel, this)
                 .create();
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+
     }
 }
