@@ -19,26 +19,25 @@ package io.github.emaccaull.sweetnothings.ui;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v4.app.FragmentManager;
 import io.github.emaccaull.sweetnothings.R;
-import io.github.emaccaull.sweetnothings.ui.ondemand.GeneratorFragment;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.instanceOf;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MainActivityTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule =
+    public ActivityTestRule<MainActivity> activityRule =
             new ActivityTestRule<>(MainActivity.class);
 
     @Test
@@ -47,11 +46,15 @@ public class MainActivityTest {
     }
 
     @Test
-    public void whenCreated_showsGeneratorFragment() {
-        FragmentManager fragmentManager = mActivityRule.getActivity().getSupportFragmentManager();
+    public void selectingGenerate_launchesPopup() {
+        onView(withText(R.string.generate_send)).check(doesNotExist());
 
-        assertThat(
-                fragmentManager.findFragmentById(R.id.fragment_container),
-                instanceOf(GeneratorFragment.class));
+        // Given that there is a sweet nothing available
+
+        // When the generate button is clicked
+        onView(withId(R.id.generate_phrase_btn)).perform(click());
+
+        // Then we should have the option of sending the sweet nothing
+        onView(withText(R.string.generate_send)).check(matches(isDisplayed()));
     }
 }
