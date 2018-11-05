@@ -16,14 +16,57 @@
 
 package io.github.emaccaull.sweetnothings.ui.ondemand;
 
+import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import io.github.emaccaull.sweetnothings.R;
+import io.github.emaccaull.sweetnothings.databinding.GeneratorFragmentBinding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Generate/fetch a Random SweetNothing on demand.
  */
 public class GeneratorFragment extends Fragment {
+    private final Logger logger = LoggerFactory.getLogger(GeneratorFragment.class);
+
+    private GeneratorFragmentBinding binding;
 
     public static GeneratorFragment newInstance() {
         return new GeneratorFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        logger.debug("Attached");
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.generator_fragment, container, false);
+        binding.generatePhraseBtn.setOnClickListener(this::onGenerateClicked);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    public void onGenerateClicked(View view) {
+        new AlertDialog.Builder(requireContext())
+                .setPositiveButton(R.string.generate_send, (a, b) -> {})
+                .show();
     }
 }
