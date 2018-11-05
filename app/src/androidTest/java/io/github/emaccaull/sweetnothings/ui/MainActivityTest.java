@@ -47,7 +47,9 @@ public class MainActivityTest {
 
     @Test
     public void selectingGenerate_launchesPopup() {
+        onView(withText(R.string.generate_found_message_title)).check(doesNotExist());
         onView(withText(R.string.generate_send)).check(doesNotExist());
+        onView(withText(R.string.cancel)).check(doesNotExist());
 
         // Given that there is a sweet nothing available
 
@@ -55,6 +57,8 @@ public class MainActivityTest {
         onView(withId(R.id.generate_phrase_btn)).perform(click());
 
         // Then we should have the option of sending the sweet nothing
+        onView(withText(R.string.generate_found_message_title)).check(matches(isDisplayed()));
         onView(withText(R.string.generate_send)).check(matches(isDisplayed()));
+        onView(withText(R.string.cancel)).check(matches(isDisplayed()));
     }
 }
