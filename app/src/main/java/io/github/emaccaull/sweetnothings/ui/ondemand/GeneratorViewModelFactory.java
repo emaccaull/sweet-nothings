@@ -19,9 +19,10 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
-import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.glue.Injector;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Creates instances of ViewModels in this package.
@@ -31,8 +32,11 @@ class GeneratorViewModelFactory implements ViewModelProvider.Factory {
     private GetRandomSweetNothing getRandomSweetNothing;
 
     GeneratorViewModelFactory() {
-        MessageDataSource dataSource = Injector.provideMessageDataSource();
-        getRandomSweetNothing = Injector.provideGetRandomSweetNothing(dataSource);
+        this(Injector.provideGetRandomSweetNothing(Injector.provideMessageDataSource()));
+    }
+
+    GeneratorViewModelFactory(GetRandomSweetNothing getRandomSweetNothing) {
+        this.getRandomSweetNothing = checkNotNull(getRandomSweetNothing);
     }
 
     @NonNull
