@@ -72,4 +72,8 @@ public class FakeMessageDataSource implements MessageDataSource {
     public void insert(SweetNothing message) {
         store.put(message.getId(), message);
     }
+
+    public void clear() {
+        store.clear();
+    }
 }

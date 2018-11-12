@@ -14,21 +14,31 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.app;
+package io.github.emaccaull.sweetnothings.glue;
 
-import android.app.Application;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import javax.inject.Provider;
 
 /**
- * Sweet Nothings application class.
- *
- * Application initialization happens here.
+ * Lazily creates an instance of T.
  */
-public class SweetNothingsApp extends Application {
+public class Lazy<T> implements Provider<T> {
+
+    private Provider<T> provider;
+    private volatile T t;
+
+    public Lazy(Provider<T> provider) {
+        this.provider = provider;
+    }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        Injector.setAppComponent(new ProdAppComponent());
+    public T get() {
+        if (t == null) {
+            synchronized (this) {
+                if (t == null) {
+                    t = provider.get();
+                }
+            }
+        }
+        return t;
     }
 }

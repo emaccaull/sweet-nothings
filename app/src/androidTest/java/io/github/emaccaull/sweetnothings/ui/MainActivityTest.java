@@ -20,6 +20,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import io.github.emaccaull.sweetnothings.R;
+import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +38,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class MainActivityTest {
 
     @Rule
+    public FakeDataSourceTestRule fakeDataSourceTestRule = new FakeDataSourceTestRule();
+
+    @Rule
     public ActivityTestRule<MainActivity> activityRule =
             new ActivityTestRule<>(MainActivity.class);
 
@@ -46,12 +50,14 @@ public class MainActivityTest {
     }
 
     @Test
-    public void selectingGenerate_launchesPopup() {
+    public void selectingGenerate_launchesDialog() {
         onView(withText(R.string.generate_found_message_title)).check(doesNotExist());
         onView(withText(R.string.generate_send)).check(doesNotExist());
         onView(withText(R.string.cancel)).check(doesNotExist());
 
         // Given that there is a sweet nothing available
+        SweetNothing message = SweetNothing.builder("xyz").message("<3 u").used(false).build();
+        fakeDataSourceTestRule.getDataSource().insert(message);
 
         // When the generate button is clicked
         onView(withId(R.id.generate_phrase_btn)).perform(click());

@@ -73,7 +73,8 @@ public class GeneratorFragment extends Fragment {
     }
 
     private GeneratorViewModel obtainViewModel() {
-        return ViewModelProviders.of(this).get(GeneratorViewModel.class);
+        GeneratorViewModelFactory factory = new GeneratorViewModelFactory();
+        return ViewModelProviders.of(this, factory).get(GeneratorViewModel.class);
     }
 
     private void updateViewState(ViewState state) {

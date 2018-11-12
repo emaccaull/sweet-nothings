@@ -16,19 +16,18 @@
 
 package io.github.emaccaull.sweetnothings.ui.app;
 
-import android.app.Application;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
+import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
+import io.github.emaccaull.sweetnothings.glue.AppComponent;
 
 /**
- * Sweet Nothings application class.
- *
- * Application initialization happens here.
+ * AppComponent used for production builds.
  */
-public class SweetNothingsApp extends Application {
+public class ProdAppComponent implements AppComponent {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        Injector.setAppComponent(new ProdAppComponent());
+    public MessageDataSource messageDataSource() {
+        // TODO plug real data source
+        return new FakeMessageDataSource();
     }
 }

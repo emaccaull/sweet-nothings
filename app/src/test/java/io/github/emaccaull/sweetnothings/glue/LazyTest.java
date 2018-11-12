@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.app;
+package io.github.emaccaull.sweetnothings.glue;
 
-import android.app.Application;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import org.junit.Test;
 
-/**
- * Sweet Nothings application class.
- *
- * Application initialization happens here.
- */
-public class SweetNothingsApp extends Application {
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Injector.setAppComponent(new ProdAppComponent());
+public class LazyTest {
+
+    @Test
+    public void get() {
+        Lazy<Object> lo = new Lazy<>(Object::new);
+
+        Object o1 = lo.get();
+        assertThat(o1, is(notNullValue()));
+
+        Object o2 = lo.get();
+        assertThat(o2, is(o1));
     }
 }
