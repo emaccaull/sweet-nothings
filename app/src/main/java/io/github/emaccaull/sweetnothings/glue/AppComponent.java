@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.app;
+package io.github.emaccaull.sweetnothings.glue;
 
-import android.app.Application;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 
 /**
- * Sweet Nothings application class.
- *
- * Application initialization happens here.
+ * Defines implementations of application scoped dependencies.
  */
-public class SweetNothingsApp extends Application {
+public interface AppComponent {
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Injector.setAppComponent(new ProdAppComponent());
-    }
+    /** @return a MessageDataSource to share globally. */
+    MessageDataSource messageDataSource();
 }

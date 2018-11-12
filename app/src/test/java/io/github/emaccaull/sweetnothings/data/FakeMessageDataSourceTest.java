@@ -22,6 +22,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -103,5 +106,19 @@ public class FakeMessageDataSourceTest {
         // Then the message should be modified
         SweetNothing modified = dataSource.fetchMessage("1234").blockingGet();
         assertTrue(modified.isUsed());
+    }
+
+    @Test
+    public void clear() {
+        // Given that there is an item in the dataSource
+        SweetNothing message = SweetNothing.builder("756").message("foo").build();
+        dataSource.insert(message);
+
+        // When clearing it
+        dataSource.clear();
+
+        // Then that item shouldn't be stored
+        SweetNothing sweetNothing = dataSource.fetchMessage("756").blockingGet();
+        assertThat(sweetNothing, is(nullValue()));
     }
 }

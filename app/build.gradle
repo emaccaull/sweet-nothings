@@ -64,6 +64,9 @@ dependencies {
     // Utilities
     implementation "com.google.guava:guava:$guava_version"
 
+    // Dependency Management
+    implementation "javax.inject:javax.inject:$javax_inject_version"
+
     // General Testing
     testImplementation "junit:junit:$espresso_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"

@@ -35,6 +35,7 @@ ext {
     rxjava_version = "2.2.1"
     rxandroid_version = "2.1.0"
     guava_version = "26.0-android"
+    javax_inject_version = "1"
 
     junit_version = "4.12"
     mockito_version = "2.21.0"
