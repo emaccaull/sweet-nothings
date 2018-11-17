@@ -38,12 +38,12 @@ public class InjectorTest {
 
     @After
     public void tearDown() {
-        Injector.setAppComponent(null);
+        Injector.reset();
     }
 
     @Test
     public void provideMessageDataSource() {
-        Injector.setAppComponent(new TestAppComponent());
+        Injector.setModule(new TestModule());
 
         MessageDataSource result = Injector.provideMessageDataSource();
 
@@ -52,12 +52,12 @@ public class InjectorTest {
 
     @Test
     public void provideMessageDataSource_isSingleton() {
-        Injector.setAppComponent(new NewInstanceAppComponent());
+        Injector.setModule(new NewInstanceModule());
         MessageDataSource ds1 = Injector.provideMessageDataSource();
         assertThat(Injector.provideMessageDataSource(), is(ds1));
 
         // Change app component and message data source should reset.
-        Injector.setAppComponent(new NewInstanceAppComponent());
+        Injector.setModule(new NewInstanceModule());
         MessageDataSource ds2 = Injector.provideMessageDataSource();
         assertThat(Injector.provideMessageDataSource(), is(ds2));
         assertThat(ds2, is(not(ds1)));
@@ -70,22 +70,34 @@ public class InjectorTest {
 
     @Test
     public void provideGetRandomSweetNothing() {
-        GetRandomSweetNothing useCase = Injector.provideGetRandomSweetNothing(messageDataSource);
+        Injector.setModule(new NewInstanceModule());
+
+        GetRandomSweetNothing useCase = Injector.provideGetRandomSweetNothing();
 
         assertThat(useCase, is(notNullValue()));
     }
 
-    class TestAppComponent implements AppComponent {
+    class TestModule implements Injector.Module {
         @Override
         public MessageDataSource messageDataSource() {
             return messageDataSource;
         }
+
+        @Override
+        public GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource) {
+            return mock(GetRandomSweetNothing.class);
+        }
     }
 
-    class NewInstanceAppComponent implements AppComponent {
+    class NewInstanceModule implements Injector.Module {
         @Override
         public MessageDataSource messageDataSource() {
             return mock(MessageDataSource.class);
+        }
+
+        @Override
+        public GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource) {
+            return mock(GetRandomSweetNothing.class);
         }
     }
 }

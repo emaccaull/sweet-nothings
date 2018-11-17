@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.glue;
+package io.github.emaccaull.sweetnothings.ui;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
+import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
+import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
+import io.github.emaccaull.sweetnothings.glue.Injector;
 
 /**
- * Defines implementations of application scoped dependencies.
+ * Dependencies for instrumentation tests.
  */
-public interface AppComponent {
+public class TestModule implements Injector.Module {
 
-    /** @return a MessageDataSource to share globally. */
-    MessageDataSource messageDataSource();
+    @Override
+    public MessageDataSource messageDataSource() {
+        return new FakeMessageDataSource();
+    }
+
+    @Override
+    public GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource) {
+        return new GetRandomSweetNothing(dataSource);
+    }
 }

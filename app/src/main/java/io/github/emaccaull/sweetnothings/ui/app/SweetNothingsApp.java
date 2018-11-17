@@ -29,6 +29,6 @@ public class SweetNothingsApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Injector.setAppComponent(new ProdAppComponent());
+        Injector.setModule(new ProdModule());
     }
 }
