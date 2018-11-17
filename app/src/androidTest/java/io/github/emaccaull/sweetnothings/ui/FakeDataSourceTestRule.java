@@ -33,7 +33,7 @@ public class FakeDataSourceTestRule implements TestRule {
             (FakeMessageDataSource) Injector.provideMessageDataSource();
 
     static {
-        Injector.setAppComponent(new TestAppComponent());
+        Injector.setModule(new TestModule());
     }
 
     @Override

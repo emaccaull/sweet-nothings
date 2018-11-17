@@ -18,6 +18,8 @@ package io.github.emaccaull.sweetnothings.glue;
 
 import javax.inject.Provider;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Lazily creates an instance of T.
  */
@@ -27,6 +29,7 @@ public class Lazy<T> implements Provider<T> {
     private volatile T t;
 
     public Lazy(Provider<T> provider) {
+        checkNotNull(provider);
         this.provider = provider;
     }
 
@@ -36,6 +39,7 @@ public class Lazy<T> implements Provider<T> {
             synchronized (this) {
                 if (t == null) {
                     t = provider.get();
+                    provider = null; // help gc.
                 }
             }
         }

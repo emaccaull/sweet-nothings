@@ -32,7 +32,7 @@ class GeneratorViewModelFactory implements ViewModelProvider.Factory {
     private GetRandomSweetNothing getRandomSweetNothing;
 
     GeneratorViewModelFactory() {
-        this(Injector.provideGetRandomSweetNothing(Injector.provideMessageDataSource()));
+        this(Injector.provideGetRandomSweetNothing());
     }
 
     GeneratorViewModelFactory(GetRandomSweetNothing getRandomSweetNothing) {

@@ -16,33 +16,73 @@
 
 package io.github.emaccaull.sweetnothings.glue;
 
+import android.support.annotation.VisibleForTesting;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+
 /**
- * Wires together application components.
+ * Controls creation of application scoped objects.
  */
 public final class Injector {
 
-    private static volatile Lazy<MessageDataSource> messageDataSource;
+    private static volatile Component component;
 
-    public static GetRandomSweetNothing provideGetRandomSweetNothing(MessageDataSource dataSource) {
-        return new GetRandomSweetNothing(dataSource);
+    public static GetRandomSweetNothing provideGetRandomSweetNothing() {
+        checkState(component != null, "No module set");
+        return component.getRandomSweetNothing();
     }
 
     public static MessageDataSource provideMessageDataSource() {
-        return messageDataSource.get();
+        checkState(component != null, "No module set");
+        return component.messageDataSource();
     }
 
-    private static AppComponent checkAppComponent(AppComponent component) {
-        if (component == null) {
-            throw new IllegalStateException("AppComponent not set");
+    public static void setModule(Module module) {
+        component = new Component(module);
+    }
+
+    @VisibleForTesting
+    static void reset() {
+        component = null;
+    }
+
+    /** Defines implementations of application scoped dependencies. */
+    public interface Module {
+
+        /** @return a MessageDataSource instance to share globally. */
+        @Singleton
+        MessageDataSource messageDataSource();
+
+        /** @return a new GetRandomSweetNothing use case. */
+        @Singleton
+        GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource);
+    }
+
+    /** Manages instantiation of the objects specified in {@link Module}. */
+    @Singleton
+    static final class Component {
+        Provider<MessageDataSource> messageDataSourceProvider;
+        Provider<GetRandomSweetNothing> getRandomSweetNothingProvider;
+
+        Component(Module module) {
+            checkNotNull(module, "module is null");
+            messageDataSourceProvider = new Lazy<>(module::messageDataSource);
+            getRandomSweetNothingProvider = new Lazy<>(
+                    () -> module.getRandomSweetNothing(messageDataSourceProvider.get()));
         }
-        return component;
-    }
 
-    public static void setAppComponent(AppComponent appComponent) {
-        messageDataSource = new Lazy<>(
-                () -> checkAppComponent(appComponent).messageDataSource());
+        MessageDataSource messageDataSource() {
+            return messageDataSourceProvider.get();
+        }
+
+        GetRandomSweetNothing getRandomSweetNothing() {
+            return getRandomSweetNothingProvider.get();
+        }
     }
 }

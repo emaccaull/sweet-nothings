@@ -17,17 +17,23 @@
 package io.github.emaccaull.sweetnothings.ui.app;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
+import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
-import io.github.emaccaull.sweetnothings.glue.AppComponent;
+import io.github.emaccaull.sweetnothings.glue.Injector;
 
 /**
- * AppComponent used for production builds.
+ * Module used for production builds.
  */
-public class ProdAppComponent implements AppComponent {
+public class ProdModule implements Injector.Module {
 
     @Override
     public MessageDataSource messageDataSource() {
         // TODO plug real data source
         return new FakeMessageDataSource();
+    }
+
+    @Override
+    public GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource) {
+        return new GetRandomSweetNothing(dataSource);
     }
 }
