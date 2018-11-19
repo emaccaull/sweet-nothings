@@ -16,24 +16,21 @@
 
 package io.github.emaccaull.sweetnothings.ui.app;
 
-import android.app.Application;
+import io.github.emaccaull.sweetnothings.TestModule;
 import io.github.emaccaull.sweetnothings.glue.Injector;
 
 /**
- * Sweet Nothings application class.
- *
- * Application initialization happens here.
+ * Perform common setup for Espresso tests.
  */
-public class SweetNothingsApp extends Application {
+public class TestSweetNothingsApp extends SweetNothingsApp {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        configureDataAccess();
     }
 
-    /** Setup where data should be accessed from. */
+    @Override
     protected void configureDataAccess() {
-        Injector.setModule(new ProdModule());
+        Injector.setModule(new TestModule());
     }
 }
