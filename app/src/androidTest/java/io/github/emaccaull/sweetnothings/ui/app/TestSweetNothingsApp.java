@@ -16,7 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.ui.app;
 
-import io.github.emaccaull.sweetnothings.TestModule;
+import io.github.emaccaull.sweetnothings.TestDataAccessComponent;
 import io.github.emaccaull.sweetnothings.glue.Injector;
 
 /**
@@ -31,6 +31,6 @@ public class TestSweetNothingsApp extends SweetNothingsApp {
 
     @Override
     protected void configureDataAccess() {
-        Injector.setModule(new TestModule());
+        Injector.setDataAccessComponent(new TestDataAccessComponent());
     }
 }

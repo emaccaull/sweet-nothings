@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.app;
+package io.github.emaccaull.sweetnothings;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Injector;
 
 /**
- * Module used for production builds.
+ * Dependencies for instrumentation tests.
  */
-public class ProdModule implements Injector.Module {
+public class TestDataAccessComponent implements Injector.DataAccessComponent {
 
     @Override
     public MessageDataSource messageDataSource() {
-        // TODO plug real data source
         return new FakeMessageDataSource();
-    }
-
-    @Override
-    public GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource) {
-        return new GetRandomSweetNothing(dataSource);
     }
 }

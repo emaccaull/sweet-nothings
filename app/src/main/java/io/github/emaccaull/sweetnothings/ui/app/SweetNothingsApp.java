@@ -34,6 +34,6 @@ public class SweetNothingsApp extends Application {
 
     /** Setup where data should be accessed from. */
     protected void configureDataAccess() {
-        Injector.setModule(new ProdModule());
+        Injector.setDataAccessComponent(new ProdDataAccessComponent());
     }
 }
