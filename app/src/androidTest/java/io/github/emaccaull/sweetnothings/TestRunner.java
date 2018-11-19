@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.app;
+package io.github.emaccaull.sweetnothings;
 
 import android.app.Application;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import android.content.Context;
+import android.support.test.runner.AndroidJUnitRunner;
+import io.github.emaccaull.sweetnothings.ui.app.TestSweetNothingsApp;
 
 /**
- * Sweet Nothings application class.
- *
- * Application initialization happens here.
+ * Custom configuration for Android instrumentation tests.
  */
-public class SweetNothingsApp extends Application {
+// Registered in app/build.gradle
+public class TestRunner extends AndroidJUnitRunner {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        configureDataAccess();
-    }
-
-    /** Setup where data should be accessed from. */
-    protected void configureDataAccess() {
-        Injector.setModule(new ProdModule());
+    public Application newApplication(ClassLoader cl, String className, Context context)
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        return super.newApplication(cl, TestSweetNothingsApp.class.getName(), context);
     }
 }
