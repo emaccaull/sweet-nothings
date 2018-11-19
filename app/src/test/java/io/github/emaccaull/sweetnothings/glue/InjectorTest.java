@@ -43,7 +43,7 @@ public class InjectorTest {
 
     @Test
     public void provideMessageDataSource() {
-        Injector.setModule(new TestModule());
+        Injector.setDataAccessComponent(new TestDataAccessComponent());
 
         MessageDataSource result = Injector.provideMessageDataSource();
 
@@ -52,12 +52,12 @@ public class InjectorTest {
 
     @Test
     public void provideMessageDataSource_isSingleton() {
-        Injector.setModule(new NewInstanceModule());
+        Injector.setDataAccessComponent(new NewInstanceDataAccessComponent());
         MessageDataSource ds1 = Injector.provideMessageDataSource();
         assertThat(Injector.provideMessageDataSource(), is(ds1));
 
         // Change app component and message data source should reset.
-        Injector.setModule(new NewInstanceModule());
+        Injector.setDataAccessComponent(new NewInstanceDataAccessComponent());
         MessageDataSource ds2 = Injector.provideMessageDataSource();
         assertThat(Injector.provideMessageDataSource(), is(ds2));
         assertThat(ds2, is(not(ds1)));
@@ -70,34 +70,24 @@ public class InjectorTest {
 
     @Test
     public void provideGetRandomSweetNothing() {
-        Injector.setModule(new NewInstanceModule());
+        Injector.setDataAccessComponent(new NewInstanceDataAccessComponent());
 
         GetRandomSweetNothing useCase = Injector.provideGetRandomSweetNothing();
 
         assertThat(useCase, is(notNullValue()));
     }
 
-    class TestModule implements Injector.Module {
+    class TestDataAccessComponent implements Injector.DataAccessComponent {
         @Override
         public MessageDataSource messageDataSource() {
             return messageDataSource;
         }
-
-        @Override
-        public GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource) {
-            return mock(GetRandomSweetNothing.class);
-        }
     }
 
-    class NewInstanceModule implements Injector.Module {
+    class NewInstanceDataAccessComponent implements Injector.DataAccessComponent {
         @Override
         public MessageDataSource messageDataSource() {
             return mock(MessageDataSource.class);
-        }
-
-        @Override
-        public GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource) {
-            return mock(GetRandomSweetNothing.class);
         }
     }
 }

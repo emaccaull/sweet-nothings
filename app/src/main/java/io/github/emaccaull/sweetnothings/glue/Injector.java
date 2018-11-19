@@ -21,7 +21,6 @@ import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 
 import javax.inject.Provider;
-import javax.inject.Singleton;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -43,8 +42,11 @@ public final class Injector {
         return component.messageDataSource();
     }
 
-    public static void setModule(Module module) {
-        component = new Component(module);
+    /**
+     * Configures data source implementations for the application.
+     */
+    public static void setDataAccessComponent(DataAccessComponent component) {
+        Injector.component = new Component(checkNotNull(component));
     }
 
     @VisibleForTesting
@@ -52,29 +54,31 @@ public final class Injector {
         component = null;
     }
 
-    /** Defines implementations of application scoped dependencies. */
-    public interface Module {
+    /** Defines implementations of data sources. */
+    public interface DataAccessComponent {
 
         /** @return a MessageDataSource instance to share globally. */
-        @Singleton
         MessageDataSource messageDataSource();
-
-        /** @return a new GetRandomSweetNothing use case. */
-        @Singleton
-        GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource);
     }
 
-    /** Manages instantiation of the objects specified in {@link Module}. */
-    @Singleton
+    /** Creates instances of classes which depend on a data source. */
+    static class Module {
+
+        /** @return a new GetRandomSweetNothing use case. */
+        static GetRandomSweetNothing getRandomSweetNothing(MessageDataSource dataSource) {
+            return new GetRandomSweetNothing(dataSource);
+        }
+    }
+
+    /** Manages instantiation of the objects specified by {@link DataAccessComponent}. */
     static final class Component {
         Provider<MessageDataSource> messageDataSourceProvider;
         Provider<GetRandomSweetNothing> getRandomSweetNothingProvider;
 
-        Component(Module module) {
-            checkNotNull(module, "module is null");
-            messageDataSourceProvider = new Lazy<>(module::messageDataSource);
-            getRandomSweetNothingProvider = new Lazy<>(
-                    () -> module.getRandomSweetNothing(messageDataSourceProvider.get()));
+        Component(DataAccessComponent component) {
+            messageDataSourceProvider = new Lazy<>(component::messageDataSource);
+            getRandomSweetNothingProvider =
+                    new Lazy<>(() -> Module.getRandomSweetNothing(messageDataSourceProvider.get()));
         }
 
         MessageDataSource messageDataSource() {
