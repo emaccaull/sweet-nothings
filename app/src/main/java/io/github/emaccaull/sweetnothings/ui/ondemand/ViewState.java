@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.ui.ondemand;
 
+import android.support.annotation.Nullable;
 import com.google.common.base.Objects;
 
 /**
@@ -23,10 +24,10 @@ import com.google.common.base.Objects;
  */
 public final class ViewState {
     private final boolean loading;
-    private final String message;
+    private final @Nullable String message;
     private final boolean notFound;
 
-    public ViewState(boolean loading, String message, boolean notFound) {
+    public ViewState(boolean loading, @Nullable String message, boolean notFound) {
         this.loading = loading;
         this.message = message;
         this.notFound = notFound;
@@ -36,6 +37,7 @@ public final class ViewState {
         return loading;
     }
 
+    @Nullable
     public String getMessage() {
         return message;
     }
