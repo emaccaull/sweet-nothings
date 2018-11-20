@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.app;
+package io.github.emaccaull.sweetnothings;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
-import io.github.emaccaull.sweetnothings.glue.AppComponent;
+import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
 
 /**
- * AppComponent used for production builds.
+ * Dependencies for instrumentation tests.
  */
-public class ProdAppComponent implements AppComponent {
+public class TestDataAccessComponent implements DataAccessComponent {
 
     @Override
     public MessageDataSource messageDataSource() {
-        // TODO plug real data source
         return new FakeMessageDataSource();
     }
 }

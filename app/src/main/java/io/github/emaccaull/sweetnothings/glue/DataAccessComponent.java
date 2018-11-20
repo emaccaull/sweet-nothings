@@ -18,11 +18,9 @@ package io.github.emaccaull.sweetnothings.glue;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 
-/**
- * Defines implementations of application scoped dependencies.
- */
-public interface AppComponent {
+/** Defines implementations of data sources. */
+public interface DataAccessComponent {
 
-    /** @return a MessageDataSource to share globally. */
+    /** @return a MessageDataSource instance to share globally. */
     MessageDataSource messageDataSource();
 }
