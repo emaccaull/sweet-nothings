@@ -18,12 +18,12 @@ package io.github.emaccaull.sweetnothings.ui.app;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
 
 /**
  * DataAccessComponent used for production builds.
  */
-public class ProdDataAccessComponent implements Injector.DataAccessComponent {
+public class ProdDataAccessComponent implements DataAccessComponent {
 
     @Override
     public MessageDataSource messageDataSource() {

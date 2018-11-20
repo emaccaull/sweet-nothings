@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings;
+package io.github.emaccaull.sweetnothings.glue;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
-import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
 
-/**
- * Dependencies for instrumentation tests.
- */
-public class TestDataAccessComponent implements DataAccessComponent {
+/** Defines implementations of data sources. */
+public interface DataAccessComponent {
 
-    @Override
-    public MessageDataSource messageDataSource() {
-        return new FakeMessageDataSource();
-    }
+    /** @return a MessageDataSource instance to share globally. */
+    MessageDataSource messageDataSource();
 }

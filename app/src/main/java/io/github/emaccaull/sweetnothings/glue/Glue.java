@@ -28,7 +28,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Controls creation of application scoped objects.
  */
-public final class Injector {
+public final class Glue {
 
     private static volatile Component component;
 
@@ -46,19 +46,12 @@ public final class Injector {
      * Configures data source implementations for the application.
      */
     public static void setDataAccessComponent(DataAccessComponent component) {
-        Injector.component = new Component(checkNotNull(component));
+        Glue.component = new Component(checkNotNull(component));
     }
 
     @VisibleForTesting
     static void reset() {
         component = null;
-    }
-
-    /** Defines implementations of data sources. */
-    public interface DataAccessComponent {
-
-        /** @return a MessageDataSource instance to share globally. */
-        MessageDataSource messageDataSource();
     }
 
     /** Creates instances of classes which depend on a data source. */
