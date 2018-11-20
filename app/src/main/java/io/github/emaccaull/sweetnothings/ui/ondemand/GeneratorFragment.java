@@ -61,7 +61,7 @@ public class GeneratorFragment extends Fragment {
         binding.generatePhraseBtn.setOnClickListener(this::onGenerateClicked);
 
         viewModel = obtainViewModel();
-        viewModel.getViewState().observe(this, this::updateViewState);
+        viewModel.getViewState().observe(getViewLifecycleOwner(), this::updateViewState);
 
         return binding.getRoot();
     }
