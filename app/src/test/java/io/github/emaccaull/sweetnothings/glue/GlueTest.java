@@ -31,60 +31,60 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InjectorTest {
+public class GlueTest {
 
     @Mock
     private MessageDataSource messageDataSource;
 
     @After
     public void tearDown() {
-        Injector.reset();
+        Glue.reset();
     }
 
     @Test
     public void provideMessageDataSource() {
-        Injector.setDataAccessComponent(new TestDataAccessComponent());
+        Glue.setDataAccessComponent(new TestDataAccessComponent());
 
-        MessageDataSource result = Injector.provideMessageDataSource();
+        MessageDataSource result = Glue.provideMessageDataSource();
 
         assertThat(result, is(messageDataSource));
     }
 
     @Test
     public void provideMessageDataSource_isSingleton() {
-        Injector.setDataAccessComponent(new NewInstanceDataAccessComponent());
-        MessageDataSource ds1 = Injector.provideMessageDataSource();
-        assertThat(Injector.provideMessageDataSource(), is(ds1));
+        Glue.setDataAccessComponent(new NewInstanceDataAccessComponent());
+        MessageDataSource ds1 = Glue.provideMessageDataSource();
+        assertThat(Glue.provideMessageDataSource(), is(ds1));
 
         // Change app component and message data source should reset.
-        Injector.setDataAccessComponent(new NewInstanceDataAccessComponent());
-        MessageDataSource ds2 = Injector.provideMessageDataSource();
-        assertThat(Injector.provideMessageDataSource(), is(ds2));
+        Glue.setDataAccessComponent(new NewInstanceDataAccessComponent());
+        MessageDataSource ds2 = Glue.provideMessageDataSource();
+        assertThat(Glue.provideMessageDataSource(), is(ds2));
         assertThat(ds2, is(not(ds1)));
     }
 
     @Test(expected = IllegalStateException.class)
     public void provideMessageDataSource_whenAppComponentNotSet() {
-        Injector.provideMessageDataSource();
+        Glue.provideMessageDataSource();
     }
 
     @Test
     public void provideGetRandomSweetNothing() {
-        Injector.setDataAccessComponent(new NewInstanceDataAccessComponent());
+        Glue.setDataAccessComponent(new NewInstanceDataAccessComponent());
 
-        GetRandomSweetNothing useCase = Injector.provideGetRandomSweetNothing();
+        GetRandomSweetNothing useCase = Glue.provideGetRandomSweetNothing();
 
         assertThat(useCase, is(notNullValue()));
     }
 
-    class TestDataAccessComponent implements Injector.DataAccessComponent {
+    class TestDataAccessComponent implements DataAccessComponent {
         @Override
         public MessageDataSource messageDataSource() {
             return messageDataSource;
         }
     }
 
-    class NewInstanceDataAccessComponent implements Injector.DataAccessComponent {
+    class NewInstanceDataAccessComponent implements DataAccessComponent {
         @Override
         public MessageDataSource messageDataSource() {
             return mock(MessageDataSource.class);

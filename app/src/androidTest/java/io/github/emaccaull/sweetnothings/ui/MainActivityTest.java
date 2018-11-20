@@ -22,7 +22,7 @@ import android.support.test.runner.AndroidJUnit4;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import io.github.emaccaull.sweetnothings.glue.Glue;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class MainActivityTest {
     @Before
     public void setUp() {
         // DataSource is configured by TestSweetNothingsApp
-        fakeMessageDataSource = (FakeMessageDataSource) Injector.provideMessageDataSource();
+        fakeMessageDataSource = (FakeMessageDataSource) Glue.provideMessageDataSource();
     }
 
     @Test

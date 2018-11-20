@@ -17,7 +17,7 @@
 package io.github.emaccaull.sweetnothings.ui.app;
 
 import android.app.Application;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import io.github.emaccaull.sweetnothings.glue.Glue;
 
 /**
  * Sweet Nothings application class.
@@ -34,6 +34,6 @@ public class SweetNothingsApp extends Application {
 
     /** Setup where data should be accessed from. */
     protected void configureDataAccess() {
-        Injector.setDataAccessComponent(new ProdDataAccessComponent());
+        Glue.setDataAccessComponent(new ProdDataAccessComponent());
     }
 }

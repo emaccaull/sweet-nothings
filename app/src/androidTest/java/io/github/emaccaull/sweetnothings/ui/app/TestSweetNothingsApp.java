@@ -17,7 +17,7 @@
 package io.github.emaccaull.sweetnothings.ui.app;
 
 import io.github.emaccaull.sweetnothings.TestDataAccessComponent;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import io.github.emaccaull.sweetnothings.glue.Glue;
 
 /**
  * Perform common setup for Espresso tests.
@@ -31,6 +31,6 @@ public class TestSweetNothingsApp extends SweetNothingsApp {
 
     @Override
     protected void configureDataAccess() {
-        Injector.setDataAccessComponent(new TestDataAccessComponent());
+        Glue.setDataAccessComponent(new TestDataAccessComponent());
     }
 }
