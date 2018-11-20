@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui;
+package io.github.emaccaull.sweetnothings.ui.app;
 
-import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
-import io.github.emaccaull.sweetnothings.glue.AppComponent;
+import io.github.emaccaull.sweetnothings.TestDataAccessComponent;
+import io.github.emaccaull.sweetnothings.glue.Glue;
 
 /**
- * Dependencies for instrumentation tests.
+ * Perform common setup for Espresso tests.
  */
-public class TestAppComponent implements AppComponent {
+public class TestSweetNothingsApp extends SweetNothingsApp {
 
     @Override
-    public MessageDataSource messageDataSource() {
-        return new FakeMessageDataSource();
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    @Override
+    protected void configureDataAccess() {
+        Glue.setDataAccessComponent(new TestDataAccessComponent());
     }
 }

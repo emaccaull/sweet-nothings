@@ -21,6 +21,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
+import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
+import io.github.emaccaull.sweetnothings.glue.Glue;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,11 +41,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class MainActivityTest {
 
     @Rule
-    public FakeDataSourceTestRule fakeDataSourceTestRule = new FakeDataSourceTestRule();
-
-    @Rule
     public ActivityTestRule<MainActivity> activityRule =
             new ActivityTestRule<>(MainActivity.class);
+
+    private FakeMessageDataSource fakeMessageDataSource;
+
+    @Before
+    public void setUp() {
+        // DataSource is configured by TestSweetNothingsApp
+        fakeMessageDataSource = (FakeMessageDataSource) Glue.provideMessageDataSource();
+    }
 
     @Test
     public void fragmentContainer_isVisible() {
@@ -57,7 +65,7 @@ public class MainActivityTest {
 
         // Given that there is a sweet nothing available
         SweetNothing message = SweetNothing.builder("xyz").message("<3 u").used(false).build();
-        fakeDataSourceTestRule.getDataSource().insert(message);
+        fakeMessageDataSource.insert(message);
 
         // When the generate button is clicked
         onView(withId(R.id.generate_phrase_btn)).perform(click());

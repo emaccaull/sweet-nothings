@@ -20,7 +20,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
-import io.github.emaccaull.sweetnothings.glue.Injector;
+import io.github.emaccaull.sweetnothings.glue.Glue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,7 +32,7 @@ class GeneratorViewModelFactory implements ViewModelProvider.Factory {
     private GetRandomSweetNothing getRandomSweetNothing;
 
     GeneratorViewModelFactory() {
-        this(Injector.provideGetRandomSweetNothing(Injector.provideMessageDataSource()));
+        this(Glue.provideGetRandomSweetNothing());
     }
 
     GeneratorViewModelFactory(GetRandomSweetNothing getRandomSweetNothing) {
