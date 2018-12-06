@@ -16,7 +16,6 @@
 
 package io.github.emaccaull.sweetnothings.core.usecase;
 
-import android.support.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.UseCase;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
@@ -34,7 +33,7 @@ public class GetRandomSweetNothing {
     private final MessageDataSource dataSource;
     private final MessageFilter filter;
 
-    public GetRandomSweetNothing(@NonNull MessageDataSource dataSource) {
+    public GetRandomSweetNothing(MessageDataSource dataSource) {
         this.dataSource = checkNotNull(dataSource, "dataSource is null");
         this.filter = MessageFilter.builder().includeUsed(false).build();
     }

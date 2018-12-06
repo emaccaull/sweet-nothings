@@ -18,19 +18,38 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 
 import android.support.annotation.Nullable;
 import com.google.common.base.Objects;
+import io.github.emaccaull.sweetnothings.core.SweetNothing;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Describes all possible states for views of {@link GeneratorViewModel}.
  */
-public final class ViewState {
+final class ViewState {
     private final boolean loading;
-    private final @Nullable String message;
+    private final @Nullable SweetNothing sweetNothing;
     private final boolean notFound;
 
-    public ViewState(boolean loading, @Nullable String message, boolean notFound) {
+    private ViewState(boolean loading, @Nullable SweetNothing sweetNothing, boolean notFound) {
         this.loading = loading;
-        this.message = message;
+        this.sweetNothing = sweetNothing;
         this.notFound = notFound;
+    }
+
+    public static ViewState initial() {
+        return new ViewState(false, null, false);
+    }
+
+    public static ViewState loading() {
+        return new ViewState(true, null, false);
+    }
+
+    public static ViewState loaded(SweetNothing sweetNothing) {
+        return new ViewState(false, checkNotNull(sweetNothing), false);
+    }
+
+    public static ViewState noMessageFound() {
+        return new ViewState(false, null, true);
     }
 
     public boolean isLoading() {
@@ -38,8 +57,8 @@ public final class ViewState {
     }
 
     @Nullable
-    public String getMessage() {
-        return message;
+    public SweetNothing getSweetNothing() {
+        return sweetNothing;
     }
 
     public boolean isNotFound() {
@@ -57,19 +76,19 @@ public final class ViewState {
         ViewState viewState = (ViewState) o;
         return loading == viewState.loading &&
                 notFound == viewState.notFound &&
-                Objects.equal(message, viewState.message);
+                Objects.equal(sweetNothing, viewState.sweetNothing);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(loading, message, notFound);
+        return Objects.hashCode(loading, sweetNothing, notFound);
     }
 
     @Override
     public String toString() {
         return "ViewState{" +
                 "loading=" + loading +
-                ", message='" + message + '\'' +
+                ", sweetNothing=" + sweetNothing +
                 ", notFound=" + notFound +
                 '}';
     }

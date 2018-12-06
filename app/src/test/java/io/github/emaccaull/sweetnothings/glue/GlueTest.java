@@ -18,6 +18,7 @@ package io.github.emaccaull.sweetnothings.glue;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
+import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,6 +74,15 @@ public class GlueTest {
         Glue.setDataAccessComponent(new NewInstanceDataAccessComponent());
 
         GetRandomSweetNothing useCase = Glue.provideGetRandomSweetNothing();
+
+        assertThat(useCase, is(notNullValue()));
+    }
+
+    @Test
+    public void provideMarkUsed() {
+        Glue.setDataAccessComponent(new NewInstanceDataAccessComponent());
+
+        MarkUsed useCase = Glue.provideMarkUsed();
 
         assertThat(useCase, is(notNullValue()));
     }

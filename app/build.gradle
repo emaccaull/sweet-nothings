@@ -91,4 +91,5 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:$test_support_version"
     androidTestImplementation "com.android.support.test:rules:$test_support_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espresso_version"
 }
