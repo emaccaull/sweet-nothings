@@ -19,8 +19,8 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
+import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import org.slf4j.Logger;
@@ -29,36 +29,69 @@ import org.slf4j.LoggerFactory;
 /**
  * Generate/fetch a Random SweetNothing on demand.
  */
-public class GeneratorViewModel extends ViewModel {
+public final class GeneratorViewModel extends ViewModel {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorViewModel.class);
 
     private final MutableLiveData<ViewState> viewState = new MutableLiveData<>();
 
     final CompositeDisposable disposables = new CompositeDisposable();
     private final GetRandomSweetNothing getRandomSweetNothing;
+    private final MarkUsed markUsed;
 
-    public GeneratorViewModel(@NonNull GetRandomSweetNothing getRandomSweetNothing) {
+    @SuppressWarnings("WeakerAccess")
+    public GeneratorViewModel(GetRandomSweetNothing getRandomSweetNothing, MarkUsed markUsed) {
         this.getRandomSweetNothing = getRandomSweetNothing;
-        viewState.setValue(new ViewState(false, null, false));
+        this.markUsed = markUsed;
+        resetViewState();
     }
 
-    public void requestNewMessage() {
+    /**
+     * Finds an unused sweet nothing and updates the view state.
+     */
+    void requestNewMessage() {
         logger.info("Requesting a new sweet nothing");
 
         Disposable d = getRandomSweetNothing.apply()
-                .doOnSubscribe(__ -> viewState.postValue(new ViewState(true, null, false)))
-                .map(sweetNothing -> new ViewState(false, sweetNothing.getMessage(), false))
+                .doOnSubscribe(__ -> viewState.postValue(ViewState.loading()))
+                .map(ViewState::loaded)
                 .onErrorComplete()
                 .subscribe(
                         viewState::postValue,
                         throwable -> logger.error("Couldn't load sweet nothing", throwable),
-                        () -> viewState.postValue(new ViewState(false, null, true))
+                        () -> viewState.postValue(ViewState.noMessageFound())
                 );
 
         disposables.add(d);
     }
 
-    public LiveData<ViewState> getViewState() {
+    /**
+     * Computes the next view state once a sweet nothing has been successfully shared.
+     */
+    void onShareSuccessful(String id) {
+        logger.info("Sharing a sweet nothing; id='{}'", id);
+
+        Disposable d = markUsed.apply(id)
+                .subscribe(this::resetViewState);
+
+        disposables.add(d);
+    }
+
+    void onShareFailed(String id) {
+        // Reset the view for now. TODO notify user.
+        resetViewState();
+    }
+
+    /**
+     * Sets the view back to its initial state (as if it was loaded for the first time).
+     */
+    void resetViewState() {
+        viewState.postValue(ViewState.initial());
+    }
+
+    /**
+     * A View or View Controller should observe this state to know what to display.
+     */
+    LiveData<ViewState> getViewState() {
         return viewState;
     }
 

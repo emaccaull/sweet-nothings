@@ -20,6 +20,8 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.Observer;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
+import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.disposables.Disposable;
 import org.junit.Before;
@@ -33,6 +35,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,13 +50,16 @@ public class GeneratorViewModelTest {
     private GetRandomSweetNothing getRandomSweetNothing;
 
     @Mock
+    private MarkUsed markUsed;
+
+    @Mock
     private Observer<ViewState> observer;
 
     private GeneratorViewModel viewModel;
 
     @Before
     public void setUp() {
-        viewModel = new GeneratorViewModel(getRandomSweetNothing);
+        viewModel = new GeneratorViewModel(getRandomSweetNothing, markUsed);
         viewModel.getViewState().observeForever(observer);
     }
 
@@ -66,12 +73,12 @@ public class GeneratorViewModelTest {
     public void getViewState_whenSubscribed_emitsDefaultViewState() {
         // When a new ViewModel is created and it has an observer, then the observer should get its
         // view contents from the ViewModel
-        verify(observer).onChanged(new ViewState(false, null, false));
+        verify(observer).onChanged(ViewState.initial());
     }
 
     @Test
     public void requestNewMessage_registersDisposable() {
-        withRandomSweetNothing();
+        withRandomSweetNothing("<3<3");
 
         // When requesting a new message
         viewModel.requestNewMessage();
@@ -82,15 +89,15 @@ public class GeneratorViewModelTest {
 
     @Test
     public void requestNewMessage_whenAnItemIsFound_showsMessage() {
-        withRandomSweetNothing();
+        SweetNothing sn = withRandomSweetNothing("<3<3");
 
         // When requesting a new sweet nothing
         viewModel.requestNewMessage();
 
         // Then the view should get the appropriate update
         InOrder inOrder = Mockito.inOrder(observer);
-        inOrder.verify(observer).onChanged(new ViewState(true, null, false));
-        inOrder.verify(observer).onChanged(new ViewState(false, "<3<3", false));
+        inOrder.verify(observer).onChanged(ViewState.loading());
+        inOrder.verify(observer).onChanged(ViewState.loaded(sn));
     }
 
     @Test
@@ -102,8 +109,8 @@ public class GeneratorViewModelTest {
 
         // Then the view should display an error
         InOrder inOrder = Mockito.inOrder(observer);
-        inOrder.verify(observer).onChanged(new ViewState(true, null, false));
-        inOrder.verify(observer).onChanged(new ViewState(false, null, true));
+        inOrder.verify(observer).onChanged(ViewState.loading());
+        inOrder.verify(observer).onChanged(ViewState.noMessageFound());
     }
 
     @Test
@@ -115,8 +122,62 @@ public class GeneratorViewModelTest {
 
         // Then the view should display an error
         InOrder inOrder = Mockito.inOrder(observer);
-        inOrder.verify(observer).onChanged(new ViewState(true, null, false));
-        inOrder.verify(observer).onChanged(new ViewState(false, null, true));
+        inOrder.verify(observer).onChanged(ViewState.loading());
+        inOrder.verify(observer).onChanged(ViewState.noMessageFound());
+    }
+
+    @Test
+    public void sendMessage() {
+        when(markUsed.apply(any())).thenReturn(Completable.complete());
+
+        // Given that a message was requested
+        SweetNothing sn = withRandomSweetNothing("snId", "Some Message <3");
+        viewModel.requestNewMessage();
+
+        // When the user has sent the message
+        viewModel.onShareSuccessful("snId");
+
+        // Then the sweet nothing should be marked as used
+        verify(markUsed).apply("snId");
+
+        // And the view state should be reset
+        InOrder inOrder = Mockito.inOrder(observer);
+        inOrder.verify(observer).onChanged(ViewState.loaded(sn));
+        inOrder.verify(observer).onChanged(ViewState.initial());
+    }
+
+    @Test
+    public void shareFailed() {
+        // Given that a message was requested
+        SweetNothing sn = withRandomSweetNothing("snId", "Some Message <3");
+        viewModel.requestNewMessage();
+
+        // When sharing the message failed
+        viewModel.onShareFailed("snId");
+
+        // Then the sweet nothing should not be marked as used
+        verify(markUsed, never()).apply("snId");
+
+        // And the view state should be reset
+        InOrder inOrder = Mockito.inOrder(observer);
+        inOrder.verify(observer).onChanged(ViewState.loaded(sn));
+        inOrder.verify(observer).onChanged(ViewState.initial());
+    }
+
+    @Test
+    public void cancelSend() {
+        // Given that a message was requested
+        SweetNothing sn = withRandomSweetNothing("<3!");
+        viewModel.requestNewMessage();
+
+        // When the user does not want to send the message
+        viewModel.resetViewState();
+
+        // Then the view state should be reset
+        InOrder inOrder = Mockito.inOrder(observer);
+        inOrder.verify(observer).onChanged(ViewState.loading());
+        inOrder.verify(observer).onChanged(ViewState.loaded(sn));
+        inOrder.verify(observer).onChanged(ViewState.initial());
     }
 
     @Test
@@ -133,9 +194,14 @@ public class GeneratorViewModelTest {
         assertThat(viewModel.disposables.size(), is(0));
     }
 
-    private void withRandomSweetNothing() {
-        SweetNothing sweetNothing = SweetNothing.builder("id1").message("<3<3").build();
+    private SweetNothing withRandomSweetNothing(String message) {
+        return withRandomSweetNothing("id1", message);
+    }
+
+    private SweetNothing withRandomSweetNothing(String id, String message) {
+        SweetNothing sweetNothing = SweetNothing.builder(id).message(message).build();
         when(getRandomSweetNothing.apply()).thenReturn(Maybe.just(sweetNothing));
+        return sweetNothing;
     }
 
     private void withNoSweetNothing() {
