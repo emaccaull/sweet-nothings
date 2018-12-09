@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Lazy<T> implements Provider<T> {
 
     private Provider<T> provider;
-    private volatile T t;
+    private volatile T instance;
 
     public Lazy(Provider<T> provider) {
         checkNotNull(provider);
@@ -35,14 +35,15 @@ public class Lazy<T> implements Provider<T> {
 
     @Override
     public T get() {
-        if (t == null) {
-            synchronized (this) {
-                if (t == null) {
-                    t = provider.get();
-                    provider = null; // help gc.
-                }
+        if (instance != null) {
+            return instance;
+        }
+        synchronized (this) {
+            if (instance == null) {
+                instance = provider.get();
+                provider = null; // help gc.
             }
         }
-        return t;
+        return instance;
     }
 }
