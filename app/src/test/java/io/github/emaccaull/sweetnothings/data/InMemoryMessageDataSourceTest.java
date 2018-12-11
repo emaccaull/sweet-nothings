@@ -28,9 +28,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FakeMessageDataSourceTest {
+public class InMemoryMessageDataSourceTest {
 
-    private FakeMessageDataSource dataSource = new FakeMessageDataSource();
+    private InMemoryMessageDataSource dataSource = new InMemoryMessageDataSource();
 
     @Test
     public void fetchRandomMessage() {

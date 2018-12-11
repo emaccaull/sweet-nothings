@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * In-memory store of SweetNothings.
  */
-public class FakeMessageDataSource implements MessageDataSource {
+public class InMemoryMessageDataSource implements MessageDataSource {
 
     private final ConcurrentMap<String, SweetNothing> store = new ConcurrentHashMap<>();
 

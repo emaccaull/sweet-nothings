@@ -27,7 +27,7 @@ import android.support.v4.app.FragmentActivity;
 import io.github.emaccaull.sweetnothings.MoreIntentMatchers;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
-import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
+import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Glue;
 import org.junit.After;
 import org.junit.Before;
@@ -56,17 +56,17 @@ public class MainActivityTest {
     public final IntentsTestRule<MainActivity> activityRule =
             new IntentsTestRule<>(MainActivity.class);
 
-    private FakeMessageDataSource fakeMessageDataSource;
+    private InMemoryMessageDataSource inMemoryMessageDataSource;
 
     @Before
     public void setUp() {
         // DataSource is configured by TestSweetNothingsApp
-        fakeMessageDataSource = (FakeMessageDataSource) Glue.provideMessageDataSource();
+        inMemoryMessageDataSource = (InMemoryMessageDataSource) Glue.provideMessageDataSource();
     }
 
     @After
     public void tearDown() {
-        fakeMessageDataSource.clear();
+        inMemoryMessageDataSource.clear();
     }
 
     @Test
@@ -82,7 +82,7 @@ public class MainActivityTest {
 
         // Given that there is a sweet nothing available
         SweetNothing message = SweetNothing.builder("xyz").message("<3 u").used(false).build();
-        fakeMessageDataSource.insert(message);
+        inMemoryMessageDataSource.insert(message);
 
         // When the generate button is clicked
         onView(withId(R.id.generate_phrase_btn)).perform(click());
@@ -101,7 +101,7 @@ public class MainActivityTest {
         intended(MoreIntentMatchers.hasShareIntent("<3 u"));
 
         // And the sweet nothing should be marked as used
-        SweetNothing used = fakeMessageDataSource.fetchMessage("xyz").blockingGet();
+        SweetNothing used = inMemoryMessageDataSource.fetchMessage("xyz").blockingGet();
         assertThat(used.isUsed(), is(true));
     }
 
@@ -109,7 +109,7 @@ public class MainActivityTest {
     public void selectingGenerate_thenCancel_dismissesDialog() {
         // Given that there is a sweet nothing available
         SweetNothing message = SweetNothing.builder("xyz").message("<3 u").used(false).build();
-        fakeMessageDataSource.insert(message);
+        inMemoryMessageDataSource.insert(message);
 
         // And the generate button is clicked
         onView(withId(R.id.generate_phrase_btn)).perform(click());
@@ -131,7 +131,7 @@ public class MainActivityTest {
     public void selectingGenerate_whenNoMessagesAvailable_notifiesUser() {
         // Given that no sweet nothings are available (only used one present)
         SweetNothing message = SweetNothing.builder("abc").message("<3 u").used(true).build();
-        fakeMessageDataSource.insert(message);
+        inMemoryMessageDataSource.insert(message);
 
         // When the generate button is clicked
         onView(withId(R.id.generate_phrase_btn)).perform(click());
