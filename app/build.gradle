@@ -79,6 +79,8 @@ dependencies {
 
     // Utilities
     implementation "com.google.guava:guava:$guava_version"
+    implementation "com.jakewharton:butterknife:$butterknife_version"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
 
     // Dependency Management
     implementation "javax.inject:javax.inject:$javax_inject_version"
