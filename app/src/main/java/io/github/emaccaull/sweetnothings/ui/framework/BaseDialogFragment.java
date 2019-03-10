@@ -16,21 +16,11 @@
 
 package io.github.emaccaull.sweetnothings.ui.framework;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 /**
  * Base class for dialog fragments in this app.
  */
 public class BaseDialogFragment extends DialogFragment {
 
-    @NonNull
-    public Bundle requireArguments() {
-        Bundle args = getArguments();
-        if (args == null) {
-            throw new IllegalStateException("No arguments attached to " + this);
-        }
-        return args;
-    }
 }

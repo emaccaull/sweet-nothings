@@ -17,7 +17,7 @@
 package io.github.emaccaull.sweetnothings.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.ui.ondemand.GeneratorFragment;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;

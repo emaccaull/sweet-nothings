@@ -16,7 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.ui.ondemand;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.google.common.base.Objects;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 

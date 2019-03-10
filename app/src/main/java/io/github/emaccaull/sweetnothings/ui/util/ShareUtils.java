@@ -18,8 +18,8 @@ package io.github.emaccaull.sweetnothings.ui.util;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ShareCompat;
+import androidx.annotation.Nullable;
+import androidx.core.app.ShareCompat;
 import io.github.emaccaull.sweetnothings.R;
 
 /**
