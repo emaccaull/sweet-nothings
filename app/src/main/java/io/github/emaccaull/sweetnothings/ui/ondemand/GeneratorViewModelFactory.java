@@ -20,6 +20,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
+import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import io.github.emaccaull.sweetnothings.glue.Glue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -30,13 +31,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 class GeneratorViewModelFactory implements ViewModelProvider.Factory {
 
     private GetRandomSweetNothing getRandomSweetNothing;
+    private MarkUsed markUsed;
 
     GeneratorViewModelFactory() {
-        this(Glue.provideGetRandomSweetNothing());
+        this(Glue.provideGetRandomSweetNothing(), Glue.provideMarkUsed());
     }
 
-    GeneratorViewModelFactory(GetRandomSweetNothing getRandomSweetNothing) {
+    GeneratorViewModelFactory(
+            GetRandomSweetNothing getRandomSweetNothing,
+            MarkUsed markUsed) {
         this.getRandomSweetNothing = checkNotNull(getRandomSweetNothing);
+        this.markUsed = markUsed;
     }
 
     @NonNull
@@ -44,7 +49,7 @@ class GeneratorViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (GeneratorViewModel.class.isAssignableFrom(modelClass)) {
             //noinspection unchecked
-            return (T) new GeneratorViewModel(getRandomSweetNothing);
+            return (T) new GeneratorViewModel(getRandomSweetNothing, markUsed);
         }
         throw new IllegalArgumentException("Cannot instantiate " + modelClass);
     }

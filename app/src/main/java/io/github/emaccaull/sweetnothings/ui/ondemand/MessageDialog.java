@@ -21,24 +21,37 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import io.github.emaccaull.sweetnothings.R;
+import io.github.emaccaull.sweetnothings.ui.framework.BaseDialogFragment;
 
 /**
  * Allows a user to choose an action for a given sweet nothing.
  */
-public class MessageDialog extends DialogFragment implements DialogInterface.OnClickListener {
+public class MessageDialog extends BaseDialogFragment implements DialogInterface.OnClickListener {
+    private static final String ARG_MESSAGE_ID = "message_id";
     private static final String ARG_TITLE_ID = "title";
     private static final String ARG_MESSAGE = "body";
 
-    public static MessageDialog newInstance(@StringRes int titleId, CharSequence message) {
+    public interface MessageSharedListener {
+
+        void onShareMessage(String messageId, CharSequence message);
+
+        void onCancelled();
+    }
+
+    public static <T extends Fragment & MessageSharedListener>
+    MessageDialog newInstance(
+            String messageId, CharSequence message, @StringRes int titleId, T target) {
         Bundle args = new Bundle();
+        args.putString(ARG_MESSAGE_ID, messageId);
         args.putInt(ARG_TITLE_ID, titleId);
         args.putCharSequence(ARG_MESSAGE, message);
 
         MessageDialog dialog = new MessageDialog();
         dialog.setArguments(args);
+        dialog.setTargetFragment(target, 0);
 
         return dialog;
     }
@@ -46,13 +59,10 @@ public class MessageDialog extends DialogFragment implements DialogInterface.OnC
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Bundle args = getArguments();
-        if (args != null) {
-            return createMessageDialog(
-                    args.getInt(ARG_TITLE_ID),
-                    args.getCharSequence(ARG_MESSAGE));
-        }
-        throw new AssertionError("No arguments specified");
+        Bundle args = requireArguments();
+        return createMessageDialog(
+                args.getInt(ARG_TITLE_ID),
+                args.getCharSequence(ARG_MESSAGE));
     }
 
     private Dialog createMessageDialog(@StringRes int titleId, CharSequence message) {
@@ -66,6 +76,29 @@ public class MessageDialog extends DialogFragment implements DialogInterface.OnC
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
+        Fragment f = getTargetFragment();
+        if (!(f instanceof MessageSharedListener)) {
+            throw new AssertionError(
+                    "Target fragment " + f + " does not implement " + MessageSharedListener.class);
+        }
 
+        MessageSharedListener listener = (MessageSharedListener) f;
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE: {
+                Bundle args = requireArguments();
+                String messageId = args.getString(ARG_MESSAGE_ID);
+                CharSequence message = args.getCharSequence(ARG_MESSAGE);
+                listener.onShareMessage(messageId, message);
+                break;
+            }
+
+            case DialogInterface.BUTTON_NEGATIVE: {
+                listener.onCancelled();
+                break;
+            }
+
+            default:
+                throw new AssertionError("Unhandled button " + which);
+        }
     }
 }

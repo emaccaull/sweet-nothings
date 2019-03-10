@@ -24,7 +24,7 @@ import io.github.emaccaull.sweetnothings.ui.app.TestSweetNothingsApp;
 /**
  * Custom configuration for Android instrumentation tests.
  */
-// Registered in app/build.gradle
+@SuppressWarnings("unused") // Registered in app/build.gradle
 public class TestRunner extends AndroidJUnitRunner {
 
     @Override

@@ -7,5 +7,10 @@
     <string name="generate_phrase_title">Generate Now</string>
     <string name="generate_send">Send</string>
     <string name="generate_found_message_title">Send this message?</string>
+    <string name="generate_failed_message_title">Sorry, we didn\'t find any new sayings</string>
+    <string name="generate_failed_message_body">Please check back later for new Sweet Nothings.</string>
+    <string name="generate_send_title">Send to</string>
+
     <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 </resources>
