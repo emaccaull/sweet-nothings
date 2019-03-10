@@ -16,11 +16,9 @@
 
 package io.github.emaccaull.sweetnothings.ui;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import io.github.emaccaull.sweetnothings.R;
-import io.github.emaccaull.sweetnothings.databinding.MainActivityBinding;
 import io.github.emaccaull.sweetnothings.ui.ondemand.GeneratorFragment;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import org.slf4j.Logger;
@@ -29,14 +27,11 @@ import org.slf4j.LoggerFactory;
 public class MainActivity extends AppCompatActivity {
     private final Logger logger = LoggerFactory.getLogger(MainActivity.class);
 
-    private MainActivityBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         logger.debug("app running");
-
-        binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
+        setContentView(R.layout.main_activity);
 
         GeneratorFragment fragment = findOrInsertGeneratorFragment();
 
