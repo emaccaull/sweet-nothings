@@ -54,15 +54,15 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // Support Libraries
-    implementation "com.android.support:appcompat-v7:$support_version"
-    implementation "com.android.support:design:$support_version"
-    implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
-    implementation "com.android.support:support-vector-drawable:$support_version"
+    implementation "androidx.appcompat:appcompat:$support_version"
+    implementation 'com.google.android.material:material:1.1.0-alpha04'
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+    implementation "androidx.vectordrawable:vectordrawable:1.1.0-alpha01"
 
     // Arch Components / Jetpack
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
-    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
-    testImplementation "android.arch.core:core-testing:$lifecycle_version"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha02'
+    testImplementation 'androidx.arch.core:core-testing:2.0.0'
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
@@ -82,12 +82,12 @@ dependencies {
     implementation "javax.inject:javax.inject:$javax_inject_version"
 
     // General Testing
-    testImplementation "junit:junit:$espresso_version"
+    testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "nl.jqno.equalsverifier:equalsverifier:$equalsverifier_version"
-    testImplementation "android.arch.core:core-testing:$lifecycle_version"
-    androidTestImplementation "com.android.support.test:runner:$test_support_version"
-    androidTestImplementation "com.android.support.test:rules:$test_support_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espresso_version"
+    testImplementation 'androidx.arch.core:core-testing:2.0.0'
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test:rules:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0-alpha02'
 }
