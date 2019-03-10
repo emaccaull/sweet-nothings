@@ -19,6 +19,7 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.ViewModel;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
+import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,11 +37,15 @@ public class GeneratorViewModelFactoryTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Mock
-    public GetRandomSweetNothing getRandomSweetNothing;
+    private GetRandomSweetNothing getRandomSweetNothing;
+
+    @Mock
+    private MarkUsed markUsed;
 
     @Test
     public void create() {
-        GeneratorViewModelFactory factory = new GeneratorViewModelFactory(getRandomSweetNothing);
+        GeneratorViewModelFactory factory =
+                new GeneratorViewModelFactory(getRandomSweetNothing, markUsed);
 
         GeneratorViewModel viewModel = factory.create(GeneratorViewModel.class);
         assertThat(viewModel, is(notNullValue()));
@@ -48,7 +53,8 @@ public class GeneratorViewModelFactoryTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void create_whenInvalidModelClass() {
-        GeneratorViewModelFactory factory = new GeneratorViewModelFactory(getRandomSweetNothing);
+        GeneratorViewModelFactory factory =
+                new GeneratorViewModelFactory(getRandomSweetNothing, markUsed);
 
         factory.create(ViewModel.class);
     }

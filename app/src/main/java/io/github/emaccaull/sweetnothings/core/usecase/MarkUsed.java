@@ -16,8 +16,6 @@
 
 package io.github.emaccaull.sweetnothings.core.usecase;
 
-import android.support.annotation.NonNull;
-import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.UseCase;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.reactivex.Completable;
@@ -34,11 +32,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MarkUsed {
     private final MessageDataSource dataSource;
 
-    public MarkUsed(@NonNull MessageDataSource dataSource) {
+    public MarkUsed(MessageDataSource dataSource) {
         this.dataSource = checkNotNull(dataSource, "dataSource is null");
     }
 
-    public Completable apply(@NonNull SweetNothing sweetNothing) {
-        return dataSource.markUsed(sweetNothing.getId());
+    public Completable apply(String id) {
+        return dataSource.markUsed(id);
     }
 }

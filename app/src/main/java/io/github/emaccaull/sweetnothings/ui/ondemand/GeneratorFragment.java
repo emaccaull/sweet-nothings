@@ -18,27 +18,34 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import io.github.emaccaull.sweetnothings.R;
+import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.databinding.GeneratorFragmentBinding;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
+import io.github.emaccaull.sweetnothings.ui.util.InformationalDialog;
+import io.github.emaccaull.sweetnothings.ui.util.ShareUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Generate/fetch a Random SweetNothing on demand.
  */
-public class GeneratorFragment extends Fragment {
-    private static final String CONFIRMATION_TAG = "ui.ondemand.confirm";
-
+public class GeneratorFragment extends Fragment
+        implements MessageDialog.MessageSharedListener {
     private final Logger logger = LoggerFactory.getLogger(GeneratorFragment.class);
+
+    private static final String CONFIRMATION_TAG = "ui.ondemand.confirm";
+    private static final String APOLOGY_TAG = "ui.ondemand.notfound";
 
     private GeneratorFragmentBinding binding;
     private GeneratorViewModel viewModel;
@@ -61,7 +68,7 @@ public class GeneratorFragment extends Fragment {
         binding.generatePhraseBtn.setOnClickListener(this::onGenerateClicked);
 
         viewModel = obtainViewModel();
-        viewModel.getViewState().observe(this, this::updateViewState);
+        viewModel.getViewState().observe(getViewLifecycleOwner(), this::updateViewState);
 
         return binding.getRoot();
     }
@@ -72,6 +79,10 @@ public class GeneratorFragment extends Fragment {
         binding = null;
     }
 
+    void onGenerateClicked(View view) {
+        viewModel.requestNewMessage();
+    }
+
     private GeneratorViewModel obtainViewModel() {
         GeneratorViewModelFactory factory = new GeneratorViewModelFactory();
         return ViewModelProviders.of(this, factory).get(GeneratorViewModel.class);
@@ -80,19 +91,45 @@ public class GeneratorFragment extends Fragment {
     private void updateViewState(ViewState state) {
         binding.generatePhraseBtn.setEnabled(!state.isLoading());
 
-        if (state.getMessage() != null) {
-            confirmSend(state.getMessage());
+        if (state.getSweetNothing() != null) {
+            confirmSend(state.getSweetNothing());
+        } else if (state.isNotFound()) {
+            apologize();
         }
     }
 
-    private void confirmSend(String message) {
-        MessageDialog dialog = MessageDialog.newInstance(
-                R.string.generate_found_message_title, message);
+    /// MessageDialog
 
+    private void confirmSend(SweetNothing sweetNothing) {
+        String id = sweetNothing.getId();
+        String message = sweetNothing.getMessage();
+        MessageDialog dialog =
+                MessageDialog.newInstance(id, message, R.string.generate_found_message_title, this);
         FragmentUtils.showDialog(requireFragmentManager(), dialog, CONFIRMATION_TAG);
     }
 
-    public void onGenerateClicked(View view) {
-        viewModel.requestNewMessage();
+    @Override
+    public void onShareMessage(String messageId, CharSequence message) {
+        FragmentActivity activity = requireActivity();
+        Intent shareIntent = ShareUtils.createShareIntent(activity, message);
+        if (shareIntent != null) {
+            startActivity(shareIntent);
+            viewModel.onShareSuccessful(messageId);
+        } else {
+            viewModel.onShareFailed(messageId);
+        }
+    }
+
+    @Override
+    public void onCancelled() {
+        viewModel.resetViewState();
+    }
+
+    /// Apologies
+
+    private void apologize() {
+        InformationalDialog dialog = InformationalDialog.newInstance(
+                R.string.generate_failed_message_title, R.string.generate_failed_message_body);
+        FragmentUtils.showDialog(requireFragmentManager(), dialog, APOLOGY_TAG);
     }
 }

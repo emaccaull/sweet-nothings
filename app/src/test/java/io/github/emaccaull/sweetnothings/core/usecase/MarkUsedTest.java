@@ -16,7 +16,6 @@
 
 package io.github.emaccaull.sweetnothings.core.usecase;
 
-import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.reactivex.Completable;
 import io.reactivex.observers.TestObserver;
@@ -45,10 +44,9 @@ public class MarkUsedTest {
     public void apply() {
         // Given that the data source will complete successfully when an item is marked as used.
         when(messageDataSource.markUsed("theId")).thenReturn(Completable.complete());
-        SweetNothing message = SweetNothing.builder("theId").message("hi").build();
 
         // When applying the use case
-        TestObserver<Void> observer = markUsed.apply(message).test();
+        TestObserver<Void> observer = markUsed.apply("theId").test();
 
         // Then the observer should complete
         observer.assertComplete();
