@@ -19,7 +19,6 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,9 +27,13 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
-import io.github.emaccaull.sweetnothings.databinding.GeneratorFragmentBinding;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import io.github.emaccaull.sweetnothings.ui.util.InformationalDialog;
 import io.github.emaccaull.sweetnothings.ui.util.ShareUtils;
@@ -47,8 +50,12 @@ public class GeneratorFragment extends Fragment
     private static final String CONFIRMATION_TAG = "ui.ondemand.confirm";
     private static final String APOLOGY_TAG = "ui.ondemand.notfound";
 
-    private GeneratorFragmentBinding binding;
     private GeneratorViewModel viewModel;
+
+    @BindView(R.id.generate_phrase_btn)
+    Button generatePhraseButton;
+
+    private Unbinder unbinder;
 
     public static GeneratorFragment newInstance() {
         return new GeneratorFragment();
@@ -64,21 +71,22 @@ public class GeneratorFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.generator_fragment, container, false);
-        binding.generatePhraseBtn.setOnClickListener(this::onGenerateClicked);
+        View view = inflater.inflate(R.layout.generator_fragment, container, false);
+        unbinder = ButterKnife.bind(this, view);
 
         viewModel = obtainViewModel();
         viewModel.getViewState().observe(getViewLifecycleOwner(), this::updateViewState);
 
-        return binding.getRoot();
+        return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        unbinder.unbind();
     }
 
+    @OnClick(R.id.generate_phrase_btn)
     void onGenerateClicked(View view) {
         viewModel.requestNewMessage();
     }
@@ -89,7 +97,7 @@ public class GeneratorFragment extends Fragment
     }
 
     private void updateViewState(ViewState state) {
-        binding.generatePhraseBtn.setEnabled(!state.isLoading());
+        generatePhraseButton.setEnabled(!state.isLoading());
 
         if (state.getSweetNothing() != null) {
             confirmSend(state.getSweetNothing());
