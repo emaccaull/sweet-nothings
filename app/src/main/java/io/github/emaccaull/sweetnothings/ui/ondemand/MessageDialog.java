@@ -21,10 +21,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.ui.framework.BaseDialogFragment;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Allows a user to choose an action for a given sweet nothing.
@@ -41,8 +43,7 @@ public class MessageDialog extends BaseDialogFragment implements DialogInterface
         void onCancelled();
     }
 
-    public static <T extends Fragment & MessageSharedListener>
-    MessageDialog newInstance(
+    public static <T extends Fragment & MessageSharedListener> MessageDialog newInstance(
             String messageId, CharSequence message, @StringRes int titleId, T target) {
         Bundle args = new Bundle();
         args.putString(ARG_MESSAGE_ID, messageId);
@@ -51,7 +52,7 @@ public class MessageDialog extends BaseDialogFragment implements DialogInterface
 
         MessageDialog dialog = new MessageDialog();
         dialog.setArguments(args);
-        dialog.setTargetFragment(target, 0);
+        dialog.setTargetFragment(checkNotNull(target, "target == null"), 0);
 
         return dialog;
     }
