@@ -55,14 +55,14 @@ dependencies {
 
     // Support Libraries
     implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation 'com.google.android.material:material:1.1.0-alpha04'
+    implementation 'com.google.android.material:material:1.1.0-alpha05'
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     implementation "androidx.vectordrawable:vectordrawable:1.1.0-alpha01"
 
     // Arch Components / Jetpack
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha02'
-    testImplementation 'androidx.arch.core:core-testing:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha04'
+    testImplementation 'androidx.arch.core:core-testing:2.0.1'
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
