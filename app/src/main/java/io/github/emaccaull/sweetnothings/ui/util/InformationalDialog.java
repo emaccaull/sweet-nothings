@@ -22,14 +22,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import io.github.emaccaull.sweetnothings.R;
-import io.github.emaccaull.sweetnothings.ui.framework.BaseDialogFragment;
 
 /**
  * Dialog for displaying a generic message to the user where the only action is to dismiss the
  * dialog.
  */
-public class InformationalDialog extends BaseDialogFragment {
+public class InformationalDialog extends DialogFragment {
     private static final String ARG_TITLE_ID = "title_id";
     private static final String ARG_MESSAGE_ID = "message_id";
 

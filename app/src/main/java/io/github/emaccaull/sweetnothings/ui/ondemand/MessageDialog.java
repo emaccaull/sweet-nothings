@@ -22,16 +22,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import io.github.emaccaull.sweetnothings.R;
-import io.github.emaccaull.sweetnothings.ui.framework.BaseDialogFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Allows a user to choose an action for a given sweet nothing.
  */
-public class MessageDialog extends BaseDialogFragment implements DialogInterface.OnClickListener {
+public class MessageDialog extends DialogFragment implements DialogInterface.OnClickListener {
     private static final String ARG_MESSAGE_ID = "message_id";
     private static final String ARG_TITLE_ID = "title";
     private static final String ARG_MESSAGE = "body";
