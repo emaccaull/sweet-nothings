@@ -52,5 +52,6 @@ ext {
 
     junit_version = "4.12"
     mockito_version = "2.21.0"
+    hamcrest_version = "1.3"
     equalsverifier_version = "2.5.2"
 }

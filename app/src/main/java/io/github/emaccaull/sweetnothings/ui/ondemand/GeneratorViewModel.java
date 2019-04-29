@@ -18,10 +18,9 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
-import io.reactivex.disposables.CompositeDisposable;
+import io.github.emaccaull.sweetnothings.ui.framework.RxViewModel;
 import io.reactivex.disposables.Disposable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +28,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Generate/fetch a Random SweetNothing on demand.
  */
-public final class GeneratorViewModel extends ViewModel {
+public final class GeneratorViewModel extends RxViewModel {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorViewModel.class);
 
     private final MutableLiveData<ViewState> viewState = new MutableLiveData<>();
 
-    final CompositeDisposable disposables = new CompositeDisposable();
     private final GetRandomSweetNothing getRandomSweetNothing;
     private final MarkUsed markUsed;
 
@@ -61,7 +59,7 @@ public final class GeneratorViewModel extends ViewModel {
                         () -> viewState.postValue(ViewState.noMessageFound())
                 );
 
-        disposables.add(d);
+        add(d);
     }
 
     /**
@@ -73,7 +71,7 @@ public final class GeneratorViewModel extends ViewModel {
         Disposable d = markUsed.apply(id)
                 .subscribe(this::resetViewState);
 
-        disposables.add(d);
+        add(d);
     }
 
     void onShareFailed(String id) {
@@ -93,10 +91,5 @@ public final class GeneratorViewModel extends ViewModel {
      */
     LiveData<ViewState> getViewState() {
         return viewState;
-    }
-
-    @Override
-    protected void onCleared() {
-        disposables.clear();
     }
 }
