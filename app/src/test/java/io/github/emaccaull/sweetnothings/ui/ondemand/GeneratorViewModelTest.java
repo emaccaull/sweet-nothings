@@ -23,7 +23,6 @@ import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.disposables.Disposable;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -66,7 +65,7 @@ public class GeneratorViewModelTest {
     @Test
     public void init_noStreamsOpen() {
         // When a new instance is created, then it shouldn't have any RxJava streams open
-        assertThat(viewModel.disposables.size(), is(0));
+        assertThat(viewModel.subscriberCount(), is(0));
     }
 
     @Test
@@ -84,7 +83,7 @@ public class GeneratorViewModelTest {
         viewModel.requestNewMessage();
 
         // Then a disposable should be added to the list
-        assertThat(viewModel.disposables.size(), is(1));
+        assertThat(viewModel.subscriberCount(), is(1));
     }
 
     @Test
@@ -178,20 +177,6 @@ public class GeneratorViewModelTest {
         inOrder.verify(observer).onChanged(ViewState.loading());
         inOrder.verify(observer).onChanged(ViewState.loaded(sn));
         inOrder.verify(observer).onChanged(ViewState.initial());
-    }
-
-    @Test
-    public void onCleared_clearsDisposables() {
-        // Given that a disposable is registered
-        Disposable d = Mockito.mock(Disposable.class);
-        viewModel.disposables.add(d);
-        assertThat(viewModel.disposables.size(), is(1));
-
-        // When the view models is cleared
-        viewModel.onCleared();
-
-        // Then the contained disposables should be cleared
-        assertThat(viewModel.disposables.size(), is(0));
     }
 
     private SweetNothing withRandomSweetNothing(String message) {

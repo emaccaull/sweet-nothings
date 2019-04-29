@@ -84,6 +84,7 @@ dependencies {
     // General Testing
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.hamcrest:hamcrest-all:$hamcrest_version"
     testImplementation "nl.jqno.equalsverifier:equalsverifier:$equalsverifier_version"
     testImplementation 'androidx.arch.core:core-testing:2.0.1'
     androidTestImplementation 'androidx.test:runner:1.2.0-alpha04'
