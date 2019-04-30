@@ -35,6 +35,7 @@ public class RxViewModel extends ViewModel {
      * @return true if the disposable was added, false if this ViewModel was already cleared.
      */
     protected final boolean add(Disposable disposable) {
+        // Immediate disposal occurs if the ViewModel has already been cleared.
         return disposables.add(disposable);
     }
 
@@ -47,5 +48,6 @@ public class RxViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         disposables.dispose();
+        super.onCleared();
     }
 }
