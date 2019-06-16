@@ -18,6 +18,7 @@ package io.github.emaccaull.sweetnothings.ui;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.ui.ondemand.GeneratorFragment;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
@@ -33,19 +34,16 @@ public class MainActivity extends AppCompatActivity {
         logger.debug("app running");
         setContentView(R.layout.main_activity);
 
-        GeneratorFragment fragment = findOrInsertGeneratorFragment();
-
-        FragmentUtils.replace(getSupportFragmentManager(), fragment, R.id.fragment_container);
+        showGeneratorFragment();
     }
 
-    private GeneratorFragment findOrInsertGeneratorFragment() {
-        GeneratorFragment fragment = (GeneratorFragment) getSupportFragmentManager()
+    private void showGeneratorFragment() {
+        Fragment fragment = getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
 
-        if (fragment == null) {
-            fragment = GeneratorFragment.newInstance();
+        if (!(fragment instanceof GeneratorFragment)) {
+            GeneratorFragment f = GeneratorFragment.newInstance();
+            FragmentUtils.replace(getSupportFragmentManager(), f, R.id.fragment_container);
         }
-
-        return fragment;
     }
 }
