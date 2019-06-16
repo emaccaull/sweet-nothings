@@ -19,6 +19,7 @@ package io.github.emaccaull.sweetnothings.core.data;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 /**
  * Retrieves a {@link SweetNothing} from some type of persistent storage. Can be local or network.
@@ -49,4 +50,12 @@ public interface MessageDataSource {
      * @return a Completable that completes successfully when marking as used is successful.
      */
     Completable markUsed(String id);
+
+    /**
+     * Counts the total number of items currently available, regardless of whether they have been
+     * used or not. Does not operate on any particular scheduler.
+     *
+     * @return the number of items currently available.
+     */
+    Single<Integer> size();
 }

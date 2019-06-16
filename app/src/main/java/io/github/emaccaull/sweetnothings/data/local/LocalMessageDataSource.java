@@ -22,6 +22,7 @@ import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 /**
  * Retrieves from and persists to local storage.
@@ -62,5 +63,11 @@ public class LocalMessageDataSource implements MessageDataSource {
             MessageDao dao = MessagesDatabase.getInstance(context).message();
             dao.insert(message);
         });
+    }
+
+    @Override
+    public Single<Integer> size() {
+        MessageDao dao = MessagesDatabase.getInstance(context).message();
+        return dao.size();
     }
 }

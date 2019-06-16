@@ -109,6 +109,19 @@ public class InMemoryMessageDataSourceTest {
     }
 
     @Test
+    public void size() {
+        // When the db is empty, the size should be 0
+        dataSource.size().test().assertValue(0);
+
+        // When there is an item
+        SweetNothing message = SweetNothing.builder("4321").message("oof").build();
+        dataSource.insert(message);
+
+        // Then the size should be 1
+        dataSource.size().test().assertValue(1);
+    }
+
+    @Test
     public void clear() {
         // Given that there is an item in the dataSource
         SweetNothing message = SweetNothing.builder("756").message("foo").build();
