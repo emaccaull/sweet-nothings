@@ -49,7 +49,10 @@ public class LocalMessageDataSource implements MessageDataSource {
     @Override
     public Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter) {
         MessageDao dao = MessagesDatabase.getInstance(context).message();
-        return dao.selectRandom().map(Message::toSweetNothing);
+        Maybe<Message> selection = filter.includeUsed()
+                ? dao.selectRandom()
+                : dao.selectRandomUnused();
+        return selection.map(Message::toSweetNothing);
     }
 
     @Override

@@ -48,6 +48,15 @@ interface MessageDao {
     Maybe<Message> selectRandom();
 
     /**
+     * Select a random unused sweet nothing from the db.
+     */
+    @Query("SELECT * FROM " + Message.TABLE_NAME
+            + " WHERE id = "
+            + "(SELECT id FROM " + Message.TABLE_NAME
+            + " WHERE is_used=0 ORDER BY RANDOM() LIMIT 1)")
+    Maybe<Message> selectRandomUnused();
+
+    /**
      * Selects the Message for the given ID if it exists.
      *
      * @param id the UUID of the message to fetch.
