@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MainActivity extends AppCompatActivity {
-    private final Logger logger = LoggerFactory.getLogger(MainActivity.class);
+    private static final Logger logger = LoggerFactory.getLogger(MainActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

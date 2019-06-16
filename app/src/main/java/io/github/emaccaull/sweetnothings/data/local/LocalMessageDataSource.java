@@ -25,6 +25,8 @@ import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +36,7 @@ import java.util.Set;
  * Retrieves from and persists to local storage.
  */
 public class LocalMessageDataSource extends AbstractMessageDataSource {
+    private static final Logger logger = LoggerFactory.getLogger(LocalMessageDataSource.class);
 
     private final Context context;
 
@@ -68,7 +71,9 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
         return dao.selectById(id)
                 .flatMapCompletable(message -> Completable.fromAction(() -> {
                     message.used = true;
-                    dao.update(message);
+                    if (dao.update(message) > 0) {
+                        logger.debug("Marked '{}' as used", id);
+                    }
                 }));
     }
 
@@ -86,6 +91,7 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
 
     @Override
     protected void insertImmediate(SweetNothing sweetNothing) {
+        logger.debug("Inserting {}", sweetNothing);
         Message message = Message.fromSweetNothing(sweetNothing);
         MessageDao dao = MessagesDatabase.getInstance(context).message();
         dao.insert(message);
