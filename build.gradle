@@ -40,8 +40,8 @@ task clean(type: Delete) {
 }
 
 ext {
-    appcompat_version = "1.1.0-alpha04"
-    constraint_layout_version = "2.0.0-alpha4"
+    appcompat_version = "1.1.0-beta01"
+    constraint_layout_version = "2.0.0-beta1"
     slf4j_version = "1.7.25"
     slf4j_noveogroup_version = "1.3.6"
     rxjava_version = "2.2.1"
