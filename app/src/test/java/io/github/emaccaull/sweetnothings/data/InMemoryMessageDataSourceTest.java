@@ -25,9 +25,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -135,6 +139,25 @@ public class InMemoryMessageDataSourceTest {
         assertThat(sweetNothing.getMessage(), is(message));
         assertThat(sweetNothing.isBlacklisted(), is(false));
         assertThat(sweetNothing.isUsed(), is(false));
+    }
+
+    @Test
+    public void insertIfNotPreset() {
+        when(ids.nextUuid()).thenReturn("idXYZ");
+
+        // Given that there is a sweet nothing in the database
+        String existing = "A message";
+        SweetNothing sweetNothing = dataSource.insert(existing).blockingGet();
+        assertThat(sweetNothing, is(notNullValue()));
+
+        // When adding new items and one is a duplicate
+        List<SweetNothing> sweetNothings =
+                dataSource.insertIfNotPresent("Something", existing, "hello!").blockingGet();
+
+        // Then 2 of the three should have been add
+        assertThat(sweetNothings, hasSize(2));
+        assertThat(sweetNothings.get(0).getMessage(), is("Something"));
+        assertThat(sweetNothings.get(1).getMessage(), is("hello!"));
     }
 
     @Test

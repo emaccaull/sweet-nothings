@@ -24,6 +24,11 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -89,6 +94,33 @@ public class InMemoryMessageDataSource implements MessageDataSource {
             insertImmediate(sweetNothing);
             return sweetNothing;
         });
+    }
+
+    @Override
+    public Single<List<SweetNothing>> insertIfNotPresent(String... messages) {
+        return Single.defer(() -> {
+            if (messages == null || messages.length == 0) {
+                return Single.just(Collections.emptyList());
+            }
+
+            Set<String> existing = getMessages();
+            List<Single<SweetNothing>> inserts = new ArrayList<>();
+            for (String message : messages) {
+                if (!existing.contains(message)) {
+                    inserts.add(insert(message));
+                }
+            }
+
+            return Single.concat(inserts).toList();
+        });
+    }
+
+    private Set<String> getMessages() {
+        Set<String> messages = new HashSet<>(store.size());
+        for (SweetNothing sweetNothing : store.values()) {
+            messages.add(sweetNothing.getMessage());
+        }
+        return messages;
     }
 
     public void insertImmediate(SweetNothing message) {
