@@ -62,7 +62,11 @@ dependencies {
     // Arch Components / Jetpack
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0-alpha01'
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
     testImplementation 'androidx.arch.core:core-testing:2.0.1'
+    testImplementation "androidx.room:room-testing:$room_version"
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
