@@ -21,6 +21,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
+import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +37,7 @@ public class LocalMessageDataSourceTest {
         String nextUuid;
 
         @Override
-        String nextUuid() {
+        public String nextUuid() {
             return nextUuid;
         }
     }

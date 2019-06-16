@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.data.local;
+package io.github.emaccaull.sweetnothings.data.internal;
 
 import java.util.UUID;
 
 /**
  * Creates UUIDs.
  */
-class Ids {
+public class Ids {
+    private static final Ids INSTANCE = new Ids();
+    protected Ids() {}
+
+    public static Ids getInstance() {
+        return INSTANCE;
+    }
 
     /** Creates a new UUID for use in persisting data. */
-    String nextUuid() {
+    public String nextUuid() {
         return UUID.randomUUID().toString();
     }
 }

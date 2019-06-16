@@ -19,11 +19,11 @@ package io.github.emaccaull.sweetnothings.data;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
+import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -33,6 +33,15 @@ import java.util.concurrent.ConcurrentMap;
 public class InMemoryMessageDataSource implements MessageDataSource {
 
     private final ConcurrentMap<String, SweetNothing> store = new ConcurrentHashMap<>();
+    private final Ids ids;
+
+    InMemoryMessageDataSource(Ids ids) {
+        this.ids = ids;
+    }
+
+    public InMemoryMessageDataSource() {
+        this(Ids.getInstance());
+    }
 
     @Override
     public Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter) {
@@ -74,7 +83,7 @@ public class InMemoryMessageDataSource implements MessageDataSource {
     @Override
     public Single<SweetNothing> insert(String message) {
         return Single.fromCallable(() -> {
-            SweetNothing sweetNothing = SweetNothing.builder(nextUuid())
+            SweetNothing sweetNothing = SweetNothing.builder(ids.nextUuid())
                     .message(message)
                     .build();
             insertImmediate(sweetNothing);
@@ -93,9 +102,5 @@ public class InMemoryMessageDataSource implements MessageDataSource {
 
     public void clear() {
         store.clear();
-    }
-
-    private String nextUuid() {
-        return UUID.randomUUID().toString();
     }
 }
