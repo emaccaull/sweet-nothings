@@ -21,6 +21,7 @@ import androidx.annotation.VisibleForTesting;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
+import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
@@ -42,7 +43,7 @@ public class LocalMessageDataSource implements MessageDataSource {
     }
 
     public LocalMessageDataSource(Context context) {
-        this(context, new Ids());
+        this(context, Ids.getInstance());
     }
 
     @Override

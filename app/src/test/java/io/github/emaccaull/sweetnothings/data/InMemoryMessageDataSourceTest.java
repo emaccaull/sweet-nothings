@@ -18,20 +18,31 @@ package io.github.emaccaull.sweetnothings.data;
 
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
+import io.github.emaccaull.sweetnothings.data.internal.Ids;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InMemoryMessageDataSourceTest {
 
-    private InMemoryMessageDataSource dataSource = new InMemoryMessageDataSource();
+    @Mock
+    private Ids ids;
+
+    private InMemoryMessageDataSource dataSource;
+
+    @Before
+    public void setUp() {
+        dataSource = new InMemoryMessageDataSource(ids);
+    }
 
     @Test
     public void fetchRandomMessage() {
@@ -111,6 +122,8 @@ public class InMemoryMessageDataSourceTest {
 
     @Test
     public void insert() {
+        when(ids.nextUuid()).thenReturn("idXYZ");
+
         // Given that we have a new message to insert
         String message = "Some sweet text";
 
@@ -118,7 +131,7 @@ public class InMemoryMessageDataSourceTest {
         SweetNothing sweetNothing = dataSource.insert(message).blockingGet();
 
         // Then a sweet nothing with the text should be returned
-        assertThat(sweetNothing.getId(), is(notNullValue()));
+        assertThat(sweetNothing.getId(), is("idXYZ"));
         assertThat(sweetNothing.getMessage(), is(message));
         assertThat(sweetNothing.isBlacklisted(), is(false));
         assertThat(sweetNothing.isUsed(), is(false));
