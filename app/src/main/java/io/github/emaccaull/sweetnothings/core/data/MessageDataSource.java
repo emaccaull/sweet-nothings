@@ -52,6 +52,14 @@ public interface MessageDataSource {
     Completable markUsed(String id);
 
     /**
+     * Creates a new SweetNothing and adds it to storage.
+     *
+     * @param message the new sweet nothing text to add.
+     * @return the newly created {@link SweetNothing}.
+     */
+    Single<SweetNothing> insert(String message);
+
+    /**
      * Counts the total number of items currently available, regardless of whether they have been
      * used or not. Does not operate on any particular scheduler.
      *

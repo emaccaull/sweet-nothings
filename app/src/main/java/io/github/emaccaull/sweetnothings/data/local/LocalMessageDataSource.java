@@ -17,6 +17,7 @@
 package io.github.emaccaull.sweetnothings.data.local;
 
 import android.content.Context;
+import androidx.annotation.VisibleForTesting;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
@@ -24,15 +25,24 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Retrieves from and persists to local storage.
  */
 public class LocalMessageDataSource implements MessageDataSource {
 
     private final Context context;
+    private final Ids ids;
+
+    @VisibleForTesting
+    LocalMessageDataSource(Context context, Ids ids) {
+        this.context = context.getApplicationContext();
+        this.ids = checkNotNull(ids, "ids == null");
+    }
 
     public LocalMessageDataSource(Context context) {
-        this.context = context.getApplicationContext();
+        this(context, new Ids());
     }
 
     @Override
@@ -57,12 +67,25 @@ public class LocalMessageDataSource implements MessageDataSource {
                 }));
     }
 
-    public Completable insert(SweetNothing sweetNothing) {
-        return Completable.fromAction(() -> {
-            Message message = Message.fromSweetNothing(sweetNothing);
-            MessageDao dao = MessagesDatabase.getInstance(context).message();
-            dao.insert(message);
+    @Override
+    public Single<SweetNothing> insert(String message) {
+        return Single.fromCallable(() -> {
+            SweetNothing sweetNothing = SweetNothing.builder(ids.nextUuid())
+                    .message(message)
+                    .build();
+            insertImmediate(sweetNothing);
+            return sweetNothing;
         });
+    }
+
+    public Completable insert(SweetNothing sweetNothing) {
+        return Completable.fromAction(() -> insertImmediate(sweetNothing));
+    }
+
+    private void insertImmediate(SweetNothing sweetNothing) {
+        Message message = Message.fromSweetNothing(sweetNothing);
+        MessageDao dao = MessagesDatabase.getInstance(context).message();
+        dao.insert(message);
     }
 
     @Override

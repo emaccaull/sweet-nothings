@@ -32,6 +32,17 @@ import static org.hamcrest.Matchers.notNullValue;
 @RunWith(AndroidJUnit4.class)
 public class LocalMessageDataSourceTest {
 
+    static class TestIds extends Ids {
+        String nextUuid;
+
+        @Override
+        String nextUuid() {
+            return nextUuid;
+        }
+    }
+
+    private TestIds ids = new TestIds();
+
     private LocalMessageDataSource dataSource;
 
     @Before
@@ -39,7 +50,7 @@ public class LocalMessageDataSourceTest {
         Context context = ApplicationProvider.getApplicationContext();
         MessagesDatabase.switchToInMemory(context);
 
-        dataSource = new LocalMessageDataSource(context);
+        dataSource = new LocalMessageDataSource(context, ids);
     }
 
     @Test
@@ -84,6 +95,23 @@ public class LocalMessageDataSourceTest {
         SweetNothing retrieved = dataSource.fetchMessage("ABC123").blockingGet();
         assertThat(retrieved, is(notNullValue()));
         assertThat(retrieved.isUsed(), is(true));
+    }
+
+    @Test
+    public void insert() {
+        ids.nextUuid = "uuid1";
+
+        // Given that we have a new message to insert
+        String message = "Some sweet text";
+
+        // When adding it to storage
+        SweetNothing sweetNothing = dataSource.insert(message).blockingGet();
+
+        // Then a sweet nothing with the text should be returned
+        assertThat(sweetNothing.getId(), is("uuid1"));
+        assertThat(sweetNothing.getMessage(), is(message));
+        assertThat(sweetNothing.isBlacklisted(), is(false));
+        assertThat(sweetNothing.isUsed(), is(false));
     }
 
     @Test
