@@ -20,8 +20,8 @@ import android.content.Context;
 import androidx.annotation.VisibleForTesting;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.AbstractMessageDataSource;
+import io.github.emaccaull.sweetnothings.core.data.Ids;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
-import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
@@ -30,20 +30,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Retrieves from and persists to local storage.
  */
 public class LocalMessageDataSource extends AbstractMessageDataSource {
 
     private final Context context;
-    private final Ids ids;
 
     @VisibleForTesting
     LocalMessageDataSource(Context context, Ids ids) {
+        super(ids);
         this.context = context.getApplicationContext();
-        this.ids = checkNotNull(ids, "ids is null");
     }
 
     public LocalMessageDataSource(Context context) {
@@ -76,17 +73,6 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
     }
 
     @Override
-    public Single<SweetNothing> insert(String message) {
-        return Single.fromCallable(() -> {
-            SweetNothing sweetNothing = SweetNothing.builder(ids.nextUuid())
-                    .message(message)
-                    .build();
-            insertImmediate(sweetNothing);
-            return sweetNothing;
-        });
-    }
-
-    @Override
     protected Set<String> getExistingMessages() {
         MessageDao dao = MessagesDatabase.getInstance(context).message();
 
@@ -98,7 +84,8 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
         return texts;
     }
 
-    void insertImmediate(SweetNothing sweetNothing) {
+    @Override
+    protected void insertImmediate(SweetNothing sweetNothing) {
         Message message = Message.fromSweetNothing(sweetNothing);
         MessageDao dao = MessagesDatabase.getInstance(context).message();
         dao.insert(message);
