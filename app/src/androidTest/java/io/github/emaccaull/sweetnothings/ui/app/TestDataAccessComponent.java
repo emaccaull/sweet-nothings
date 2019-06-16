@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Emmanuel MacCaull
+ * Copyright (C) 2019 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings;
+package io.github.emaccaull.sweetnothings.ui.app;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
@@ -23,7 +23,7 @@ import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
 /**
  * Dependencies for instrumentation tests.
  */
-public class TestDataAccessComponent implements DataAccessComponent {
+class TestDataAccessComponent implements DataAccessComponent {
 
     @Override
     public MessageDataSource messageDataSource() {

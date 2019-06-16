@@ -17,6 +17,7 @@
 package io.github.emaccaull.sweetnothings.ui.app;
 
 import android.app.Application;
+import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
 import io.github.emaccaull.sweetnothings.glue.Glue;
 
 /**
@@ -32,8 +33,12 @@ public class SweetNothingsApp extends Application {
         configureDataAccess();
     }
 
-    /** Setup where data should be accessed from. */
     protected void configureDataAccess() {
-        Glue.setDataAccessComponent(new ProdDataAccessComponent());
+        Glue.setDataAccessComponent(createDataAccessComponent());
+    }
+
+    /** Determines where to get and persist data. */
+    protected DataAccessComponent createDataAccessComponent() {
+        return new ProdDataAccessComponent(this);
     }
 }
