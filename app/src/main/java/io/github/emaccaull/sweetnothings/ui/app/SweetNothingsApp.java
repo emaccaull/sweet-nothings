@@ -16,7 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.ui.app;
 
-import android.app.Application;
+import androidx.multidex.MultiDexApplication;
 import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
 import io.github.emaccaull.sweetnothings.glue.Glue;
 
@@ -25,7 +25,7 @@ import io.github.emaccaull.sweetnothings.glue.Glue;
  *
  * Application initialization happens here.
  */
-public class SweetNothingsApp extends Application {
+public class SweetNothingsApp extends MultiDexApplication {
 
     @Override
     public void onCreate() {
