@@ -52,10 +52,12 @@ final class GeneratorViewModel extends RxViewModel {
         Disposable d = getRandomSweetNothing.apply()
                 .doOnSubscribe(__ -> viewState.postValue(ViewState.loading()))
                 .map(ViewState::loaded)
-                .onErrorComplete()
                 .subscribe(
                         viewState::postValue,
-                        throwable -> logger.error("Couldn't load sweet nothing", throwable),
+                        throwable -> {
+                            logger.error("Couldn't load sweet nothing", throwable);
+                            viewState.postValue(ViewState.noMessageFound());
+                        },
                         () -> viewState.postValue(ViewState.noMessageFound())
                 );
 
