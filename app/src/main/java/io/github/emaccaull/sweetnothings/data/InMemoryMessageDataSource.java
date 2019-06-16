@@ -21,6 +21,7 @@ import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -71,6 +72,11 @@ public class InMemoryMessageDataSource implements MessageDataSource {
 
     public void insert(SweetNothing message) {
         store.put(message.getId(), message);
+    }
+
+    @Override
+    public Single<Integer> size() {
+        return Single.just(store.size());
     }
 
     public void clear() {

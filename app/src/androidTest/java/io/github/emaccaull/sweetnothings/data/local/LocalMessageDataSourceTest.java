@@ -85,4 +85,17 @@ public class LocalMessageDataSourceTest {
         assertThat(retrieved, is(notNullValue()));
         assertThat(retrieved.isUsed(), is(true));
     }
+
+    @Test
+    public void size() {
+        // Size should be zero when the db is empty.
+        dataSource.size().test().assertValue(0);
+
+        // Given that a sweet nothing exists in the db
+        SweetNothing inserted = SweetNothing.builder("ABC123").message("<><>").build();
+        dataSource.insert(inserted).subscribe();
+
+        // When asking for the size
+        dataSource.size().test().assertValue(1);
+    }
 }

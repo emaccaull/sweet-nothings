@@ -21,6 +21,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 /**
  * Local message store.
@@ -53,6 +54,9 @@ interface MessageDao {
      */
     @Query("SELECT * FROM " + Message.TABLE_NAME + " WHERE id = :id")
     Maybe<Message> selectById(String id);
+
+    @Query("SELECT COUNT(*) FROM " + Message.TABLE_NAME)
+    Single<Integer> size();
 
     /**
      * Updates an existing message.
