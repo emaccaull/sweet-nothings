@@ -17,7 +17,7 @@
 package io.github.emaccaull.sweetnothings.data;
 
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
-import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
+import io.github.emaccaull.sweetnothings.core.data.AbstractMessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import io.reactivex.Completable;
@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * In-memory store of SweetNothings.
  */
-public class InMemoryMessageDataSource implements MessageDataSource {
+public class InMemoryMessageDataSource extends AbstractMessageDataSource {
 
     private final ConcurrentMap<String, SweetNothing> store = new ConcurrentHashMap<>();
     private final Ids ids;
@@ -97,25 +97,7 @@ public class InMemoryMessageDataSource implements MessageDataSource {
     }
 
     @Override
-    public Single<List<SweetNothing>> insertIfNotPresent(String... messages) {
-        return Single.defer(() -> {
-            if (messages == null || messages.length == 0) {
-                return Single.just(Collections.emptyList());
-            }
-
-            Set<String> existing = getMessages();
-            List<Single<SweetNothing>> inserts = new ArrayList<>();
-            for (String message : messages) {
-                if (!existing.contains(message)) {
-                    inserts.add(insert(message));
-                }
-            }
-
-            return Single.concat(inserts).toList();
-        });
-    }
-
-    private Set<String> getMessages() {
+    protected Set<String> getExistingMessages() {
         Set<String> messages = new HashSet<>(store.size());
         for (SweetNothing sweetNothing : store.values()) {
             messages.add(sweetNothing.getMessage());

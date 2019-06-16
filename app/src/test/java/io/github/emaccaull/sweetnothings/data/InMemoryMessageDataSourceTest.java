@@ -142,25 +142,6 @@ public class InMemoryMessageDataSourceTest {
     }
 
     @Test
-    public void insertIfNotPreset() {
-        when(ids.nextUuid()).thenReturn("idXYZ");
-
-        // Given that there is a sweet nothing in the database
-        String existing = "A message";
-        SweetNothing sweetNothing = dataSource.insert(existing).blockingGet();
-        assertThat(sweetNothing, is(notNullValue()));
-
-        // When adding new items and one is a duplicate
-        List<SweetNothing> sweetNothings =
-                dataSource.insertIfNotPresent("Something", existing, "hello!").blockingGet();
-
-        // Then 2 of the three should have been add
-        assertThat(sweetNothings, hasSize(2));
-        assertThat(sweetNothings.get(0).getMessage(), is("Something"));
-        assertThat(sweetNothings.get(1).getMessage(), is("hello!"));
-    }
-
-    @Test
     public void size() {
         // When the db is empty, the size should be 0
         dataSource.size().test().assertValue(0);

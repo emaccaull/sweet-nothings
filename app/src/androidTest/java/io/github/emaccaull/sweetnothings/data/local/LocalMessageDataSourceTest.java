@@ -30,10 +30,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -131,25 +128,6 @@ public class LocalMessageDataSourceTest {
         assertThat(sweetNothing.getMessage(), is(message));
         assertThat(sweetNothing.isBlacklisted(), is(false));
         assertThat(sweetNothing.isUsed(), is(false));
-    }
-
-    @Test
-    public void insertIfNotPresent() {
-        when(ids.nextUuid()).thenReturn("idXYZ");
-
-        // Given that there is a sweet nothing in the database
-        String existing = "A message";
-        SweetNothing sweetNothing = dataSource.insert(existing).blockingGet();
-        assertThat(sweetNothing, is(notNullValue()));
-
-        // When adding new items and one is a duplicate
-        List<SweetNothing> sweetNothings =
-                dataSource.insertIfNotPresent("Something", existing, "hello!").blockingGet();
-
-        // Then 2 of the three should have been add
-        assertThat(sweetNothings, hasSize(2));
-        assertThat(sweetNothings.get(0).getMessage(), is("Something"));
-        assertThat(sweetNothings.get(1).getMessage(), is("hello!"));
     }
 
     @Test
