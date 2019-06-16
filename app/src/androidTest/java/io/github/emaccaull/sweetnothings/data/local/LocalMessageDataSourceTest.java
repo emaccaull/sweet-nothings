@@ -33,6 +33,7 @@ import org.mockito.junit.MockitoRule;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -68,6 +69,20 @@ public class LocalMessageDataSourceTest {
 
         // Then a sweet nothing should be retrieved
         assertThat(message, is(notNullValue()));
+    }
+
+    @Test
+    public void fetchRandom_whenAllItemsUsed() {
+        // Given that a used sweet nothing exists in the db
+        SweetNothing inserted = SweetNothing.builder("XYQ123").message("hello").used(true).build();
+        dataSource.insertImmediate(inserted);
+
+        // When selecting a random but excluding used
+        MessageFilter filter = MessageFilter.builder().includeUsed(false).build();
+        SweetNothing message = dataSource.fetchRandomMessage(filter).blockingGet();
+
+        // Then no sweet nothing should be found
+        assertThat(message, is(nullValue()));
     }
 
     @Test
