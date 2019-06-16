@@ -17,7 +17,7 @@
 package io.github.emaccaull.sweetnothings;
 
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.github.emaccaull.sweetnothings.data.FakeMessageDataSource;
+import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
 
 /**
@@ -27,6 +27,6 @@ public class TestDataAccessComponent implements DataAccessComponent {
 
     @Override
     public MessageDataSource messageDataSource() {
-        return new FakeMessageDataSource();
+        return new InMemoryMessageDataSource();
     }
 }
