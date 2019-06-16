@@ -39,7 +39,7 @@ public class LocalMessageDataSource implements MessageDataSource {
     @VisibleForTesting
     LocalMessageDataSource(Context context, Ids ids) {
         this.context = context.getApplicationContext();
-        this.ids = checkNotNull(ids, "ids == null");
+        this.ids = checkNotNull(ids, "ids is null");
     }
 
     public LocalMessageDataSource(Context context) {

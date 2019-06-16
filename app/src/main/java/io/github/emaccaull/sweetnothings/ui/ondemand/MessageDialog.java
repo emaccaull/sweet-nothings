@@ -52,7 +52,7 @@ public class MessageDialog extends DialogFragment implements DialogInterface.OnC
 
         MessageDialog dialog = new MessageDialog();
         dialog.setArguments(args);
-        dialog.setTargetFragment(checkNotNull(target, "target == null"), 0);
+        dialog.setTargetFragment(checkNotNull(target, "target is null"), 0);
 
         return dialog;
     }
