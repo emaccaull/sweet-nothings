@@ -62,9 +62,9 @@ public class GeneratorFragment extends Fragment
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        logger.debug("Attached");
+        logger.debug("Attached to {}", context.getClass().getSimpleName());
     }
 
     @Nullable
