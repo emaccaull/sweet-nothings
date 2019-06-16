@@ -20,8 +20,8 @@ import android.content.Context;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
+import io.github.emaccaull.sweetnothings.core.data.Ids;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
-import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -111,23 +111,6 @@ public class LocalMessageDataSourceTest {
         SweetNothing retrieved = dataSource.fetchMessage("ABC123").blockingGet();
         assertThat(retrieved, is(notNullValue()));
         assertThat(retrieved.isUsed(), is(true));
-    }
-
-    @Test
-    public void insert() {
-        when(ids.nextUuid()).thenReturn("uuid1");
-
-        // Given that we have a new message to insert
-        String message = "Some sweet text";
-
-        // When adding it to storage
-        SweetNothing sweetNothing = dataSource.insert(message).blockingGet();
-
-        // Then a sweet nothing with the text should be returned
-        assertThat(sweetNothing.getId(), is("uuid1"));
-        assertThat(sweetNothing.getMessage(), is(message));
-        assertThat(sweetNothing.isBlacklisted(), is(false));
-        assertThat(sweetNothing.isUsed(), is(false));
     }
 
     @Test

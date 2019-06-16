@@ -18,16 +18,13 @@ package io.github.emaccaull.sweetnothings.data;
 
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.AbstractMessageDataSource;
+import io.github.emaccaull.sweetnothings.core.data.Ids;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
-import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -38,10 +35,9 @@ import java.util.concurrent.ConcurrentMap;
 public class InMemoryMessageDataSource extends AbstractMessageDataSource {
 
     private final ConcurrentMap<String, SweetNothing> store = new ConcurrentHashMap<>();
-    private final Ids ids;
 
     InMemoryMessageDataSource(Ids ids) {
-        this.ids = ids;
+        super(ids);
     }
 
     public InMemoryMessageDataSource() {
@@ -83,17 +79,6 @@ public class InMemoryMessageDataSource extends AbstractMessageDataSource {
                 .map(sweetNothing -> SweetNothing.builder(sweetNothing).used(true).build())
                 .doOnSuccess(this::insertImmediate)
                 .flatMapCompletable(__ -> Completable.complete());
-    }
-
-    @Override
-    public Single<SweetNothing> insert(String message) {
-        return Single.fromCallable(() -> {
-            SweetNothing sweetNothing = SweetNothing.builder(ids.nextUuid())
-                    .message(message)
-                    .build();
-            insertImmediate(sweetNothing);
-            return sweetNothing;
-        });
     }
 
     @Override

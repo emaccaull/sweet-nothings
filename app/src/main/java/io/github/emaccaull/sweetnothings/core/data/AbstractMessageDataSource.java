@@ -29,6 +29,29 @@ import java.util.Set;
  */
 public abstract class AbstractMessageDataSource implements MessageDataSource {
 
+    private final Ids ids;
+
+    public AbstractMessageDataSource(Ids ids) {
+        this.ids = ids;
+    }
+
+    @Override
+    public Single<SweetNothing> insert(String message) {
+        return Single.fromCallable(() -> {
+            SweetNothing sweetNothing = SweetNothing.builder(ids.nextUuid())
+                    .message(message)
+                    .build();
+            insertImmediate(sweetNothing);
+            return sweetNothing;
+        });
+    }
+
+    /**
+     * Inserts the sweet nothing into the data store immediately. If a sweet nothing with the same
+     * id already exists, this {@code sweetNothing} overwrites the existing one.
+     */
+    protected abstract void insertImmediate(SweetNothing sweetNothing);
+
     @Override
     public Single<List<SweetNothing>> insertIfNotPresent(String... messages) {
         return Single.defer(() -> {

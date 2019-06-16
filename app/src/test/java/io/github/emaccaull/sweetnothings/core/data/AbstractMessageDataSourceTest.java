@@ -17,10 +17,10 @@
 package io.github.emaccaull.sweetnothings.core.data;
 
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
-import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -31,9 +31,11 @@ import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractMessageDataSourceTest {
@@ -41,11 +43,34 @@ public class AbstractMessageDataSourceTest {
     @Mock
     private Ids ids;
 
-    private TestMessageDataSource dataSource = new TestMessageDataSource();
+    private TestMessageDataSource dataSource;
+
+    @Before
+    public void setUp() {
+        dataSource = new TestMessageDataSource(ids);
+    }
+
+    @Test
+    public void insert() {
+        when(ids.nextUuid()).thenReturn("uuid1");
+
+        // Given that we have a new message to insert
+        String message = "Some sweet text";
+
+        // When adding it to storage
+        SweetNothing sweetNothing = dataSource.insert(message).blockingGet();
+
+        // Then a sweet nothing with the text should be returned
+        assertThat(sweetNothing.getId(), is("uuid1"));
+        assertThat(sweetNothing.getMessage(), is(message));
+        assertThat(sweetNothing.isBlacklisted(), is(false));
+        assertThat(sweetNothing.isUsed(), is(false));
+        assertThat(dataSource.existingMessages, contains(message));
+    }
 
     @Test
     public void insertIfNotPresent() {
-        //when(ids.nextUuid()).thenReturn("idXYZ");
+        when(ids.nextUuid()).thenReturn("idXYZ");
 
         // Given that there is a sweet nothing in the database
         String existing = "A message";
@@ -64,6 +89,10 @@ public class AbstractMessageDataSourceTest {
 
     static class TestMessageDataSource extends AbstractMessageDataSource {
         Set<String> existingMessages = new HashSet<>();
+
+        TestMessageDataSource(Ids ids) {
+            super(ids);
+        }
 
         @Override
         protected Set<String> getExistingMessages() {
@@ -86,9 +115,8 @@ public class AbstractMessageDataSourceTest {
         }
 
         @Override
-        public Single<SweetNothing> insert(String message) {
-            existingMessages.add(message);
-            return Single.just(SweetNothing.builder("123").message(message).build());
+        protected void insertImmediate(SweetNothing sweetNothing) {
+            existingMessages.add(sweetNothing.getMessage());
         }
 
         @Override

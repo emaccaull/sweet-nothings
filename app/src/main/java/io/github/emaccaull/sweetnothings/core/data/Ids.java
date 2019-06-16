@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.data.internal;
+package io.github.emaccaull.sweetnothings.core.data;
 
 import java.util.UUID;
 

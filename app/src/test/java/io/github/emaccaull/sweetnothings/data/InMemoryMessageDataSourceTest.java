@@ -17,23 +17,18 @@
 package io.github.emaccaull.sweetnothings.data;
 
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
+import io.github.emaccaull.sweetnothings.core.data.Ids;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
-import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InMemoryMessageDataSourceTest {
@@ -122,23 +117,6 @@ public class InMemoryMessageDataSourceTest {
         // Then the message should be modified
         SweetNothing modified = dataSource.fetchMessage("1234").blockingGet();
         assertTrue(modified.isUsed());
-    }
-
-    @Test
-    public void insert() {
-        when(ids.nextUuid()).thenReturn("idXYZ");
-
-        // Given that we have a new message to insert
-        String message = "Some sweet text";
-
-        // When adding it to storage
-        SweetNothing sweetNothing = dataSource.insert(message).blockingGet();
-
-        // Then a sweet nothing with the text should be returned
-        assertThat(sweetNothing.getId(), is("idXYZ"));
-        assertThat(sweetNothing.getMessage(), is(message));
-        assertThat(sweetNothing.isBlacklisted(), is(false));
-        assertThat(sweetNothing.isUsed(), is(false));
     }
 
     @Test
