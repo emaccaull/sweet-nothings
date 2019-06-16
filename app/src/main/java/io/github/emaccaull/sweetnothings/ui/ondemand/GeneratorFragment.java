@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GeneratorFragment extends Fragment
         implements MessageDialog.MessageSharedListener {
-    private final Logger logger = LoggerFactory.getLogger(GeneratorFragment.class);
+    private static final Logger logger = LoggerFactory.getLogger(GeneratorFragment.class);
 
     private static final String CONFIRMATION_TAG = "ui.ondemand.confirm";
     private static final String APOLOGY_TAG = "ui.ondemand.notfound";

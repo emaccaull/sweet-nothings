@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * Generate/fetch a Random SweetNothing on demand.
  */
 final class GeneratorViewModel extends RxViewModel {
-    private final Logger logger = LoggerFactory.getLogger(GeneratorViewModel.class);
+    private static final Logger logger = LoggerFactory.getLogger(GeneratorViewModel.class);
 
     private final MutableLiveData<ViewState> viewState = new MutableLiveData<>();
 
