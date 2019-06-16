@@ -18,6 +18,7 @@ package io.github.emaccaull.sweetnothings.data.local;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import io.reactivex.Maybe;
@@ -36,7 +37,7 @@ interface MessageDao {
      * @return the row ID of the inserted message.
      */
     @SuppressWarnings("UnusedReturnValue")
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Message message);
 
     /**
