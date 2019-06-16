@@ -16,18 +16,24 @@
 
 package io.github.emaccaull.sweetnothings.ui.app;
 
+import android.app.Application;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
+import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
 
 /**
  * DataAccessComponent used for production builds.
  */
-public class ProdDataAccessComponent implements DataAccessComponent {
+class ProdDataAccessComponent implements DataAccessComponent {
+
+    private final Application context;
+
+    ProdDataAccessComponent(Application context) {
+        this.context = context;
+    }
 
     @Override
     public MessageDataSource messageDataSource() {
-        // TODO plug real data source
-        return new InMemoryMessageDataSource();
+        return new LocalMessageDataSource(context);
     }
 }
