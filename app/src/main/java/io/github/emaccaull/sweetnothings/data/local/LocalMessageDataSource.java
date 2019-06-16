@@ -26,6 +26,12 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -80,6 +86,36 @@ public class LocalMessageDataSource implements MessageDataSource {
             insertImmediate(sweetNothing);
             return sweetNothing;
         });
+    }
+
+    @Override
+    public Single<List<SweetNothing>> insertIfNotPresent(String... messages) {
+        return Single.defer(() -> {
+            if (messages == null || messages.length == 0) {
+                return Single.just(Collections.emptyList());
+            }
+
+            Set<String> existing = getMessageTexts();
+            List<Single<SweetNothing>> inserts = new ArrayList<>();
+            for (String message : messages) {
+                if (!existing.contains(message)) {
+                    inserts.add(insert(message));
+                }
+            }
+
+            return Single.concat(inserts).toList();
+        });
+    }
+
+    private Set<String> getMessageTexts() {
+        MessageDao dao = MessagesDatabase.getInstance(context).message();
+
+        Set<String> texts = new HashSet<>();
+        List<Message> messages = dao.selectAll();
+        for (Message message : messages) {
+            texts.add(message.content);
+        }
+        return texts;
     }
 
     void insertImmediate(SweetNothing sweetNothing) {

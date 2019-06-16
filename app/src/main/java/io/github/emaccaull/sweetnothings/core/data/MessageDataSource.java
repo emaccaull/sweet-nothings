@@ -21,6 +21,8 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
+import java.util.List;
+
 /**
  * Retrieves a {@link SweetNothing} from some type of persistent storage. Can be local or network.
  */
@@ -58,6 +60,15 @@ public interface MessageDataSource {
      * @return the newly created {@link SweetNothing}.
      */
     Single<SweetNothing> insert(String message);
+
+    /**
+     * Creates new SweetNothings and inserts them into the database for all {@code messages} that do
+     * not exist in the database.
+     *
+     * @param messages list of sweet sayings. If null or empty, this method is a no-op.
+     * @return the newly created {@link SweetNothing SweetNothings}.
+     */
+    Single<List<SweetNothing>> insertIfNotPresent(String... messages);
 
     /**
      * Counts the total number of items currently available, regardless of whether they have been
