@@ -23,7 +23,8 @@ import java.util.UUID;
  */
 public class Ids {
     private static final Ids INSTANCE = new Ids();
-    protected Ids() {}
+
+    private Ids() {}
 
     public static Ids getInstance() {
         return INSTANCE;

@@ -23,26 +23,26 @@ import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.github.emaccaull.sweetnothings.data.internal.Ids;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 public class LocalMessageDataSourceTest {
 
-    static class TestIds extends Ids {
-        String nextUuid;
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-        @Override
-        public String nextUuid() {
-            return nextUuid;
-        }
-    }
-
-    private TestIds ids = new TestIds();
+    @Mock
+    private Ids ids;
 
     private LocalMessageDataSource dataSource;
 
@@ -100,7 +100,7 @@ public class LocalMessageDataSourceTest {
 
     @Test
     public void insert() {
-        ids.nextUuid = "uuid1";
+        when(ids.nextUuid()).thenReturn("uuid1");
 
         // Given that we have a new message to insert
         String message = "Some sweet text";
