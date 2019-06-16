@@ -16,9 +16,9 @@
 
 package io.github.emaccaull.sweetnothings.ui.ondemand;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.annotation.NonNull;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import io.github.emaccaull.sweetnothings.glue.Glue;
@@ -44,11 +44,11 @@ class GeneratorViewModelFactory implements ViewModelProvider.Factory {
         this.markUsed = markUsed;
     }
 
+    @SuppressWarnings("unchecked")
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (GeneratorViewModel.class.isAssignableFrom(modelClass)) {
-            //noinspection unchecked
             return (T) new GeneratorViewModel(getRandomSweetNothing, markUsed);
         }
         throw new IllegalArgumentException("Cannot instantiate " + modelClass);
