@@ -79,11 +79,7 @@ public class LocalMessageDataSource implements MessageDataSource {
         });
     }
 
-    public Completable insert(SweetNothing sweetNothing) {
-        return Completable.fromAction(() -> insertImmediate(sweetNothing));
-    }
-
-    private void insertImmediate(SweetNothing sweetNothing) {
+    void insertImmediate(SweetNothing sweetNothing) {
         Message message = Message.fromSweetNothing(sweetNothing);
         MessageDao dao = MessagesDatabase.getInstance(context).message();
         dao.insert(message);
