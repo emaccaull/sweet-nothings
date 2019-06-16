@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -36,7 +37,7 @@ public class InMemoryMessageDataSourceTest {
     public void fetchRandomMessage() {
         // Given that there is one SweetNothing available
         SweetNothing message = SweetNothing.builder("abc").message("hello").build();
-        dataSource.insert(message);
+        dataSource.insertImmediate(message);
 
         // When retrieving a random sweet nothing
         dataSource.fetchRandomMessage(MessageFilter.selectAll())
@@ -61,7 +62,7 @@ public class InMemoryMessageDataSourceTest {
     public void fetchRandomMessage_whenAllItemsUsed() {
         // Given that there are no unused sweet nothings
         SweetNothing message = SweetNothing.builder("abc").message("hello").used(true).build();
-        dataSource.insert(message);
+        dataSource.insertImmediate(message);
 
         // When requesting non-blacklisted items
         dataSource.fetchRandomMessage(MessageFilter.builder().includeUsed(false).build())
@@ -75,7 +76,7 @@ public class InMemoryMessageDataSourceTest {
     public void fetchMessage() {
         // Given that there is a sweet nothing with the given id
         SweetNothing message = SweetNothing.builder("ID").message("foo").build();
-        dataSource.insert(message);
+        dataSource.insertImmediate(message);
 
         // When fetching the message
         dataSource.fetchMessage("ID")
@@ -98,7 +99,7 @@ public class InMemoryMessageDataSourceTest {
     public void markUsed() {
         // Given that there is a sweet nothing with the given id
         SweetNothing message = SweetNothing.builder("1234").message("foo").build();
-        dataSource.insert(message);
+        dataSource.insertImmediate(message);
 
         // When marking the message as used
         dataSource.markUsed("1234").test().assertComplete();
@@ -109,13 +110,28 @@ public class InMemoryMessageDataSourceTest {
     }
 
     @Test
+    public void insert() {
+        // Given that we have a new message to insert
+        String message = "Some sweet text";
+
+        // When adding it to storage
+        SweetNothing sweetNothing = dataSource.insert(message).blockingGet();
+
+        // Then a sweet nothing with the text should be returned
+        assertThat(sweetNothing.getId(), is(notNullValue()));
+        assertThat(sweetNothing.getMessage(), is(message));
+        assertThat(sweetNothing.isBlacklisted(), is(false));
+        assertThat(sweetNothing.isUsed(), is(false));
+    }
+
+    @Test
     public void size() {
         // When the db is empty, the size should be 0
         dataSource.size().test().assertValue(0);
 
         // When there is an item
         SweetNothing message = SweetNothing.builder("4321").message("oof").build();
-        dataSource.insert(message);
+        dataSource.insertImmediate(message);
 
         // Then the size should be 1
         dataSource.size().test().assertValue(1);
@@ -125,7 +141,7 @@ public class InMemoryMessageDataSourceTest {
     public void clear() {
         // Given that there is an item in the dataSource
         SweetNothing message = SweetNothing.builder("756").message("foo").build();
-        dataSource.insert(message);
+        dataSource.insertImmediate(message);
 
         // When clearing it
         dataSource.clear();

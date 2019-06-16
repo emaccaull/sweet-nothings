@@ -23,6 +23,7 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -66,11 +67,22 @@ public class InMemoryMessageDataSource implements MessageDataSource {
         return fetchMessage(id)
                 .filter(sweetNothing -> !sweetNothing.isUsed())
                 .map(sweetNothing -> SweetNothing.builder(sweetNothing).used(true).build())
-                .doOnSuccess(this::insert)
+                .doOnSuccess(this::insertImmediate)
                 .flatMapCompletable(__ -> Completable.complete());
     }
 
-    public void insert(SweetNothing message) {
+    @Override
+    public Single<SweetNothing> insert(String message) {
+        return Single.fromCallable(() -> {
+            SweetNothing sweetNothing = SweetNothing.builder(nextUuid())
+                    .message(message)
+                    .build();
+            insertImmediate(sweetNothing);
+            return sweetNothing;
+        });
+    }
+
+    public void insertImmediate(SweetNothing message) {
         store.put(message.getId(), message);
     }
 
@@ -81,5 +93,9 @@ public class InMemoryMessageDataSource implements MessageDataSource {
 
     public void clear() {
         store.clear();
+    }
+
+    private String nextUuid() {
+        return UUID.randomUUID().toString();
     }
 }

@@ -20,8 +20,9 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "io.github.emaccaull.sweetnothings"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 28
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "io.github.emaccaull.sweetnothings.TestRunner"
@@ -91,6 +92,7 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-all:$hamcrest_version"
     testImplementation "nl.jqno.equalsverifier:equalsverifier:$equalsverifier_version"
     testImplementation 'androidx.arch.core:core-testing:2.0.1'
+    //androidTestImplementation "org.mockito:mockito-android:$mockito_version" // for semi-integration tests
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
