@@ -58,7 +58,7 @@ public class LocalMessageDataSourceTest {
     public void fetchRandom() {
         // Given that a particular sweet nothing exists in the db
         SweetNothing inserted = SweetNothing.builder("XYQ123").message("hello").build();
-        dataSource.insert(inserted).subscribe();
+        dataSource.insertImmediate(inserted);
 
         // When selecting a random sweet nothing
         MessageFilter filter = MessageFilter.selectAll();
@@ -74,7 +74,7 @@ public class LocalMessageDataSourceTest {
     public void fetchMessage() {
         // Given that a particular sweet nothing exists in the db
         SweetNothing inserted = SweetNothing.builder("1234").message("foo").build();
-        dataSource.insert(inserted).subscribe();
+        dataSource.insertImmediate(inserted);
 
         // When fetching that item
         SweetNothing retrieved = dataSource.fetchMessage("1234").blockingGet();
@@ -87,7 +87,7 @@ public class LocalMessageDataSourceTest {
     public void markUsed() {
         // Given that a sweet nothing exists in the db
         SweetNothing inserted = SweetNothing.builder("ABC123").message("<3").build();
-        dataSource.insert(inserted).subscribe();
+        dataSource.insertImmediate(inserted);
 
         // When marking that item as used
         dataSource.markUsed("ABC123").subscribe();
@@ -117,12 +117,13 @@ public class LocalMessageDataSourceTest {
 
     @Test
     public void size() {
+        when(ids.nextUuid()).thenReturn("ID");
+
         // Size should be zero when the db is empty.
         dataSource.size().test().assertValue(0);
 
         // Given that a sweet nothing exists in the db
-        SweetNothing inserted = SweetNothing.builder("ABC123").message("<><>").build();
-        dataSource.insert(inserted).subscribe();
+        dataSource.insert("<><>").subscribe();
 
         // When asking for the size
         dataSource.size().test().assertValue(1);
