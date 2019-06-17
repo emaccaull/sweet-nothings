@@ -38,18 +38,15 @@ public final class Injection {
     }
 
     public static GetRandomSweetNothing provideGetRandomSweetNothing() {
-        Configuration config = INSTANCE.getConfiguration();
-        return new GetRandomSweetNothing(config.messageDataSource());
+        return new GetRandomSweetNothing(provideMessageDataSource());
     }
 
     public static GetSweetNothing provideGetSweetNothing() {
-        Configuration config = INSTANCE.getConfiguration();
-        return new GetSweetNothing(config.messageDataSource());
+        return new GetSweetNothing(provideMessageDataSource());
     }
 
     public static MarkUsed provideMarkUsed() {
-        Configuration config = INSTANCE.getConfiguration();
-        return new MarkUsed(config.messageDataSource());
+        return new MarkUsed(provideMessageDataSource());
     }
 
     public static SchedulerProvider provideSchedulerProvider() {
