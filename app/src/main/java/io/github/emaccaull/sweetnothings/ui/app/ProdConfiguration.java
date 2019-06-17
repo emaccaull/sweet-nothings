@@ -21,6 +21,7 @@ import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
+import io.github.emaccaull.sweetnothings.ui.util.AppSchedulerProvider;
 
 /**
  * Configuration used for production builds.
@@ -35,7 +36,7 @@ class ProdConfiguration implements Configuration {
 
     @Override
     public SchedulerProvider schedulerProvider() {
-        return null;
+        return new AppSchedulerProvider();
     }
 
     @Override

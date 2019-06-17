@@ -54,6 +54,7 @@ final class GeneratorViewModel extends RxViewModel {
         logger.info("Requesting a new sweet nothing");
 
         Disposable d = getRandomSweetNothing.apply()
+                .subscribeOn(schedulerProvider.diskIO())
                 .doOnSubscribe(__ -> viewState.postValue(ViewState.loading()))
                 .map(ViewState::loaded)
                 .subscribe(
@@ -75,6 +76,7 @@ final class GeneratorViewModel extends RxViewModel {
         logger.info("Sharing a sweet nothing; id='{}'", id);
 
         Disposable d = markUsed.apply(id)
+                .subscribeOn(schedulerProvider.diskIO())
                 .subscribe(this::resetViewState);
 
         add(d);
