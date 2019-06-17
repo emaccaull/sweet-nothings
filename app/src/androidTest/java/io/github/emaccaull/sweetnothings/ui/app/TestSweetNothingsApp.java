@@ -24,11 +24,6 @@ import io.github.emaccaull.sweetnothings.glue.Configuration;
 public class TestSweetNothingsApp extends SweetNothingsApp {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
     protected Configuration createConfiguration() {
         return new TestConfiguration();
     }

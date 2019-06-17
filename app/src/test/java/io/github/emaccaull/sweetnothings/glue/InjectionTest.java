@@ -42,7 +42,7 @@ public class InjectionTest {
     @Mock
     private MessageDataSource messageDataSource;
 
-    private SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
+    private final SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
 
     @Test
     public void getInstance() {

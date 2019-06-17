@@ -44,7 +44,7 @@ public class GeneratorViewModelFactoryTest {
     @Mock
     private MarkUsed markUsed;
 
-    private SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
+    private final SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
 
     @Test
     public void create() {

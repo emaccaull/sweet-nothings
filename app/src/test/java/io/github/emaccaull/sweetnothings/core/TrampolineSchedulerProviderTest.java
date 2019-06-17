@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.is;
 
 public class TrampolineSchedulerProviderTest {
 
-    private SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
+    private final SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
 
     @Test
     public void diskIO() {
