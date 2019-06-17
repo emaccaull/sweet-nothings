@@ -19,28 +19,32 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import io.github.emaccaull.sweetnothings.glue.Injection;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Creates instances of ViewModels in this package.
  */
 class GeneratorViewModelFactory implements ViewModelProvider.Factory {
 
-    private GetRandomSweetNothing getRandomSweetNothing;
-    private MarkUsed markUsed;
+    private final SchedulerProvider schedulerProvider;
+    private final GetRandomSweetNothing getRandomSweetNothing;
+    private final MarkUsed markUsed;
 
     GeneratorViewModelFactory() {
-        this(Injection.provideGetRandomSweetNothing(), Injection.provideMarkUsed());
+        this(Injection.provideSchedulerProvider(),
+             Injection.provideGetRandomSweetNothing(),
+             Injection.provideMarkUsed());
     }
 
     GeneratorViewModelFactory(
+            SchedulerProvider schedulerProvider,
             GetRandomSweetNothing getRandomSweetNothing,
             MarkUsed markUsed) {
-        this.getRandomSweetNothing = checkNotNull(getRandomSweetNothing);
+        this.schedulerProvider = schedulerProvider;
+        this.getRandomSweetNothing = getRandomSweetNothing;
         this.markUsed = markUsed;
     }
 
@@ -49,7 +53,7 @@ class GeneratorViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (GeneratorViewModel.class.isAssignableFrom(modelClass)) {
-            return (T) new GeneratorViewModel(getRandomSweetNothing, markUsed);
+            return (T) new GeneratorViewModel(schedulerProvider, getRandomSweetNothing, markUsed);
         }
         throw new IllegalArgumentException("Cannot instantiate " + modelClass);
     }

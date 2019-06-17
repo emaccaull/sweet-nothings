@@ -18,6 +18,8 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.ViewModel;
+import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
+import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import org.junit.Rule;
@@ -42,10 +44,12 @@ public class GeneratorViewModelFactoryTest {
     @Mock
     private MarkUsed markUsed;
 
+    private SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
+
     @Test
     public void create() {
         GeneratorViewModelFactory factory =
-                new GeneratorViewModelFactory(getRandomSweetNothing, markUsed);
+                new GeneratorViewModelFactory(schedulerProvider, getRandomSweetNothing, markUsed);
 
         GeneratorViewModel viewModel = factory.create(GeneratorViewModel.class);
         assertThat(viewModel, is(notNullValue()));
@@ -54,7 +58,7 @@ public class GeneratorViewModelFactoryTest {
     @Test(expected = IllegalArgumentException.class)
     public void create_whenInvalidModelClass() {
         GeneratorViewModelFactory factory =
-                new GeneratorViewModelFactory(getRandomSweetNothing, markUsed);
+                new GeneratorViewModelFactory(schedulerProvider, getRandomSweetNothing, markUsed);
 
         factory.create(ViewModel.class);
     }

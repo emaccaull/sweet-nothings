@@ -18,6 +18,7 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import io.github.emaccaull.sweetnothings.ui.framework.RxViewModel;
@@ -33,11 +34,14 @@ final class GeneratorViewModel extends RxViewModel {
 
     private final MutableLiveData<ViewState> viewState = new MutableLiveData<>();
 
+    private final SchedulerProvider schedulerProvider;
     private final GetRandomSweetNothing getRandomSweetNothing;
     private final MarkUsed markUsed;
 
     @SuppressWarnings("WeakerAccess")
-    public GeneratorViewModel(GetRandomSweetNothing getRandomSweetNothing, MarkUsed markUsed) {
+    public GeneratorViewModel(SchedulerProvider schedulerProvider,
+            GetRandomSweetNothing getRandomSweetNothing, MarkUsed markUsed) {
+        this.schedulerProvider = schedulerProvider;
         this.getRandomSweetNothing = getRandomSweetNothing;
         this.markUsed = markUsed;
         resetViewState();

@@ -19,6 +19,10 @@ package io.github.emaccaull.sweetnothings.glue;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 
+import javax.inject.Provider;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Lazily gets instances from a delegate configuration and reuses them.
  */
@@ -28,8 +32,8 @@ class InstanceCachingConfiguration implements Configuration {
     private final Lazy<MessageDataSource> lazyMessageDataSource;
 
     InstanceCachingConfiguration(Configuration delegate) {
-        this.lazySchedulerProvider = new Lazy<>(delegate::schedulerProvider);
-        this.lazyMessageDataSource = new Lazy<>(delegate::messageDataSource);
+        this.lazySchedulerProvider = new Lazy<>(notNull(delegate::schedulerProvider));
+        this.lazyMessageDataSource = new Lazy<>(notNull(delegate::messageDataSource));
     }
 
     @Override
@@ -40,5 +44,9 @@ class InstanceCachingConfiguration implements Configuration {
     @Override
     public MessageDataSource messageDataSource() {
         return lazyMessageDataSource.get();
+    }
+
+    private static <T> Provider<T> notNull(Provider<T> provider) {
+        return () -> checkNotNull(provider.get(), "provider returned null value");
     }
 }
