@@ -60,14 +60,14 @@ public abstract class AbstractMessageDataSource implements MessageDataSource {
             }
 
             Set<String> existing = getExistingMessages();
-            List<Single<SweetNothing>> inserts = new ArrayList<>();
+            List<Single<SweetNothing>> creates = new ArrayList<>();
             for (String message : messages) {
                 if (!existing.contains(message)) {
-                    inserts.add(create(message));
+                    creates.add(create(message));
                 }
             }
 
-            return Single.concat(inserts).toList();
+            return Single.concat(creates).toList();
         });
     }
 
