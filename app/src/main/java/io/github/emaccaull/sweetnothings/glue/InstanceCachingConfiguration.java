@@ -27,7 +27,7 @@ class InstanceCachingConfiguration implements Configuration {
     private final Lazy<SchedulerProvider> lazySchedulerProvider;
     private final Lazy<MessageDataSource> lazyMessageDataSource;
 
-    public InstanceCachingConfiguration(Configuration delegate) {
+    InstanceCachingConfiguration(Configuration delegate) {
         this.lazySchedulerProvider = new Lazy<>(delegate::schedulerProvider);
         this.lazyMessageDataSource = new Lazy<>(delegate::messageDataSource);
     }

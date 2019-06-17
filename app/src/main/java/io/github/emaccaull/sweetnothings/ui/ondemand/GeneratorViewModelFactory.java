@@ -21,7 +21,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
-import io.github.emaccaull.sweetnothings.glue.Glue;
+import io.github.emaccaull.sweetnothings.glue.Injection;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -34,7 +34,7 @@ class GeneratorViewModelFactory implements ViewModelProvider.Factory {
     private MarkUsed markUsed;
 
     GeneratorViewModelFactory() {
-        this(Glue.provideGetRandomSweetNothing(), Glue.provideMarkUsed());
+        this(Injection.provideGetRandomSweetNothing(), Injection.provideMarkUsed());
     }
 
     GeneratorViewModelFactory(

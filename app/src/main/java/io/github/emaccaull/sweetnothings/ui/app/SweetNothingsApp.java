@@ -17,8 +17,8 @@
 package io.github.emaccaull.sweetnothings.ui.app;
 
 import androidx.multidex.MultiDexApplication;
-import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
-import io.github.emaccaull.sweetnothings.glue.Glue;
+import io.github.emaccaull.sweetnothings.glue.Configuration;
+import io.github.emaccaull.sweetnothings.glue.Injection;
 
 /**
  * Sweet Nothings application class.
@@ -30,15 +30,15 @@ public class SweetNothingsApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        configureDataAccess();
+        configureDependencies();
     }
 
-    protected void configureDataAccess() {
-        Glue.setDataAccessComponent(createDataAccessComponent());
+    protected void configureDependencies() {
+        Configuration config = createConfiguration();
+        Injection.getInstance().setConfiguration(config);
     }
 
-    /** Determines where to get and persist data. */
-    protected DataAccessComponent createDataAccessComponent() {
-        return new ProdDataAccessComponent(this);
+    protected Configuration createConfiguration() {
+        return new ProdConfiguration(this);
     }
 }
