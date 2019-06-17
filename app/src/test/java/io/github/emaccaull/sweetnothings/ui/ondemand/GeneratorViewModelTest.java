@@ -18,7 +18,9 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Observer;
+import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
+import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import io.reactivex.Completable;
@@ -54,11 +56,13 @@ public class GeneratorViewModelTest {
     @Mock
     private Observer<ViewState> observer;
 
+    private SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
+
     private GeneratorViewModel viewModel;
 
     @Before
     public void setUp() {
-        viewModel = new GeneratorViewModel(getRandomSweetNothing, markUsed);
+        viewModel = new GeneratorViewModel(schedulerProvider, getRandomSweetNothing, markUsed);
         viewModel.getViewState().observeForever(observer);
     }
 
