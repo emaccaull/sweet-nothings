@@ -19,7 +19,6 @@ package io.github.emaccaull.sweetnothings.core.data;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Single;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,14 +50,14 @@ public class AbstractMessageDataSourceTest {
     }
 
     @Test
-    public void insert() {
+    public void create() {
         when(ids.nextUuid()).thenReturn("uuid1");
 
         // Given that we have a new message to insert
         String message = "Some sweet text";
 
         // When adding it to storage
-        SweetNothing sweetNothing = dataSource.insert(message).blockingGet();
+        SweetNothing sweetNothing = dataSource.create(message).blockingGet();
 
         // Then a sweet nothing with the text should be returned
         assertThat(sweetNothing.getId(), is("uuid1"));
@@ -69,17 +68,17 @@ public class AbstractMessageDataSourceTest {
     }
 
     @Test
-    public void insertIfNotPresent() {
+    public void createIfNotPresent() {
         when(ids.nextUuid()).thenReturn("idXYZ");
 
         // Given that there is a sweet nothing in the database
         String existing = "A message";
-        SweetNothing sweetNothing = dataSource.insert(existing).blockingGet();
+        SweetNothing sweetNothing = dataSource.create(existing).blockingGet();
         assertThat(sweetNothing, is(notNullValue()));
 
         // When adding new items and one is a duplicate
         List<SweetNothing> sweetNothings =
-                dataSource.insertIfNotPresent("Something", existing, "hello!").blockingGet();
+                dataSource.createIfNotPresent("Something", existing, "hello!").blockingGet();
 
         // Then 2 of the three should have been add
         assertThat(sweetNothings, hasSize(2));
@@ -115,13 +114,8 @@ public class AbstractMessageDataSourceTest {
         }
 
         @Override
-        protected void insertImmediate(SweetNothing sweetNothing) {
+        protected void addBlocking(SweetNothing sweetNothing) {
             existingMessages.add(sweetNothing.getMessage());
-        }
-
-        @Override
-        public Single<Integer> size() {
-            return null;
         }
     }
 }

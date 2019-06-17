@@ -47,11 +47,11 @@ public class InMemoryMessageDataSourceTest {
     public void fetchRandomMessage() {
         // Given that there is one SweetNothing available
         SweetNothing message = SweetNothing.builder("abc").message("hello").build();
-        dataSource.insertImmediate(message);
+        dataSource.addBlocking(message);
 
         // When retrieving a random sweet nothing
         dataSource.fetchRandomMessage(MessageFilter.selectAll())
-                // Then the inserted sweet nothing should be delivered
+                // Then the added sweet nothing should be delivered
                 .test()
                 .assertValue(message);
     }
@@ -72,7 +72,7 @@ public class InMemoryMessageDataSourceTest {
     public void fetchRandomMessage_whenAllItemsUsed() {
         // Given that there are no unused sweet nothings
         SweetNothing message = SweetNothing.builder("abc").message("hello").used(true).build();
-        dataSource.insertImmediate(message);
+        dataSource.addBlocking(message);
 
         // When requesting non-blacklisted items
         dataSource.fetchRandomMessage(MessageFilter.builder().includeUsed(false).build())
@@ -86,7 +86,7 @@ public class InMemoryMessageDataSourceTest {
     public void fetchMessage() {
         // Given that there is a sweet nothing with the given id
         SweetNothing message = SweetNothing.builder("ID").message("foo").build();
-        dataSource.insertImmediate(message);
+        dataSource.addBlocking(message);
 
         // When fetching the message
         dataSource.fetchMessage("ID")
@@ -109,7 +109,7 @@ public class InMemoryMessageDataSourceTest {
     public void markUsed() {
         // Given that there is a sweet nothing with the given id
         SweetNothing message = SweetNothing.builder("1234").message("foo").build();
-        dataSource.insertImmediate(message);
+        dataSource.addBlocking(message);
 
         // When marking the message as used
         dataSource.markUsed("1234").test().assertComplete();
@@ -120,23 +120,10 @@ public class InMemoryMessageDataSourceTest {
     }
 
     @Test
-    public void size() {
-        // When the db is empty, the size should be 0
-        dataSource.size().test().assertValue(0);
-
-        // When there is an item
-        SweetNothing message = SweetNothing.builder("4321").message("oof").build();
-        dataSource.insertImmediate(message);
-
-        // Then the size should be 1
-        dataSource.size().test().assertValue(1);
-    }
-
-    @Test
     public void clear() {
         // Given that there is an item in the dataSource
         SweetNothing message = SweetNothing.builder("756").message("foo").build();
-        dataSource.insertImmediate(message);
+        dataSource.addBlocking(message);
 
         // When clearing it
         dataSource.clear();

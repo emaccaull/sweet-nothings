@@ -22,7 +22,6 @@ import io.github.emaccaull.sweetnothings.core.data.Ids;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Single;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -77,7 +76,7 @@ public class InMemoryMessageDataSource extends AbstractMessageDataSource {
         return fetchMessage(id)
                 .filter(sweetNothing -> !sweetNothing.isUsed())
                 .map(sweetNothing -> SweetNothing.builder(sweetNothing).used(true).build())
-                .doOnSuccess(this::insertImmediate)
+                .doOnSuccess(this::addBlocking)
                 .flatMapCompletable(__ -> Completable.complete());
     }
 
@@ -90,13 +89,9 @@ public class InMemoryMessageDataSource extends AbstractMessageDataSource {
         return messages;
     }
 
-    public void insertImmediate(SweetNothing message) {
-        store.put(message.getId(), message);
-    }
-
     @Override
-    public Single<Integer> size() {
-        return Single.just(store.size());
+    public void addBlocking(SweetNothing message) {
+        store.put(message.getId(), message);
     }
 
     public void clear() {
