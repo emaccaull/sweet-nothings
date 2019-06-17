@@ -22,7 +22,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import io.reactivex.Maybe;
-import io.reactivex.Single;
 
 import java.util.List;
 
@@ -74,9 +73,6 @@ interface MessageDao {
      */
     @Query("SELECT * FROM " + Message.TABLE_NAME)
     List<Message> selectAll();
-
-    @Query("SELECT COUNT(*) FROM " + Message.TABLE_NAME)
-    Single<Integer> size();
 
     /**
      * Updates an existing message.

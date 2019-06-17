@@ -59,22 +59,14 @@ public interface MessageDataSource {
      * @param message the new sweet nothing text to add.
      * @return the newly created {@link SweetNothing}.
      */
-    Single<SweetNothing> insert(String message);
+    Single<SweetNothing> create(String message);
 
     /**
-     * Creates new SweetNothings and inserts them into the database for all {@code messages} that do
-     * not exist in the database.
+     * Creates new SweetNothings and adds them to the data store for all {@code messages} that do
+     * not exist in the store.
      *
      * @param messages list of sweet sayings. If null or empty, this method is a no-op.
      * @return the newly created {@link SweetNothing SweetNothings}.
      */
-    Single<List<SweetNothing>> insertIfNotPresent(String... messages);
-
-    /**
-     * Counts the total number of items currently available, regardless of whether they have been
-     * used or not. Does not operate on any particular scheduler.
-     *
-     * @return the number of items currently available.
-     */
-    Single<Integer> size();
+    Single<List<SweetNothing>> createIfNotPresent(String... messages);
 }

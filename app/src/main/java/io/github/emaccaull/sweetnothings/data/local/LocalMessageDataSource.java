@@ -24,7 +24,6 @@ import io.github.emaccaull.sweetnothings.core.data.Ids;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Single;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,16 +89,10 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
     }
 
     @Override
-    protected void insertImmediate(SweetNothing sweetNothing) {
+    protected void addBlocking(SweetNothing sweetNothing) {
         logger.debug("Inserting {}", sweetNothing);
         Message message = Message.fromSweetNothing(sweetNothing);
         MessageDao dao = MessagesDatabase.getInstance(context).message();
         dao.insert(message);
-    }
-
-    @Override
-    public Single<Integer> size() {
-        MessageDao dao = MessagesDatabase.getInstance(context).message();
-        return dao.size();
     }
 }

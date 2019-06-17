@@ -36,24 +36,24 @@ public abstract class AbstractMessageDataSource implements MessageDataSource {
     }
 
     @Override
-    public Single<SweetNothing> insert(String message) {
+    public Single<SweetNothing> create(String message) {
         return Single.fromCallable(() -> {
             SweetNothing sweetNothing = SweetNothing.builder(ids.nextUuid())
                     .message(message)
                     .build();
-            insertImmediate(sweetNothing);
+            addBlocking(sweetNothing);
             return sweetNothing;
         });
     }
 
     /**
-     * Inserts the sweet nothing into the data store immediately. If a sweet nothing with the same
+     * Blocks while adding the sweet nothing into the data store. If a sweet nothing with the same
      * id already exists, this {@code sweetNothing} overwrites the existing one.
      */
-    protected abstract void insertImmediate(SweetNothing sweetNothing);
+    protected abstract void addBlocking(SweetNothing sweetNothing);
 
     @Override
-    public Single<List<SweetNothing>> insertIfNotPresent(String... messages) {
+    public Single<List<SweetNothing>> createIfNotPresent(String... messages) {
         return Single.defer(() -> {
             if (messages == null || messages.length == 0) {
                 return Single.just(Collections.emptyList());
@@ -63,7 +63,7 @@ public abstract class AbstractMessageDataSource implements MessageDataSource {
             List<Single<SweetNothing>> inserts = new ArrayList<>();
             for (String message : messages) {
                 if (!existing.contains(message)) {
-                    inserts.add(insert(message));
+                    inserts.add(create(message));
                 }
             }
 

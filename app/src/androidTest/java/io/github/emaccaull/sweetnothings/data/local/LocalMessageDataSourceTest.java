@@ -34,7 +34,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 public class LocalMessageDataSourceTest {
@@ -58,8 +57,8 @@ public class LocalMessageDataSourceTest {
     @Test
     public void fetchRandom() {
         // Given that a particular sweet nothing exists in the db
-        SweetNothing inserted = SweetNothing.builder("XYQ123").message("hello").build();
-        dataSource.insertImmediate(inserted);
+        SweetNothing added = SweetNothing.builder("XYQ123").message("hello").build();
+        dataSource.addBlocking(added);
 
         // When selecting a random sweet nothing
         MessageFilter filter = MessageFilter.selectAll();
@@ -74,8 +73,8 @@ public class LocalMessageDataSourceTest {
     @Test
     public void fetchRandom_whenAllItemsUsed() {
         // Given that a used sweet nothing exists in the db
-        SweetNothing inserted = SweetNothing.builder("XYQ123").message("hello").used(true).build();
-        dataSource.insertImmediate(inserted);
+        SweetNothing added = SweetNothing.builder("XYQ123").message("hello").used(true).build();
+        dataSource.addBlocking(added);
 
         // When selecting a random but excluding used
         MessageFilter filter = MessageFilter.builder().includeUsed(false).build();
@@ -88,21 +87,21 @@ public class LocalMessageDataSourceTest {
     @Test
     public void fetchMessage() {
         // Given that a particular sweet nothing exists in the db
-        SweetNothing inserted = SweetNothing.builder("1234").message("foo").build();
-        dataSource.insertImmediate(inserted);
+        SweetNothing added = SweetNothing.builder("1234").message("foo").build();
+        dataSource.addBlocking(added);
 
         // When fetching that item
         SweetNothing retrieved = dataSource.fetchMessage("1234").blockingGet();
 
-        // Then it should be the message that was inserted
-        assertThat(retrieved, is(inserted));
+        // Then it should be the message that was added
+        assertThat(retrieved, is(added));
     }
 
     @Test
     public void markUsed() {
         // Given that a sweet nothing exists in the db
-        SweetNothing inserted = SweetNothing.builder("ABC123").message("<3").build();
-        dataSource.insertImmediate(inserted);
+        SweetNothing added = SweetNothing.builder("ABC123").message("<3").build();
+        dataSource.addBlocking(added);
 
         // When marking that item as used
         dataSource.markUsed("ABC123").subscribe();
@@ -111,19 +110,5 @@ public class LocalMessageDataSourceTest {
         SweetNothing retrieved = dataSource.fetchMessage("ABC123").blockingGet();
         assertThat(retrieved, is(notNullValue()));
         assertThat(retrieved.isUsed(), is(true));
-    }
-
-    @Test
-    public void size() {
-        when(ids.nextUuid()).thenReturn("ID");
-
-        // Size should be zero when the db is empty.
-        dataSource.size().test().assertValue(0);
-
-        // Given that a sweet nothing exists in the db
-        dataSource.insert("<><>").subscribe();
-
-        // When asking for the size
-        dataSource.size().test().assertValue(1);
     }
 }
