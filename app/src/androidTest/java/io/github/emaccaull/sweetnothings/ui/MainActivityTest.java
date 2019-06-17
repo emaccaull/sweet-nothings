@@ -28,7 +28,7 @@ import io.github.emaccaull.sweetnothings.MoreIntentMatchers;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
-import io.github.emaccaull.sweetnothings.glue.Glue;
+import io.github.emaccaull.sweetnothings.glue.Injection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -61,7 +61,7 @@ public class MainActivityTest {
     @Before
     public void setUp() {
         // DataSource is configured by TestSweetNothingsApp
-        inMemoryMessageDataSource = (InMemoryMessageDataSource) Glue.provideMessageDataSource();
+        inMemoryMessageDataSource = (InMemoryMessageDataSource)Injection.provideMessageDataSource();
     }
 
     @After

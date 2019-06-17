@@ -17,6 +17,7 @@
 package io.github.emaccaull.sweetnothings.glue;
 
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
+import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.GetSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
@@ -54,6 +55,11 @@ public final class Injection {
     public static SchedulerProvider provideSchedulerProvider() {
         Configuration config = INSTANCE.getConfiguration();
         return config.schedulerProvider();
+    }
+
+    public static MessageDataSource provideMessageDataSource() {
+        Configuration config = INSTANCE.getConfiguration();
+        return config.messageDataSource();
     }
 
     public void setConfiguration(Configuration config) {

@@ -16,17 +16,30 @@
 
 package io.github.emaccaull.sweetnothings.ui.app;
 
+import android.app.Application;
+import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
-import io.github.emaccaull.sweetnothings.glue.DataAccessComponent;
+import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
+import io.github.emaccaull.sweetnothings.glue.Configuration;
 
 /**
- * Dependencies for instrumentation tests.
+ * Configuration used for production builds.
  */
-class TestDataAccessComponent implements DataAccessComponent {
+class ProdConfiguration implements Configuration {
+
+    private final Application context;
+
+    ProdConfiguration(Application context) {
+        this.context = context;
+    }
+
+    @Override
+    public SchedulerProvider schedulerProvider() {
+        return null;
+    }
 
     @Override
     public MessageDataSource messageDataSource() {
-        return new InMemoryMessageDataSource();
+        return new LocalMessageDataSource(context);
     }
 }
