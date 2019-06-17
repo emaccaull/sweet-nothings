@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class Injection {
 
-    private static volatile Injection INSTANCE = new Injection();
+    private static final Injection INSTANCE = new Injection();
 
     private Configuration config;
 

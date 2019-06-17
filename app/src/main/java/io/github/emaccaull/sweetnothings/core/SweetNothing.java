@@ -92,7 +92,7 @@ public final class SweetNothing {
     }
 
     public static class Builder {
-        private String id;
+        private final String id;
         private String message;
         private boolean blacklisted;
         private boolean used;

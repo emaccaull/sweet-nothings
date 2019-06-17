@@ -23,12 +23,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Lazily creates an instance of T.
  */
-public class Lazy<T> implements Provider<T> {
+final class Lazy<T> implements Provider<T> {
 
     private Provider<T> provider;
     private volatile T instance;
 
-    public Lazy(Provider<T> provider) {
+    Lazy(Provider<T> provider) {
         checkNotNull(provider);
         this.provider = provider;
     }

@@ -56,7 +56,7 @@ public class GeneratorViewModelTest {
     @Mock
     private Observer<ViewState> observer;
 
-    private SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
+    private final SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
 
     private GeneratorViewModel viewModel;
 

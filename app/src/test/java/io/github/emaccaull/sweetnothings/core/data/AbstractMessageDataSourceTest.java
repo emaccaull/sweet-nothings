@@ -88,7 +88,7 @@ public class AbstractMessageDataSourceTest {
     }
 
     static class TestMessageDataSource extends AbstractMessageDataSource {
-        Set<String> existingMessages = new HashSet<>();
+        final Set<String> existingMessages = new HashSet<>();
 
         TestMessageDataSource(Ids ids) {
             super(ids);
