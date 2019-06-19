@@ -17,30 +17,22 @@
 package io.github.emaccaull.sweetnothings.data;
 
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
-import io.github.emaccaull.sweetnothings.core.data.Ids;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
 public class InMemoryMessageDataSourceTest {
-
-    @Mock
-    private Ids ids;
 
     private InMemoryMessageDataSource dataSource;
 
     @Before
     public void setUp() {
-        dataSource = new InMemoryMessageDataSource(ids);
+        dataSource = new InMemoryMessageDataSource();
     }
 
     @Test
