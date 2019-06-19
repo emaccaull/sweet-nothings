@@ -114,7 +114,7 @@ public class AbstractMessageDataSourceTest {
         }
 
         @Override
-        protected void addBlocking(SweetNothing sweetNothing) {
+        protected void add(SweetNothing sweetNothing) {
             existingMessages.add(sweetNothing.getMessage());
         }
     }

@@ -88,7 +88,7 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
     }
 
     @Override
-    protected void addBlocking(SweetNothing sweetNothing) {
+    protected void add(SweetNothing sweetNothing) {
         logger.debug("Inserting {}", sweetNothing);
         Message message = Message.fromSweetNothing(sweetNothing);
         getMessageDao().insert(message);

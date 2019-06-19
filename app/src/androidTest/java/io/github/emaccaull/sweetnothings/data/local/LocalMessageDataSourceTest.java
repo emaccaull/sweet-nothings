@@ -47,7 +47,7 @@ public class LocalMessageDataSourceTest {
     public void fetchRandom() {
         // Given that a particular sweet nothing exists in the db
         SweetNothing added = SweetNothing.builder("XYQ123").message("hello").build();
-        dataSource.addBlocking(added);
+        dataSource.add(added);
 
         // When selecting a random sweet nothing
         MessageFilter filter = MessageFilter.selectAll();
@@ -63,7 +63,7 @@ public class LocalMessageDataSourceTest {
     public void fetchRandom_whenAllItemsUsed() {
         // Given that a used sweet nothing exists in the db
         SweetNothing added = SweetNothing.builder("XYQ123").message("hello").used(true).build();
-        dataSource.addBlocking(added);
+        dataSource.add(added);
 
         // When selecting a random but excluding used
         MessageFilter filter = MessageFilter.builder().includeUsed(false).build();
@@ -77,7 +77,7 @@ public class LocalMessageDataSourceTest {
     public void fetchMessage() {
         // Given that a particular sweet nothing exists in the db
         SweetNothing added = SweetNothing.builder("1234").message("foo").build();
-        dataSource.addBlocking(added);
+        dataSource.add(added);
 
         // When fetching that item
         SweetNothing retrieved = dataSource.fetchMessage("1234").blockingGet();
@@ -90,7 +90,7 @@ public class LocalMessageDataSourceTest {
     public void markUsed() {
         // Given that a sweet nothing exists in the db
         SweetNothing added = SweetNothing.builder("ABC123").message("<3").build();
-        dataSource.addBlocking(added);
+        dataSource.add(added);
 
         // When marking that item as used
         dataSource.markUsed("ABC123").subscribe();
