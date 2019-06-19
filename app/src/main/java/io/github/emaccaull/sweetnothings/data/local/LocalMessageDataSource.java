@@ -39,14 +39,8 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
 
     private final Context context;
 
-    @VisibleForTesting
-    LocalMessageDataSource(Context context, Ids ids) {
-        super(ids);
-        this.context = context.getApplicationContext();
-    }
-
     public LocalMessageDataSource(Context context) {
-        this(context, Ids.getInstance());
+        this.context = context.getApplicationContext();
     }
 
     @Override

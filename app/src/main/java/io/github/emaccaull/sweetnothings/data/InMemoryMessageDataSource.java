@@ -18,7 +18,6 @@ package io.github.emaccaull.sweetnothings.data;
 
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.AbstractMessageDataSource;
-import io.github.emaccaull.sweetnothings.core.data.Ids;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
@@ -34,14 +33,6 @@ import java.util.concurrent.ConcurrentMap;
 public class InMemoryMessageDataSource extends AbstractMessageDataSource {
 
     private final ConcurrentMap<String, SweetNothing> store = new ConcurrentHashMap<>();
-
-    InMemoryMessageDataSource(Ids ids) {
-        super(ids);
-    }
-
-    public InMemoryMessageDataSource() {
-        this(Ids.getInstance());
-    }
 
     @Override
     public Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter) {

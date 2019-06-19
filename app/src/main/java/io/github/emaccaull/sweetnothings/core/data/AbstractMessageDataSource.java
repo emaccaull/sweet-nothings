@@ -31,8 +31,12 @@ public abstract class AbstractMessageDataSource implements MessageDataSource {
 
     private final Ids ids;
 
-    protected AbstractMessageDataSource(Ids ids) {
+    AbstractMessageDataSource(Ids ids) {
         this.ids = ids;
+    }
+
+    protected AbstractMessageDataSource() {
+        this(Ids.getInstance());
     }
 
     @Override
