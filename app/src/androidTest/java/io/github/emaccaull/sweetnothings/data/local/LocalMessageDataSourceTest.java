@@ -40,7 +40,7 @@ public class LocalMessageDataSourceTest {
         Context context = ApplicationProvider.getApplicationContext();
         MessagesDatabase.switchToInMemory(context);
 
-        dataSource = new LocalMessageDataSource(context);
+        dataSource = new LocalMessageDataSource(MessagesDatabase.getInstance(context));
     }
 
     @Test
