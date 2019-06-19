@@ -17,10 +17,8 @@
 package io.github.emaccaull.sweetnothings.data.local;
 
 import android.content.Context;
-import androidx.annotation.VisibleForTesting;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.AbstractMessageDataSource;
-import io.github.emaccaull.sweetnothings.core.data.Ids;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
@@ -37,15 +35,23 @@ import java.util.Set;
 public class LocalMessageDataSource extends AbstractMessageDataSource {
     private static final Logger logger = LoggerFactory.getLogger(LocalMessageDataSource.class);
 
-    private final Context context;
+    private final MessagesDatabase messagesDatabase;
+
+    private LocalMessageDataSource(MessagesDatabase messagesDatabase) {
+        this.messagesDatabase = messagesDatabase;
+    }
 
     public LocalMessageDataSource(Context context) {
-        this.context = context.getApplicationContext();
+        this(MessagesDatabase.getInstance(context));
+    }
+
+    private MessageDao getMessageDao() {
+        return messagesDatabase.message();
     }
 
     @Override
     public Maybe<SweetNothing> fetchRandomMessage(MessageFilter filter) {
-        MessageDao dao = MessagesDatabase.getInstance(context).message();
+        MessageDao dao = getMessageDao();
         Maybe<Message> selection = filter.includeUsed()
                 ? dao.selectRandom()
                 : dao.selectRandomUnused();
@@ -54,13 +60,13 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
 
     @Override
     public Maybe<SweetNothing> fetchMessage(String id) {
-        MessageDao dao = MessagesDatabase.getInstance(context).message();
+        MessageDao dao = getMessageDao();
         return dao.selectById(id).map(Message::toSweetNothing);
     }
 
     @Override
     public Completable markUsed(String id) {
-        MessageDao dao = MessagesDatabase.getInstance(context).message();
+        MessageDao dao = getMessageDao();
         return dao.selectById(id)
                 .flatMapCompletable(message -> Completable.fromAction(() -> {
                     message.used = true;
@@ -72,8 +78,7 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
 
     @Override
     protected Set<String> getExistingMessages() {
-        MessageDao dao = MessagesDatabase.getInstance(context).message();
-
+        MessageDao dao = getMessageDao();
         Set<String> texts = new HashSet<>();
         List<Message> messages = dao.selectAll();
         for (Message message : messages) {
@@ -86,7 +91,6 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
     protected void addBlocking(SweetNothing sweetNothing) {
         logger.debug("Inserting {}", sweetNothing);
         Message message = Message.fromSweetNothing(sweetNothing);
-        MessageDao dao = MessagesDatabase.getInstance(context).message();
-        dao.insert(message);
+        getMessageDao().insert(message);
     }
 }
