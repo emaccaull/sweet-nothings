@@ -67,7 +67,7 @@ public class InMemoryMessageDataSource extends AbstractMessageDataSource {
         return fetchMessage(id)
                 .filter(sweetNothing -> !sweetNothing.isUsed())
                 .map(sweetNothing -> SweetNothing.builder(sweetNothing).used(true).build())
-                .doOnSuccess(this::addBlocking)
+                .doOnSuccess(this::add)
                 .flatMapCompletable(__ -> Completable.complete());
     }
 
@@ -81,7 +81,7 @@ public class InMemoryMessageDataSource extends AbstractMessageDataSource {
     }
 
     @Override
-    public void addBlocking(SweetNothing message) {
+    public void add(SweetNothing message) {
         store.put(message.getId(), message);
     }
 

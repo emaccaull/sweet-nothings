@@ -82,7 +82,7 @@ public class MainActivityTest {
 
         // Given that there is a sweet nothing available
         SweetNothing message = SweetNothing.builder("xyz").message("<3 u").used(false).build();
-        inMemoryMessageDataSource.addBlocking(message);
+        inMemoryMessageDataSource.add(message);
 
         // When the generate button is clicked
         onView(withId(R.id.generate_phrase_btn)).perform(click());
@@ -109,7 +109,7 @@ public class MainActivityTest {
     public void selectingGenerate_thenCancel_dismissesDialog() {
         // Given that there is a sweet nothing available
         SweetNothing message = SweetNothing.builder("xyz").message("<3 u").used(false).build();
-        inMemoryMessageDataSource.addBlocking(message);
+        inMemoryMessageDataSource.add(message);
 
         // And the generate button is clicked
         onView(withId(R.id.generate_phrase_btn)).perform(click());
@@ -131,7 +131,7 @@ public class MainActivityTest {
     public void selectingGenerate_whenNoMessagesAvailable_notifiesUser() {
         // Given that no sweet nothings are available (only used one present)
         SweetNothing message = SweetNothing.builder("abc").message("<3 u").used(true).build();
-        inMemoryMessageDataSource.addBlocking(message);
+        inMemoryMessageDataSource.add(message);
 
         // When the generate button is clicked
         onView(withId(R.id.generate_phrase_btn)).perform(click());

@@ -45,16 +45,16 @@ public abstract class AbstractMessageDataSource implements MessageDataSource {
             SweetNothing sweetNothing = SweetNothing.builder(ids.nextUuid())
                     .message(message)
                     .build();
-            addBlocking(sweetNothing);
+            add(sweetNothing);
             return sweetNothing;
         });
     }
 
     /**
-     * Blocks while adding the sweet nothing into the data store. If a sweet nothing with the same
-     * id already exists, this {@code sweetNothing} overwrites the existing one.
+     * Immediately adds the sweet nothing into the data store. If a sweet nothing with the same id
+     * already exists, this {@code sweetNothing} overwrites the existing one.
      */
-    protected abstract void addBlocking(SweetNothing sweetNothing);
+    protected abstract void add(SweetNothing sweetNothing);
 
     @Override
     public Single<List<SweetNothing>> createIfNotPresent(String... messages) {
