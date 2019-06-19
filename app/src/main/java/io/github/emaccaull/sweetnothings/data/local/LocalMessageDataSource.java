@@ -37,7 +37,7 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
 
     private final MessagesDatabase messagesDatabase;
 
-    private LocalMessageDataSource(MessagesDatabase messagesDatabase) {
+    LocalMessageDataSource(MessagesDatabase messagesDatabase) {
         this.messagesDatabase = messagesDatabase;
     }
 
