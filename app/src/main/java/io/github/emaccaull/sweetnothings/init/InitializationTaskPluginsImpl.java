@@ -30,7 +30,6 @@ public class InitializationTaskPluginsImpl implements InitializationTaskPlugins 
 
     @Override
     public void load() {
-        // Task implementations will not actually be here.
         tasks.add(app -> logger.debug("Started running initialization tasks"));
         tasks.add(app -> logger.debug("Finished running initialization tasks"));
     }

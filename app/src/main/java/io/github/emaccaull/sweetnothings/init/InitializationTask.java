@@ -19,8 +19,9 @@ package io.github.emaccaull.sweetnothings.init;
 import android.app.Application;
 
 /**
- * Plugin point which allows arbitrary tasks to run after app launch. Each initialization task is
- * run exactly one time each time the application process is created.
+ * Plugin point which allows arbitrary tasks to run after app launch, before any Activity is
+ * created. Each initialization task is run exactly one time each time the application process is
+ * created.
  *
  * Tasks must be short lived since they are executed on the main thread. If a task needs to perform
  * a long running action, it should do so on a background thread. If the task is expected to run for
@@ -28,6 +29,6 @@ import android.app.Application;
  */
 public interface InitializationTask {
 
-    /** Executes this initialization task for the given app context. */
+    /** Executes this initialization task for the given app context on the UI thread. */
     void run(Application app);
 }

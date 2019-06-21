@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.util;
+package io.github.emaccaull.sweetnothings.app;
 
 import android.os.AsyncTask;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Scheduler provider used by the app in production.
  */
-public class AppSchedulerProvider implements SchedulerProvider {
+class AppSchedulerProvider implements SchedulerProvider {
 
     // Use the AsyncTask thread pool since it has a reasonable config for a mobile device.
     private final Scheduler diskIOScheduler = Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR);
