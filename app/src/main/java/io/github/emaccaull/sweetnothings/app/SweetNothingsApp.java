@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.app;
+package io.github.emaccaull.sweetnothings.app;
 
 import androidx.multidex.MultiDexApplication;
 import io.github.emaccaull.sweetnothings.glue.Configuration;

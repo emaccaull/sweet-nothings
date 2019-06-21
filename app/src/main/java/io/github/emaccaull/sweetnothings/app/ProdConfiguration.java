@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.app;
+package io.github.emaccaull.sweetnothings.app;
 
 import android.app.Application;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
