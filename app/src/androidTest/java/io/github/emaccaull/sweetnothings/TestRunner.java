@@ -19,7 +19,7 @@ package io.github.emaccaull.sweetnothings;
 import android.app.Application;
 import android.content.Context;
 import androidx.test.runner.AndroidJUnitRunner;
-import io.github.emaccaull.sweetnothings.ui.app.TestSweetNothingsApp;
+import io.github.emaccaull.sweetnothings.app.TestSweetNothingsApp;
 
 /**
  * Custom configuration for Android instrumentation tests.
