@@ -31,8 +31,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        logger.debug("app running");
         setContentView(R.layout.main_activity);
+
+        if (savedInstanceState == null) {
+            logger.debug("app running");
+        }
 
         showGeneratorFragment();
     }

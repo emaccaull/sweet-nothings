@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.init;
-
-import java.util.List;
+package io.github.emaccaull.sweetnothings.data.init;
 
 /**
- * Provides {@link InitializationTask InitializationTasks} to the application.
+ * Provides stock sweet nothing messages.
  */
-public interface InitializationTaskPlugins {
+public interface StockMessageProvider {
 
-    /** Initializes plugins. */
-    void load();
-
-    /** @return a list of initialization tasks to run before any Activity is created. */
-    List<InitializationTask> getTasks();
+    String[] getMessages();
 }

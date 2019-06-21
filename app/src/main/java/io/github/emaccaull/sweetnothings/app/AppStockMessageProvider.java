@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.init;
+package io.github.emaccaull.sweetnothings.app;
 
-import java.util.List;
+import android.content.Context;
+import io.github.emaccaull.sweetnothings.R;
+import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 
 /**
- * Provides {@link InitializationTask InitializationTasks} to the application.
+ * Production stock message provider.
  */
-public interface InitializationTaskPlugins {
+class AppStockMessageProvider implements StockMessageProvider {
 
-    /** Initializes plugins. */
-    void load();
+    private final Context context;
 
-    /** @return a list of initialization tasks to run before any Activity is created. */
-    List<InitializationTask> getTasks();
+    AppStockMessageProvider(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public String[] getMessages() {
+        return context.getResources().getStringArray(R.array.canned_messages);
+    }
 }

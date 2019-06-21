@@ -23,7 +23,6 @@ import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
 import io.github.emaccaull.sweetnothings.init.InitializationTaskPluginsImpl;
-import io.github.emaccaull.sweetnothings.ui.util.AppSchedulerProvider;
 
 /**
  * Configuration used for production builds.
