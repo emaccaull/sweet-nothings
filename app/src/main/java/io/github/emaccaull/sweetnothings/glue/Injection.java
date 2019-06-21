@@ -21,6 +21,7 @@ import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.GetSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
+import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -57,6 +58,11 @@ public final class Injection {
     public static MessageDataSource provideMessageDataSource() {
         Configuration config = INSTANCE.getConfiguration();
         return config.messageDataSource();
+    }
+
+    public static InitializationTaskPlugins provideInitializationTaskPlugins() {
+        Configuration config = INSTANCE.getConfiguration();
+        return config.initializationTaskPlugins();
     }
 
     public void setConfiguration(Configuration config) {
