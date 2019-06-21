@@ -21,6 +21,8 @@ import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
+import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
+import io.github.emaccaull.sweetnothings.init.InitializationTaskPluginsImpl;
 import io.github.emaccaull.sweetnothings.ui.util.AppSchedulerProvider;
 
 /**
@@ -42,5 +44,10 @@ class ProdConfiguration implements Configuration {
     @Override
     public MessageDataSource messageDataSource() {
         return new LocalMessageDataSource(context);
+    }
+
+    @Override
+    public InitializationTaskPlugins initializationTaskPlugins() {
+        return new InitializationTaskPluginsImpl();
     }
 }

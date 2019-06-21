@@ -21,6 +21,8 @@ import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
+import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
+import io.github.emaccaull.sweetnothings.init.InitializationTaskPluginsImpl;
 
 /**
  * Dependencies for instrumentation tests.
@@ -36,5 +38,10 @@ public class TestConfiguration implements Configuration {
     @Override
     public MessageDataSource messageDataSource() {
         return new InMemoryMessageDataSource();
+    }
+
+    @Override
+    public InitializationTaskPlugins initializationTaskPlugins() {
+        return new InitializationTaskPluginsImpl();
     }
 }

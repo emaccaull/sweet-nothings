@@ -19,6 +19,8 @@ package io.github.emaccaull.sweetnothings.app;
 import androidx.multidex.MultiDexApplication;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.glue.Injection;
+import io.github.emaccaull.sweetnothings.init.InitializationTask;
+import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
 
 /**
  * Sweet Nothings application class.
@@ -31,6 +33,7 @@ public class SweetNothingsApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         configureDependencies();
+        init();
     }
 
     protected void configureDependencies() {
@@ -40,5 +43,15 @@ public class SweetNothingsApp extends MultiDexApplication {
 
     protected Configuration createConfiguration() {
         return new ProdConfiguration(this);
+    }
+
+    private void init()  {
+        InitializationTaskPlugins plugins = Injection.provideInitializationTaskPlugins();
+
+        plugins.load();
+
+        for (InitializationTask task : plugins.getTasks()) {
+            task.run(this);
+        }
     }
 }
