@@ -16,6 +16,8 @@
 
 package io.github.emaccaull.sweetnothings.glue;
 
+import io.reactivex.annotations.NonNull;
+
 import javax.inject.Provider;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -33,6 +35,7 @@ final class Lazy<T> implements Provider<T> {
         this.provider = provider;
     }
 
+    @NonNull
     @Override
     public T get() {
         if (instance != null) {
@@ -40,7 +43,7 @@ final class Lazy<T> implements Provider<T> {
         }
         synchronized (this) {
             if (instance == null) {
-                instance = provider.get();
+                instance = checkNotNull(provider.get(), "null value from " + provider);
                 provider = null; // help gc.
             }
         }
