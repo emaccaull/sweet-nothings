@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.app;
+package io.github.emaccaull.sweetnothings.testsupport;
 
+import androidx.annotation.RestrictTo;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
+import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
 import io.github.emaccaull.sweetnothings.init.InitializationTaskPluginsImpl;
@@ -27,6 +29,7 @@ import io.github.emaccaull.sweetnothings.init.InitializationTaskPluginsImpl;
 /**
  * Dependencies for instrumentation tests.
  */
+@RestrictTo(RestrictTo.Scope.TESTS)
 public class TestConfiguration implements Configuration {
 
     @Override
@@ -43,5 +46,10 @@ public class TestConfiguration implements Configuration {
     @Override
     public InitializationTaskPlugins initializationTaskPlugins() {
         return new InitializationTaskPluginsImpl();
+    }
+
+    @Override
+    public StockMessageProvider stockMessageProvider() {
+        return new EmptyStockMessageProvider();
     }
 }

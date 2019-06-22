@@ -16,14 +16,31 @@
 
 package io.github.emaccaull.sweetnothings.init;
 
+import io.github.emaccaull.sweetnothings.data.init.DataSourceInitializationTask;
+import io.github.emaccaull.sweetnothings.glue.Injection;
+import io.github.emaccaull.sweetnothings.testsupport.TestConfiguration;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
 
 public class InitializationTaskPluginsImplTest {
 
     private final InitializationTaskPluginsImpl plugins = new InitializationTaskPluginsImpl();
+
+    @Before
+    public void setUp() {
+        Injection.getInstance().setConfiguration(new TestConfiguration());
+    }
+
+    @After
+    public void tearDown() {
+        Injection.reset();
+    }
 
     @Test
     public void load() {
@@ -31,7 +48,7 @@ public class InitializationTaskPluginsImplTest {
         plugins.load();
 
         // Then
-        assertThat(plugins.getTasks(), hasSize(2));
+        assertThat(plugins.getTasks(), hasItem(instanceOf(DataSourceInitializationTask.class)));
     }
 
     @Test

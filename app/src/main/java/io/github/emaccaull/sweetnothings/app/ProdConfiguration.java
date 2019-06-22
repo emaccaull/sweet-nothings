@@ -19,6 +19,7 @@ package io.github.emaccaull.sweetnothings.app;
 import android.app.Application;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
+import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
@@ -48,5 +49,10 @@ class ProdConfiguration implements Configuration {
     @Override
     public InitializationTaskPlugins initializationTaskPlugins() {
         return new InitializationTaskPluginsImpl();
+    }
+
+    @Override
+    public StockMessageProvider stockMessageProvider() {
+        return new AppStockMessageProvider(context);
     }
 }

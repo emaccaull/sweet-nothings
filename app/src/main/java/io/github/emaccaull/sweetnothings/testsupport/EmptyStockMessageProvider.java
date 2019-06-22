@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Emmanuel MacCaull
+ * Copyright (C) 2019 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.app;
+package io.github.emaccaull.sweetnothings.testsupport;
 
-import io.github.emaccaull.sweetnothings.glue.Configuration;
-import io.github.emaccaull.sweetnothings.testsupport.TestConfiguration;
+import androidx.annotation.RestrictTo;
+import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 
 /**
- * Perform common setup for Espresso tests.
+ * Stock message provider for testing that has no data.
  */
-public class TestSweetNothingsApp extends SweetNothingsApp {
+@RestrictTo(RestrictTo.Scope.TESTS)
+public class EmptyStockMessageProvider implements StockMessageProvider {
 
     @Override
-    protected Configuration createConfiguration() {
-        return new TestConfiguration();
+    public String[] getMessages() {
+        return new String[0];
     }
 }

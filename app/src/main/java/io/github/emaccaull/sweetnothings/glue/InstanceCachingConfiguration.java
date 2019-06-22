@@ -18,6 +18,7 @@ package io.github.emaccaull.sweetnothings.glue;
 
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
+import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
 
 import javax.inject.Provider;
@@ -32,11 +33,14 @@ class InstanceCachingConfiguration implements Configuration {
     private final Lazy<SchedulerProvider> lazySchedulerProvider;
     private final Lazy<MessageDataSource> lazyMessageDataSource;
     private final Lazy<InitializationTaskPlugins> lazyInitializationTaskPlugins;
+    private final Lazy<StockMessageProvider> lazyStockMessageProvider;
 
     InstanceCachingConfiguration(Configuration delegate) {
+        // TODO: selectively hold refs based on @Singleton annotation of instance's class.
         lazySchedulerProvider = new Lazy<>(notNull(delegate::schedulerProvider));
         lazyMessageDataSource = new Lazy<>(notNull(delegate::messageDataSource));
         lazyInitializationTaskPlugins = new Lazy<>(notNull(delegate::initializationTaskPlugins));
+        lazyStockMessageProvider = new Lazy<>(notNull(delegate::stockMessageProvider));
     }
 
     @Override
@@ -52,6 +56,11 @@ class InstanceCachingConfiguration implements Configuration {
     @Override
     public InitializationTaskPlugins initializationTaskPlugins() {
         return lazyInitializationTaskPlugins.get();
+    }
+
+    @Override
+    public StockMessageProvider stockMessageProvider() {
+        return lazyStockMessageProvider.get();
     }
 
     private static <T> Provider<T> notNull(Provider<T> provider) {
