@@ -16,11 +16,13 @@
 
 package io.github.emaccaull.sweetnothings.glue;
 
+import androidx.annotation.VisibleForTesting;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.GetSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
+import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -65,12 +67,22 @@ public final class Injection {
         return config.initializationTaskPlugins();
     }
 
+    public static StockMessageProvider provideStockMessageProvider() {
+        Configuration config = INSTANCE.getConfiguration();
+        return config.stockMessageProvider();
+    }
+
     public void setConfiguration(Configuration config) {
         this.config = new InstanceCachingConfiguration(config);
     }
 
     Configuration getConfiguration() {
         return checkNotNull(config, "config is null");
+    }
+
+    @VisibleForTesting
+    public static void reset() {
+        INSTANCE.config = null;
     }
 
     private Injection() {

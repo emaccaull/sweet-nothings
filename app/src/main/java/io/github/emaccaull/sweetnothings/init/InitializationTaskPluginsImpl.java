@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.init;
 
+import io.github.emaccaull.sweetnothings.data.init.DataSourceInitializationTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +32,7 @@ public class InitializationTaskPluginsImpl implements InitializationTaskPlugins 
     @Override
     public void load() {
         tasks.add(app -> logger.debug("Started running initialization tasks"));
+        tasks.add(DataSourceInitializationTask.create());
         tasks.add(app -> logger.debug("Finished running initialization tasks"));
     }
 
