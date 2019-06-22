@@ -21,49 +21,63 @@ import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Provider;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Lazily gets instances from a delegate configuration and reuses them.
  */
 class InstanceCachingConfiguration implements Configuration {
 
-    private final Lazy<SchedulerProvider> lazySchedulerProvider;
-    private final Lazy<MessageDataSource> lazyMessageDataSource;
-    private final Lazy<InitializationTaskPlugins> lazyInitializationTaskPlugins;
-    private final Lazy<StockMessageProvider> lazyStockMessageProvider;
+    private final Map<String, Provider<?>> providers = new HashMap<>();
 
     InstanceCachingConfiguration(Configuration delegate) {
-        // TODO: selectively hold refs based on @Singleton annotation of instance's class.
-        lazySchedulerProvider = new Lazy<>(notNull(delegate::schedulerProvider));
-        lazyMessageDataSource = new Lazy<>(notNull(delegate::messageDataSource));
-        lazyInitializationTaskPlugins = new Lazy<>(notNull(delegate::initializationTaskPlugins));
-        lazyStockMessageProvider = new Lazy<>(notNull(delegate::stockMessageProvider));
+        put(SchedulerProvider.class, new Lazy<>(delegate::schedulerProvider));
+        put(MessageDataSource.class, new Lazy<>(delegate::messageDataSource));
+        put(InitializationTaskPlugins.class, new Lazy<>(delegate::initializationTaskPlugins));
+        put(StockMessageProvider.class, delegate::stockMessageProvider); // New instance each time
     }
 
     @Override
     public SchedulerProvider schedulerProvider() {
-        return lazySchedulerProvider.get();
+        return get(SchedulerProvider.class);
     }
 
     @Override
     public MessageDataSource messageDataSource() {
-        return lazyMessageDataSource.get();
+        return get(MessageDataSource.class);
     }
 
     @Override
     public InitializationTaskPlugins initializationTaskPlugins() {
-        return lazyInitializationTaskPlugins.get();
+        return get(InitializationTaskPlugins.class);
     }
 
     @Override
     public StockMessageProvider stockMessageProvider() {
-        return lazyStockMessageProvider.get();
+        return get(StockMessageProvider.class);
     }
 
-    private static <T> Provider<T> notNull(Provider<T> provider) {
-        return () -> checkNotNull(provider.get(), "provider returned null value");
+    private <T> void put(Class<T> clazz, Provider<T> provider) {
+        providers.put(getKey(clazz), provider);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T get(Class<T> clazz) {
+        String key = getKey(clazz);
+        Provider<T> provider = (Provider<T>)providers.get(key);
+        if (provider == null) {
+            throw new IllegalArgumentException("No provider for " + clazz);
+        }
+        return provider.get();
+    }
+
+    private static String getKey(Class<?> clazz) {
+        String key = clazz.getCanonicalName();
+        if (key == null) {
+            throw new IllegalArgumentException("clazz");
+        }
+        return key;
     }
 }
