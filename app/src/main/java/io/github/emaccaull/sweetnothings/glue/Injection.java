@@ -25,6 +25,7 @@ import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
 
+import static androidx.annotation.VisibleForTesting.NONE;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -80,7 +81,7 @@ public final class Injection {
         return checkNotNull(config, "config is null");
     }
 
-    @VisibleForTesting
+    @VisibleForTesting(otherwise = NONE)
     public static void reset() {
         INSTANCE.config = null;
     }
