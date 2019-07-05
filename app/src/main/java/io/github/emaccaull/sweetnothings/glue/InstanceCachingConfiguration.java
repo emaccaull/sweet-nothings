@@ -59,7 +59,7 @@ class InstanceCachingConfiguration implements Configuration {
         return get(StockMessageProvider.class);
     }
 
-    private <T> void put(Class<T> clazz, Provider<T> provider) {
+    private <T> void put(Class<T> clazz, Provider<? extends T> provider) {
         providers.put(getKey(clazz), provider);
     }
 
