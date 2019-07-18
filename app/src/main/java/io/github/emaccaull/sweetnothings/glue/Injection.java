@@ -65,11 +65,11 @@ public final class Injection {
         return getConfiguration().stockMessageProvider();
     }
 
-    public static void setConfiguration(Configuration config) {
+    public static synchronized void setConfiguration(Configuration config) {
         INSTANCE.config = new InstanceCachingConfiguration(config);
     }
 
-    static Configuration getConfiguration() {
+    static synchronized Configuration getConfiguration() {
         return checkNotNull(INSTANCE.config, "config is null");
     }
 
