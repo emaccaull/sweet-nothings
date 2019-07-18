@@ -37,10 +37,6 @@ public final class Injection {
 
     private Configuration config;
 
-    public static Injection getInstance() {
-        return INSTANCE;
-    }
-
     public static GetRandomSweetNothing provideGetRandomSweetNothing() {
         return new GetRandomSweetNothing(provideMessageDataSource());
     }
@@ -54,31 +50,27 @@ public final class Injection {
     }
 
     public static SchedulerProvider provideSchedulerProvider() {
-        Configuration config = INSTANCE.getConfiguration();
-        return config.schedulerProvider();
+        return getConfiguration().schedulerProvider();
     }
 
     public static MessageDataSource provideMessageDataSource() {
-        Configuration config = INSTANCE.getConfiguration();
-        return config.messageDataSource();
+        return getConfiguration().messageDataSource();
     }
 
     public static InitializationTaskPlugins provideInitializationTaskPlugins() {
-        Configuration config = INSTANCE.getConfiguration();
-        return config.initializationTaskPlugins();
+        return getConfiguration().initializationTaskPlugins();
     }
 
     public static StockMessageProvider provideStockMessageProvider() {
-        Configuration config = INSTANCE.getConfiguration();
-        return config.stockMessageProvider();
+        return getConfiguration().stockMessageProvider();
     }
 
-    public void setConfiguration(Configuration config) {
-        this.config = new InstanceCachingConfiguration(config);
+    public static void setConfiguration(Configuration config) {
+        INSTANCE.config = new InstanceCachingConfiguration(config);
     }
 
-    Configuration getConfiguration() {
-        return checkNotNull(config, "config is null");
+    static Configuration getConfiguration() {
+        return checkNotNull(INSTANCE.config, "config is null");
     }
 
     @VisibleForTesting(otherwise = NONE)

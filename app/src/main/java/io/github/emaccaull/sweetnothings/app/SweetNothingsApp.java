@@ -38,7 +38,7 @@ public class SweetNothingsApp extends MultiDexApplication {
 
     protected void configureDependencies() {
         Configuration config = createConfiguration();
-        Injection.getInstance().setConfiguration(config);
+        Injection.setConfiguration(config);
     }
 
     protected Configuration createConfiguration() {

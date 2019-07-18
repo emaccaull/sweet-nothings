@@ -45,19 +45,14 @@ public class InjectionTest {
     private final SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
 
     @Test
-    public void getInstance() {
-        assertThat(Injection.getInstance(), is(notNullValue()));
-    }
-
-    @Test
     public void dependenciesAreSharedInstances() {
         // Given that each invocation of the config yields a new instance
         when(config.messageDataSource()).then(invocation -> mock(MessageDataSource.class));
         when(config.schedulerProvider()).then(invocation -> mock(SchedulerProvider.class));
-        Injection.getInstance().setConfiguration(config);
+        Injection.setConfiguration(config);
 
         // When requesting data
-        Configuration config = Injection.getInstance().getConfiguration();
+        Configuration config = Injection.getConfiguration();
 
         // Then the config should cache the first value
         MessageDataSource aMds = config.messageDataSource();
@@ -74,7 +69,7 @@ public class InjectionTest {
         when(config.messageDataSource()).thenReturn(messageDataSource);
 
         // Given
-        Injection.getInstance().setConfiguration(config);
+        Injection.setConfiguration(config);
 
         // When
         GetRandomSweetNothing grsw = Injection.provideGetRandomSweetNothing();
@@ -88,7 +83,7 @@ public class InjectionTest {
         when(config.messageDataSource()).thenReturn(messageDataSource);
 
         // Given
-        Injection.getInstance().setConfiguration(config);
+        Injection.setConfiguration(config);
 
         // When
         GetSweetNothing gsn = Injection.provideGetSweetNothing();
@@ -102,7 +97,7 @@ public class InjectionTest {
         when(config.messageDataSource()).thenReturn(messageDataSource);
 
         // Given
-        Injection.getInstance().setConfiguration(config);
+        Injection.setConfiguration(config);
 
         // When
         MarkUsed mu = Injection.provideMarkUsed();
@@ -116,7 +111,7 @@ public class InjectionTest {
         when(config.schedulerProvider()).thenReturn(schedulerProvider);
 
         // Given
-        Injection.getInstance().setConfiguration(config);
+        Injection.setConfiguration(config);
 
         // When
         SchedulerProvider sp = Injection.provideSchedulerProvider();

@@ -34,7 +34,7 @@ public class InitializationTaskPluginsImplTest {
 
     @Before
     public void setUp() {
-        Injection.getInstance().setConfiguration(new TestConfiguration());
+        Injection.setConfiguration(new TestConfiguration());
     }
 
     @After
