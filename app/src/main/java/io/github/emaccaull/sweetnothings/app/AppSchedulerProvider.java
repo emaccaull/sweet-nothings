@@ -16,23 +16,39 @@
 
 package io.github.emaccaull.sweetnothings.app;
 
-import android.os.AsyncTask;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
+import io.github.emaccaull.sweetnothings.core.concurrent.NamedThreadFactory;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Scheduler provider used by the app in production.
  */
 class AppSchedulerProvider implements SchedulerProvider {
 
-    // Use the AsyncTask thread pool since it has a reasonable config for a mobile device.
-    private final Scheduler diskIOScheduler = Schedulers.from(AsyncTask.THREAD_POOL_EXECUTOR);
+    private static final Scheduler DISK_IO_SCHEDULER;
+    static {
+        int cpuCount         = Runtime.getRuntime().availableProcessors();
+        int corePoolSize     = Math.max(2, Math.min(cpuCount - 1, 4));
+        int maxPoolSize      = cpuCount * 2 + 1;
+        int keepAliveSeconds = 30;
+
+        final Executor diskIOExecutor = new ThreadPoolExecutor(
+                corePoolSize, maxPoolSize, keepAliveSeconds, TimeUnit.SECONDS,
+                new LinkedBlockingDeque<>(128), new NamedThreadFactory("DiskIO"));
+
+        DISK_IO_SCHEDULER = Schedulers.from(diskIOExecutor);
+    }
 
     @Override
     public Scheduler diskIO() {
-        return diskIOScheduler;
+        return DISK_IO_SCHEDULER;
     }
 
     @Override
