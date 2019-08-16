@@ -17,10 +17,10 @@
 package io.github.emaccaull.sweetnothings.data.init;
 
 import android.app.Application;
-import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
-import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DataSourceInitializationTaskTest {
 
-    private final SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
+    private final Scheduler scheduler = Schedulers.trampoline();
 
     @Mock
     private StockMessageProvider messageProvider;
@@ -51,7 +51,7 @@ public class DataSourceInitializationTaskTest {
 
     @Before
     public void setUp() {
-        task = new DataSourceInitializationTask(schedulerProvider, messageProvider, dataSource);
+        task = new DataSourceInitializationTask(messageProvider, dataSource, scheduler);
     }
 
     @Test

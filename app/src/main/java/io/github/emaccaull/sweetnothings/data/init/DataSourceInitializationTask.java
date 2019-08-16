@@ -17,40 +17,40 @@
 package io.github.emaccaull.sweetnothings.data.init;
 
 import android.app.Application;
-import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Injection;
 import io.github.emaccaull.sweetnothings.init.InitializationTask;
+import io.reactivex.Scheduler;
 
 /**
  * Populates the data store with stock sweet nothings.
  */
 public class DataSourceInitializationTask implements InitializationTask {
 
-    private final SchedulerProvider schedulerProvider;
     private final StockMessageProvider stockMessageProvider;
     private final MessageDataSource dataSource;
+    private final Scheduler ioScheduler;
 
     DataSourceInitializationTask(
-            SchedulerProvider schedulerProvider,
             StockMessageProvider stockMessageProvider,
-            MessageDataSource dataSource) {
-        this.schedulerProvider = schedulerProvider;
+            MessageDataSource dataSource,
+            Scheduler ioScheduler) {
         this.stockMessageProvider = stockMessageProvider;
         this.dataSource = dataSource;
+        this.ioScheduler = ioScheduler;
     }
 
     public static DataSourceInitializationTask create() {
         return new DataSourceInitializationTask(
-                Injection.provideSchedulerProvider(),
                 Injection.provideStockMessageProvider(),
-                Injection.provideMessageDataSource());
+                Injection.provideMessageDataSource(),
+                Injection.provideSchedulerProvider().io());
     }
 
     @Override
     public void run(Application app) {
         dataSource.createIfNotPresent(stockMessageProvider.getMessages())
-                .subscribeOn(schedulerProvider.diskIO())
+                .subscribeOn(ioScheduler)
                 .subscribe();
     }
 }

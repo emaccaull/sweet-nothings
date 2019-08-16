@@ -26,7 +26,7 @@ public enum TrampolineSchedulerProvider implements SchedulerProvider {
     INSTANCE;
 
     @Override
-    public Scheduler diskIO() {
+    public Scheduler io() {
         return Schedulers.trampoline();
     }
 
