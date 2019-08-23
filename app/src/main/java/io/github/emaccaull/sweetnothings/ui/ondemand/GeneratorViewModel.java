@@ -53,17 +53,18 @@ final class GeneratorViewModel extends RxViewModel {
     void requestNewMessage() {
         logger.info("Requesting a new sweet nothing");
 
-        Disposable d = getRandomSweetNothing.apply()
+        Disposable d = getRandomSweetNothing.apply().toObservable()
                 .subscribeOn(schedulerProvider.io())
-                .doOnSubscribe(__ -> viewState.postValue(ViewState.loading()))
+                .observeOn(schedulerProvider.ui())
                 .map(ViewState::loaded)
+                .defaultIfEmpty(ViewState.noMessageFound())
+                .startWith(ViewState.loading())
                 .subscribe(
-                        viewState::postValue,
+                        viewState::setValue,
                         throwable -> {
                             logger.error("Couldn't load sweet nothing", throwable);
-                            viewState.postValue(ViewState.noMessageFound());
-                        },
-                        () -> viewState.postValue(ViewState.noMessageFound())
+                            viewState.setValue(ViewState.noMessageFound());
+                        }
                 );
 
         add(d);
