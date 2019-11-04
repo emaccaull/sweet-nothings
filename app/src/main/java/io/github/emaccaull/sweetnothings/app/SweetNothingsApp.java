@@ -46,9 +46,7 @@ public class SweetNothingsApp extends MultiDexApplication {
     }
 
     private void init()  {
-        InitializationTaskPlugins plugins = Injection.provideInitializationTaskPlugins();
-
-        plugins.load();
+        final InitializationTaskPlugins plugins = Injection.provideInitializationTaskPlugins();
 
         for (InitializationTask task : plugins.getTasks()) {
             task.run(this);

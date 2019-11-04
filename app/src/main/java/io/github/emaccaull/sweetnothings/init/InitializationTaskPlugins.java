@@ -23,9 +23,6 @@ import java.util.List;
  */
 public interface InitializationTaskPlugins {
 
-    /** Initializes plugins. */
-    void load();
-
     /** @return a list of initialization tasks to run before any Activity is created. */
     List<InitializationTask> getTasks();
 }

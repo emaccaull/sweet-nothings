@@ -23,6 +23,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -45,14 +47,9 @@ public class InitializationTaskPluginsImplTest {
     @Test
     public void load() {
         // When
-        plugins.load();
+        List<InitializationTask> tasks = plugins.getTasks();
 
         // Then
-        assertThat(plugins.getTasks(), hasItem(instanceOf(DataSourceInitializationTask.class)));
-    }
-
-    @Test
-    public void getTasks_beforeLoad() {
-        assertThat(plugins.getTasks(), hasSize(0));
+        assertThat(tasks, hasItem(instanceOf(DataSourceInitializationTask.class)));
     }
 }
