@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.List;
 
-public class InitializationTaskPluginsImpl implements InitializationTaskPlugins {
+public class InitializationTasksPluginImpl implements InitializationTasksPlugin {
     private static final Logger logger =
-            LoggerFactory.getLogger(InitializationTaskPluginsImpl.class);
+            LoggerFactory.getLogger(InitializationTasksPluginImpl.class);
 
     @Override
     public List<InitializationTask> getTasks() {

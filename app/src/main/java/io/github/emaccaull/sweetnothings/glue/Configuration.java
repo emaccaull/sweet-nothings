@@ -19,7 +19,7 @@ package io.github.emaccaull.sweetnothings.glue;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 
 /**
  * Allows the application to configure the runtime behavior of the system.
@@ -32,8 +32,8 @@ public interface Configuration {
     /** @return a MessageDataSource instance to share globally. */
     MessageDataSource messageDataSource();
 
-    /** @return a InitializationTaskPlugins implementation for this configuration. */
-    InitializationTaskPlugins initializationTaskPlugins();
+    /** @return a InitializationTasksPlugin implementation for this configuration. */
+    InitializationTasksPlugin initializationTasksPlugin();
 
     /** @return a new StockMessageProvider for this configuration. */
     StockMessageProvider stockMessageProvider();

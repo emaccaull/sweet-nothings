@@ -23,8 +23,8 @@ import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPluginsImpl;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
 
 /**
  * Dependencies for instrumentation tests.
@@ -44,8 +44,8 @@ public class TestConfiguration implements Configuration {
     }
 
     @Override
-    public InitializationTaskPlugins initializationTaskPlugins() {
-        return new InitializationTaskPluginsImpl();
+    public InitializationTasksPlugin initializationTasksPlugin() {
+        return new InitializationTasksPluginImpl();
     }
 
     @Override

@@ -19,7 +19,7 @@ package io.github.emaccaull.sweetnothings.glue;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ class InstanceCachingConfiguration implements Configuration {
     InstanceCachingConfiguration(Configuration delegate) {
         put(SchedulerProvider.class, new Lazy<>(delegate::schedulerProvider));
         put(MessageDataSource.class, new Lazy<>(delegate::messageDataSource));
-        put(InitializationTaskPlugins.class, new Lazy<>(delegate::initializationTaskPlugins));
+        put(InitializationTasksPlugin.class, new Lazy<>(delegate::initializationTasksPlugin));
         put(StockMessageProvider.class, delegate::stockMessageProvider); // New instance each time
     }
 
@@ -50,8 +50,8 @@ class InstanceCachingConfiguration implements Configuration {
     }
 
     @Override
-    public InitializationTaskPlugins initializationTaskPlugins() {
-        return get(InitializationTaskPlugins.class);
+    public InitializationTasksPlugin initializationTasksPlugin() {
+        return get(InitializationTasksPlugin.class);
     }
 
     @Override

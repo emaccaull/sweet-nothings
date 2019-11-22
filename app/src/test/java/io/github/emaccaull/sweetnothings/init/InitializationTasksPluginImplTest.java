@@ -30,9 +30,9 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 
-public class InitializationTaskPluginsImplTest {
+public class InitializationTasksPluginImplTest {
 
-    private final InitializationTaskPluginsImpl plugins = new InitializationTaskPluginsImpl();
+    private final InitializationTasksPluginImpl plugins = new InitializationTasksPluginImpl();
 
     @Before
     public void setUp() {

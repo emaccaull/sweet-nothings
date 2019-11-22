@@ -23,7 +23,7 @@ import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.GetSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 
 import static androidx.annotation.VisibleForTesting.NONE;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -57,8 +57,8 @@ public final class Injection {
         return getConfiguration().messageDataSource();
     }
 
-    public static InitializationTaskPlugins provideInitializationTaskPlugins() {
-        return getConfiguration().initializationTaskPlugins();
+    public static InitializationTasksPlugin provideInitializationTasksPlugin() {
+        return getConfiguration().initializationTasksPlugin();
     }
 
     public static StockMessageProvider provideStockMessageProvider() {

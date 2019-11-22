@@ -20,7 +20,7 @@ import androidx.multidex.MultiDexApplication;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.glue.Injection;
 import io.github.emaccaull.sweetnothings.init.InitializationTask;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 
 /**
  * Sweet Nothings application class.
@@ -33,10 +33,10 @@ public class SweetNothingsApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         configureDependencies();
-        init();
+        initialize();
     }
 
-    protected void configureDependencies() {
+    private void configureDependencies() {
         Configuration config = createConfiguration();
         Injection.setConfiguration(config);
     }
@@ -45,10 +45,10 @@ public class SweetNothingsApp extends MultiDexApplication {
         return new ProdConfiguration(this);
     }
 
-    private void init()  {
-        final InitializationTaskPlugins plugins = Injection.provideInitializationTaskPlugins();
+    private void initialize()  {
+        final InitializationTasksPlugin plugin = Injection.provideInitializationTasksPlugin();
 
-        for (InitializationTask task : plugins.getTasks()) {
+        for (InitializationTask task : plugin.getTasks()) {
             task.run(this);
         }
     }

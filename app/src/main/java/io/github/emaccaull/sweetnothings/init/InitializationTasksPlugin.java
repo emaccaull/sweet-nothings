@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Provides {@link InitializationTask InitializationTasks} to the application.
  */
-public interface InitializationTaskPlugins {
+public interface InitializationTasksPlugin {
 
     /** @return a list of initialization tasks to run before any Activity is created. */
     List<InitializationTask> getTasks();
