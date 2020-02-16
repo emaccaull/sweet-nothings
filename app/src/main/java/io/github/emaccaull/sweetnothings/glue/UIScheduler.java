@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Emmanuel MacCaull
+ * Copyright (C) 2020 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.app;
+package io.github.emaccaull.sweetnothings.glue;
 
-import io.github.emaccaull.sweetnothings.testsupport.DaggerTestConfiguration;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import javax.inject.Qualifier;
 
 /**
- * Perform common setup for Espresso tests.
+ * Denotes the shared UI scheduler.
  */
-public class TestSweetNothingsApp extends SweetNothingsApp {
-
-    @Override
-    protected ProdConfiguration createConfiguration() {
-        return DaggerTestConfiguration.builder().application(this).build();
-    }
+@Qualifier
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UIScheduler {
 }

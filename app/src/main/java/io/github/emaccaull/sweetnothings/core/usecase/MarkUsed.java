@@ -20,6 +20,8 @@ import io.github.emaccaull.sweetnothings.core.UseCase;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.reactivex.Completable;
 
+import javax.inject.Inject;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -32,6 +34,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MarkUsed {
     private final MessageDataSource dataSource;
 
+    @Inject
     public MarkUsed(MessageDataSource dataSource) {
         this.dataSource = checkNotNull(dataSource, "dataSource is null");
     }

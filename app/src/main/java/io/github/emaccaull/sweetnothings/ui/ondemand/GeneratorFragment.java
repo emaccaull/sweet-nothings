@@ -27,18 +27,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.github.emaccaull.sweetnothings.R;
+import io.github.emaccaull.sweetnothings.app.SweetNothingsApp;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import io.github.emaccaull.sweetnothings.ui.util.InformationalDialog;
 import io.github.emaccaull.sweetnothings.ui.util.ShareUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
 
 /**
  * Generate/fetch a Random SweetNothing on demand.
@@ -51,6 +55,9 @@ public class GeneratorFragment extends Fragment
     private static final String APOLOGY_TAG = "ui.ondemand.notfound";
 
     private GeneratorViewModel viewModel;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @BindView(R.id.generate_phrase_btn)
     Button generatePhraseButton;
@@ -65,6 +72,10 @@ public class GeneratorFragment extends Fragment
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         logger.debug("Attached to {}", context.getClass().getSimpleName());
+
+        OnDemandBuilder.ParentComponent component =
+                ((SweetNothingsApp) context.getApplicationContext()).getConfiguration();
+        new OnDemandBuilder(component).inject(this);
     }
 
     @Nullable
@@ -92,8 +103,7 @@ public class GeneratorFragment extends Fragment
     }
 
     private GeneratorViewModel obtainViewModel() {
-        GeneratorViewModelFactory factory = new GeneratorViewModelFactory();
-        return ViewModelProviders.of(this, factory).get(GeneratorViewModel.class);
+        return ViewModelProviders.of(this, viewModelFactory).get(GeneratorViewModel.class);
     }
 
     private void updateViewState(ViewState state) {

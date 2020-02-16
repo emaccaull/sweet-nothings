@@ -101,6 +101,8 @@ public class GeneratorViewModelTest {
         InOrder inOrder = Mockito.inOrder(observer);
         inOrder.verify(observer).onChanged(ViewState.loading());
         inOrder.verify(observer).onChanged(ViewState.loaded(sn));
+
+        verify(observer, never()).onChanged(ViewState.noMessageFound());
     }
 
     @Test

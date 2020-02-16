@@ -17,42 +17,66 @@
 package io.github.emaccaull.sweetnothings.app;
 
 import android.app.Application;
+import dagger.Binds;
+import dagger.BindsInstance;
+import dagger.Provides;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPluginsImpl;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksModule;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
+import io.github.emaccaull.sweetnothings.ui.ondemand.OnDemandBuilder;
 
-/**
- * Configuration used for production builds.
- */
-class ProdConfiguration implements Configuration {
+import javax.inject.Singleton;
 
-    private final Application context;
+/** Configuration used for production builds. */
+@Singleton
+@dagger.Component(
+        modules = {
+            ProdConfiguration.ProdModule.class,
+            ExtModule.class,
+            InitializationTasksModule.class
+        })
+public interface ProdConfiguration extends Configuration, OnDemandBuilder.ParentComponent {
 
-    ProdConfiguration(Application context) {
-        this.context = context;
+    void inject(SweetNothingsApp app);
+
+    @dagger.Module
+    abstract class ProdModule {
+
+        @Singleton
+        @Provides
+        static SchedulerProvider provideSchedulerProvider() {
+            return new AppSchedulerProvider();
+        }
+
+        @Singleton
+        @Provides
+        static MessageDataSource provideMessageDataSource(Application application) {
+            return new LocalMessageDataSource(application);
+        }
+
+        @Singleton
+        @Binds
+        abstract InitializationTasksPlugin provideInitializationTasksPlugin(
+                InitializationTasksPluginImpl impl);
+
+        @Singleton
+        @Provides
+        static StockMessageProvider provideStockMessageProvider(Application application) {
+            return new AppStockMessageProvider(application);
+        }
     }
 
-    @Override
-    public SchedulerProvider schedulerProvider() {
-        return new AppSchedulerProvider();
-    }
+    @dagger.Component.Builder
+    interface Builder {
 
-    @Override
-    public MessageDataSource messageDataSource() {
-        return new LocalMessageDataSource(context);
-    }
+        @BindsInstance
+        Builder application(Application application);
 
-    @Override
-    public InitializationTaskPlugins initializationTaskPlugins() {
-        return new InitializationTaskPluginsImpl();
-    }
-
-    @Override
-    public StockMessageProvider stockMessageProvider() {
-        return new AppStockMessageProvider(context);
+        ProdConfiguration build();
     }
 }

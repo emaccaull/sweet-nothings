@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Emmanuel MacCaull
+ * Copyright (C) 2019 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.app;
+package io.github.emaccaull.sweetnothings.init;
 
-import io.github.emaccaull.sweetnothings.testsupport.DaggerTestConfiguration;
+import java.util.List;
 
 /**
- * Perform common setup for Espresso tests.
+ * Provides {@link InitializationTask InitializationTasks} to the application.
  */
-public class TestSweetNothingsApp extends SweetNothingsApp {
+public interface InitializationTasksPlugin {
 
-    @Override
-    protected ProdConfiguration createConfiguration() {
-        return DaggerTestConfiguration.builder().application(this).build();
-    }
+    /** @return a list of initialization tasks to run before any Activity is created. */
+    List<InitializationTask> getTasks();
 }

@@ -16,40 +16,69 @@
 
 package io.github.emaccaull.sweetnothings.testsupport;
 
+import android.app.Application;
 import androidx.annotation.RestrictTo;
+import dagger.Binds;
+import dagger.BindsInstance;
+import dagger.Provides;
+import io.github.emaccaull.sweetnothings.app.ExtModule;
+import io.github.emaccaull.sweetnothings.app.ProdConfiguration;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
-import io.github.emaccaull.sweetnothings.glue.Configuration;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPluginsImpl;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksModule;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
 
-/**
- * Dependencies for instrumentation tests.
- */
+import javax.inject.Singleton;
+
+/** Dependencies for instrumentation tests. */
 @RestrictTo(RestrictTo.Scope.TESTS)
-public class TestConfiguration implements Configuration {
+@Singleton
+@dagger.Component(
+        modules = {
+            TestConfiguration.TestModule.class,
+            ExtModule.class,
+            InitializationTasksModule.class
+        })
+public interface TestConfiguration extends ProdConfiguration {
 
-    @Override
-    public SchedulerProvider schedulerProvider() {
-        // We're using an in-memory DB, so we don't need to run on a background thread.
-        return TrampolineSchedulerProvider.INSTANCE;
+    @dagger.Module
+    abstract class TestModule {
+
+        @Provides
+        @Singleton
+        static SchedulerProvider schedulerProvider() {
+            // We're using an in-memory DB, so we don't need to run on a background thread.
+            return TrampolineSchedulerProvider.INSTANCE;
+        }
+
+        @Provides
+        @Singleton
+        static MessageDataSource messageDataSource() {
+            return new InMemoryMessageDataSource();
+        }
+
+        @Singleton
+        @Binds
+        abstract InitializationTasksPlugin provideInitializationTasksPlugin(
+                InitializationTasksPluginImpl impl);
+
+        @Provides
+        @Singleton
+        static StockMessageProvider stockMessageProvider() {
+            return new EmptyStockMessageProvider();
+        }
     }
 
-    @Override
-    public MessageDataSource messageDataSource() {
-        return new InMemoryMessageDataSource();
-    }
+    @dagger.Component.Builder
+    interface Builder {
 
-    @Override
-    public InitializationTaskPlugins initializationTaskPlugins() {
-        return new InitializationTaskPluginsImpl();
-    }
+        @BindsInstance
+        Builder application(Application application);
 
-    @Override
-    public StockMessageProvider stockMessageProvider() {
-        return new EmptyStockMessageProvider();
+        TestConfiguration build();
     }
 }

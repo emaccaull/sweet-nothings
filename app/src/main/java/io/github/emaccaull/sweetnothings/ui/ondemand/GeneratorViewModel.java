@@ -26,6 +26,8 @@ import io.reactivex.disposables.Disposable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+
 /**
  * Generate/fetch a Random SweetNothing on demand.
  */
@@ -38,6 +40,7 @@ final class GeneratorViewModel extends RxViewModel {
     private final GetRandomSweetNothing getRandomSweetNothing;
     private final MarkUsed markUsed;
 
+    @Inject
     @SuppressWarnings("WeakerAccess")
     public GeneratorViewModel(SchedulerProvider schedulerProvider,
             GetRandomSweetNothing getRandomSweetNothing, MarkUsed markUsed) {
@@ -53,17 +56,18 @@ final class GeneratorViewModel extends RxViewModel {
     void requestNewMessage() {
         logger.info("Requesting a new sweet nothing");
 
-        Disposable d = getRandomSweetNothing.apply()
-                .subscribeOn(schedulerProvider.diskIO())
-                .doOnSubscribe(__ -> viewState.postValue(ViewState.loading()))
+        Disposable d = getRandomSweetNothing.apply().toObservable()
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .map(ViewState::loaded)
+                .defaultIfEmpty(ViewState.noMessageFound())
+                .startWith(ViewState.loading())
                 .subscribe(
-                        viewState::postValue,
+                        viewState::setValue,
                         throwable -> {
                             logger.error("Couldn't load sweet nothing", throwable);
-                            viewState.postValue(ViewState.noMessageFound());
-                        },
-                        () -> viewState.postValue(ViewState.noMessageFound())
+                            viewState.setValue(ViewState.noMessageFound());
+                        }
                 );
 
         add(d);
@@ -76,7 +80,7 @@ final class GeneratorViewModel extends RxViewModel {
         logger.info("Sharing a sweet nothing; id='{}'", id);
 
         Disposable d = markUsed.apply(id)
-                .subscribeOn(schedulerProvider.diskIO())
+                .subscribeOn(schedulerProvider.io())
                 .subscribe(this::resetViewState);
 
         add(d);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Emmanuel MacCaull
+ * Copyright (C) 2020 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.glue;
+package io.github.emaccaull.sweetnothings.ui.framework;
 
-import org.junit.Test;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import javax.inject.Scope;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-public class LazyTest {
-
-    @Test
-    public void get() {
-        Lazy<Object> lo = new Lazy<>(Object::new);
-
-        Object o1 = lo.get();
-        assertThat(o1, is(notNullValue()));
-
-        Object o2 = lo.get();
-        assertThat(o2, is(o1));
-    }
+/**
+ * Denotes a component or object that exists for the lifetime of a single Fragment instance.
+ */
+@Scope
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+public @interface FragmentScope {
 }

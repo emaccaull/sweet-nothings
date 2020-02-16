@@ -32,23 +32,23 @@ import java.util.concurrent.TimeUnit;
  */
 class AppSchedulerProvider implements SchedulerProvider {
 
-    private static final Scheduler DISK_IO_SCHEDULER;
+    private static final Scheduler IO_SCHEDULER;
     static {
         int cpuCount         = Runtime.getRuntime().availableProcessors();
         int corePoolSize     = Math.max(2, Math.min(cpuCount - 1, 4));
         int maxPoolSize      = cpuCount * 2 + 1;
         int keepAliveSeconds = 30;
 
-        final Executor diskIOExecutor = new ThreadPoolExecutor(
+        final Executor ioExecutor = new ThreadPoolExecutor(
                 corePoolSize, maxPoolSize, keepAliveSeconds, TimeUnit.SECONDS,
-                new LinkedBlockingDeque<>(128), new NamedThreadFactory("DiskIO"));
+                new LinkedBlockingDeque<>(128), new NamedThreadFactory("IO"));
 
-        DISK_IO_SCHEDULER = Schedulers.from(diskIOExecutor);
+        IO_SCHEDULER = Schedulers.from(ioExecutor);
     }
 
     @Override
-    public Scheduler diskIO() {
-        return DISK_IO_SCHEDULER;
+    public Scheduler io() {
+        return IO_SCHEDULER;
     }
 
     @Override

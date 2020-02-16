@@ -17,10 +17,10 @@
 package io.github.emaccaull.sweetnothings.app;
 
 import androidx.multidex.MultiDexApplication;
-import io.github.emaccaull.sweetnothings.glue.Configuration;
-import io.github.emaccaull.sweetnothings.glue.Injection;
 import io.github.emaccaull.sweetnothings.init.InitializationTask;
-import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
+
+import javax.inject.Inject;
 
 /**
  * Sweet Nothings application class.
@@ -29,28 +29,33 @@ import io.github.emaccaull.sweetnothings.init.InitializationTaskPlugins;
  */
 public class SweetNothingsApp extends MultiDexApplication {
 
+    private ProdConfiguration configuration;
+
+    @Inject
+    InitializationTasksPlugin initializationTasksPlugin;
+
     @Override
     public void onCreate() {
         super.onCreate();
         configureDependencies();
-        init();
+        initialize();
     }
 
-    protected void configureDependencies() {
-        Configuration config = createConfiguration();
-        Injection.setConfiguration(config);
+    private void configureDependencies() {
+        configuration = createConfiguration();
+        configuration.inject(this);
     }
 
-    protected Configuration createConfiguration() {
-        return new ProdConfiguration(this);
+    protected ProdConfiguration createConfiguration() {
+        return DaggerProdConfiguration.builder().application(this).build();
     }
 
-    private void init()  {
-        InitializationTaskPlugins plugins = Injection.provideInitializationTaskPlugins();
+    public ProdConfiguration getConfiguration() {
+        return configuration;
+    }
 
-        plugins.load();
-
-        for (InitializationTask task : plugins.getTasks()) {
+    private void initialize()  {
+        for (InitializationTask task : initializationTasksPlugin.getTasks()) {
             task.run(this);
         }
     }

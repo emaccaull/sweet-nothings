@@ -24,9 +24,9 @@ import io.reactivex.Scheduler;
 public interface SchedulerProvider {
 
     /**
-     * Returns a default, shared {@link Scheduler} instance intended for disk IO-bound work.
+     * Returns a default, shared {@link Scheduler} instance intended for IO-bound work.
      */
-    Scheduler diskIO();
+    Scheduler io();
 
     /**
      * A {@link Scheduler} which executes actions on the main thread.

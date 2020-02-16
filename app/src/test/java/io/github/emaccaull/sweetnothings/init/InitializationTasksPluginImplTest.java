@@ -17,42 +17,31 @@
 package io.github.emaccaull.sweetnothings.init;
 
 import io.github.emaccaull.sweetnothings.data.init.DataSourceInitializationTask;
-import io.github.emaccaull.sweetnothings.glue.Injection;
-import io.github.emaccaull.sweetnothings.testsupport.TestConfiguration;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.mockito.Mockito.mock;
 
-public class InitializationTaskPluginsImplTest {
+public class InitializationTasksPluginImplTest {
 
-    private final InitializationTaskPluginsImpl plugins = new InitializationTaskPluginsImpl();
-
-    @Before
-    public void setUp() {
-        Injection.setConfiguration(new TestConfiguration());
-    }
-
-    @After
-    public void tearDown() {
-        Injection.reset();
-    }
+    private final Set<InitializationTask> tasks = new HashSet<>();
 
     @Test
     public void load() {
+        // Given
+        tasks.add(mock(DataSourceInitializationTask.class));
+        InitializationTasksPluginImpl plugins = new InitializationTasksPluginImpl(tasks);
+
         // When
-        plugins.load();
+        List<InitializationTask> tasks = plugins.getTasks();
 
         // Then
-        assertThat(plugins.getTasks(), hasItem(instanceOf(DataSourceInitializationTask.class)));
-    }
-
-    @Test
-    public void getTasks_beforeLoad() {
-        assertThat(plugins.getTasks(), hasSize(0));
+        assertThat(tasks, hasItem(instanceOf(DataSourceInitializationTask.class)));
     }
 }

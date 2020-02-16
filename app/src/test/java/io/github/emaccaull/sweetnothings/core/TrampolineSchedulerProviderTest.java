@@ -28,7 +28,7 @@ public class TrampolineSchedulerProviderTest {
 
     @Test
     public void diskIO() {
-        assertThat(schedulerProvider.diskIO(), is(Schedulers.trampoline()));
+        assertThat(schedulerProvider.io(), is(Schedulers.trampoline()));
     }
 
     @Test
