@@ -42,6 +42,8 @@ import javax.inject.Singleton;
         })
 public interface ProdConfiguration extends Configuration, OnDemandBuilder.ParentComponent {
 
+    void inject(SweetNothingsApp app);
+
     @dagger.Module
     abstract class ProdModule {
 

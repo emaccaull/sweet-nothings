@@ -20,6 +20,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import io.github.emaccaull.sweetnothings.R;
+import io.github.emaccaull.sweetnothings.app.ProdConfiguration;
+import io.github.emaccaull.sweetnothings.app.SweetNothingsApp;
 import io.github.emaccaull.sweetnothings.ui.ondemand.GeneratorFragment;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import org.slf4j.Logger;
@@ -48,5 +50,9 @@ public class MainActivity extends AppCompatActivity {
             GeneratorFragment f = GeneratorFragment.newInstance();
             FragmentUtils.replace(getSupportFragmentManager(), f, R.id.fragment_container);
         }
+    }
+
+    public ProdConfiguration getConfiguration() {
+        return ((SweetNothingsApp) getApplication()).getConfiguration();
     }
 }
