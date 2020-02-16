@@ -17,23 +17,33 @@
 package io.github.emaccaull.sweetnothings.init;
 
 import android.app.Application;
-import io.github.emaccaull.sweetnothings.data.init.DataSourceInitializationTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import javax.inject.Inject;
 
 public class InitializationTasksPluginImpl implements InitializationTasksPlugin {
     private static final Logger logger =
             LoggerFactory.getLogger(InitializationTasksPluginImpl.class);
 
+    private final Set<InitializationTask> tasksSet;
+
+    @Inject
+    InitializationTasksPluginImpl(Set<InitializationTask> tasks) {
+        this.tasksSet = tasks;
+    }
+
     @Override
     public List<InitializationTask> getTasks() {
-        return Arrays.asList(
-                new LogTask("Started running initialization tasks"),
-                DataSourceInitializationTask.create(),
-                new LogTask("Finished running initialization tasks"));
+        List<InitializationTask> tasks = new ArrayList<>(tasksSet.size() + 2);
+        tasks.add(new LogTask("Started running initialization tasks"));
+        tasks.addAll(tasksSet);
+        tasks.add(new LogTask("Finished running initialization tasks"));
+        return Collections.unmodifiableList(tasks);
     }
 
     private static final class LogTask implements InitializationTask {

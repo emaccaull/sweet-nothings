@@ -16,35 +16,28 @@
 
 package io.github.emaccaull.sweetnothings.init;
 
-import io.github.emaccaull.sweetnothings.UnitTestConfiguration;
 import io.github.emaccaull.sweetnothings.data.init.DataSourceInitializationTask;
-import io.github.emaccaull.sweetnothings.glue.Injection;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.mockito.Mockito.mock;
 
 public class InitializationTasksPluginImplTest {
 
-    private final InitializationTasksPluginImpl plugins = new InitializationTasksPluginImpl();
-
-    @Before
-    public void setUp() {
-        Injection.setConfiguration(new UnitTestConfiguration());
-    }
-
-    @After
-    public void tearDown() {
-        Injection.reset();
-    }
+    private final Set<InitializationTask> tasks = new HashSet<>();
 
     @Test
     public void load() {
+        // Given
+        tasks.add(mock(DataSourceInitializationTask.class));
+        InitializationTasksPluginImpl plugins = new InitializationTasksPluginImpl(tasks);
+
         // When
         List<InitializationTask> tasks = plugins.getTasks();
 

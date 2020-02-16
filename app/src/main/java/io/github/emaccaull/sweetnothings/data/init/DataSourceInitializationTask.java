@@ -18,9 +18,11 @@ package io.github.emaccaull.sweetnothings.data.init;
 
 import android.app.Application;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.github.emaccaull.sweetnothings.glue.Injection;
+import io.github.emaccaull.sweetnothings.glue.IOScheduler;
 import io.github.emaccaull.sweetnothings.init.InitializationTask;
 import io.reactivex.Scheduler;
+
+import javax.inject.Inject;
 
 /**
  * Populates the data store with stock sweet nothings.
@@ -31,20 +33,14 @@ public class DataSourceInitializationTask implements InitializationTask {
     private final MessageDataSource dataSource;
     private final Scheduler ioScheduler;
 
+    @Inject
     DataSourceInitializationTask(
             StockMessageProvider stockMessageProvider,
             MessageDataSource dataSource,
-            Scheduler ioScheduler) {
+            @IOScheduler Scheduler ioScheduler) {
         this.stockMessageProvider = stockMessageProvider;
         this.dataSource = dataSource;
         this.ioScheduler = ioScheduler;
-    }
-
-    public static DataSourceInitializationTask create() {
-        return new DataSourceInitializationTask(
-                Injection.provideStockMessageProvider(),
-                Injection.provideMessageDataSource(),
-                Injection.provideSchedulerProvider().io());
     }
 
     @Override

@@ -18,27 +18,31 @@ package io.github.emaccaull.sweetnothings.testsupport;
 
 import android.app.Application;
 import androidx.annotation.RestrictTo;
+import dagger.Binds;
 import dagger.BindsInstance;
 import dagger.Provides;
+import io.github.emaccaull.sweetnothings.app.ExtModule;
 import io.github.emaccaull.sweetnothings.app.ProdConfiguration;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksModule;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
 
 import javax.inject.Singleton;
 
-/**
- * Dependencies for instrumentation tests.
- */
+/** Dependencies for instrumentation tests. */
 @RestrictTo(RestrictTo.Scope.TESTS)
 @Singleton
-@dagger.Component(modules = {
-        TestConfiguration.TestModule.class
-})
+@dagger.Component(
+        modules = {
+            TestConfiguration.TestModule.class,
+            ExtModule.class,
+            InitializationTasksModule.class
+        })
 public interface TestConfiguration extends ProdConfiguration {
 
     @dagger.Module
@@ -57,11 +61,10 @@ public interface TestConfiguration extends ProdConfiguration {
             return new InMemoryMessageDataSource();
         }
 
-        @Provides
         @Singleton
-        static InitializationTasksPlugin initializationTasksPlugin() {
-            return new InitializationTasksPluginImpl();
-        }
+        @Binds
+        abstract InitializationTasksPlugin provideInitializationTasksPlugin(
+                InitializationTasksPluginImpl impl);
 
         @Provides
         @Singleton

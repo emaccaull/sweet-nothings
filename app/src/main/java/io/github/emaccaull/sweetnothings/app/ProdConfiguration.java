@@ -17,6 +17,7 @@
 package io.github.emaccaull.sweetnothings.app;
 
 import android.app.Application;
+import dagger.Binds;
 import dagger.BindsInstance;
 import dagger.Provides;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
@@ -24,19 +25,21 @@ import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
+import io.github.emaccaull.sweetnothings.init.InitializationTasksModule;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
 import io.github.emaccaull.sweetnothings.ui.ondemand.OnDemandBuilder;
 
 import javax.inject.Singleton;
 
-/**
- * Configuration used for production builds.
- */
+/** Configuration used for production builds. */
 @Singleton
-@dagger.Component(modules = {
-        ProdConfiguration.ProdModule.class
-})
+@dagger.Component(
+        modules = {
+            ProdConfiguration.ProdModule.class,
+            ExtModule.class,
+            InitializationTasksModule.class
+        })
 public interface ProdConfiguration extends Configuration, OnDemandBuilder.ParentComponent {
 
     @dagger.Module
@@ -55,10 +58,9 @@ public interface ProdConfiguration extends Configuration, OnDemandBuilder.Parent
         }
 
         @Singleton
-        @Provides
-        static InitializationTasksPlugin provideInitializationTasksPlugin() {
-            return new InitializationTasksPluginImpl();
-        }
+        @Binds
+        abstract InitializationTasksPlugin provideInitializationTasksPlugin(
+                InitializationTasksPluginImpl impl);
 
         @Singleton
         @Provides
