@@ -16,7 +16,10 @@
 
 package io.github.emaccaull.sweetnothings.testsupport;
 
+import android.app.Application;
 import androidx.annotation.RestrictTo;
+import dagger.BindsInstance;
+import dagger.Provides;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
@@ -26,30 +29,51 @@ import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
 
+import javax.inject.Singleton;
+
 /**
  * Dependencies for instrumentation tests.
  */
 @RestrictTo(RestrictTo.Scope.TESTS)
-public class TestConfiguration implements Configuration {
+@Singleton
+@dagger.Component(modules = TestConfiguration.TestModule.class)
+public interface TestConfiguration extends Configuration {
 
-    @Override
-    public SchedulerProvider schedulerProvider() {
-        // We're using an in-memory DB, so we don't need to run on a background thread.
-        return TrampolineSchedulerProvider.INSTANCE;
+    @dagger.Module
+    abstract class TestModule {
+
+        @Provides
+        @Singleton
+        static SchedulerProvider schedulerProvider() {
+            // We're using an in-memory DB, so we don't need to run on a background thread.
+            return TrampolineSchedulerProvider.INSTANCE;
+        }
+
+        @Provides
+        @Singleton
+        static MessageDataSource messageDataSource() {
+            return new InMemoryMessageDataSource();
+        }
+
+        @Provides
+        @Singleton
+        static InitializationTasksPlugin initializationTasksPlugin() {
+            return new InitializationTasksPluginImpl();
+        }
+
+        @Provides
+        @Singleton
+        static StockMessageProvider stockMessageProvider() {
+            return new EmptyStockMessageProvider();
+        }
     }
 
-    @Override
-    public MessageDataSource messageDataSource() {
-        return new InMemoryMessageDataSource();
-    }
+    @dagger.Component.Builder
+    interface Builder {
 
-    @Override
-    public InitializationTasksPlugin initializationTasksPlugin() {
-        return new InitializationTasksPluginImpl();
-    }
+        @BindsInstance
+        Builder application(Application application);
 
-    @Override
-    public StockMessageProvider stockMessageProvider() {
-        return new EmptyStockMessageProvider();
+        TestConfiguration build();
     }
 }

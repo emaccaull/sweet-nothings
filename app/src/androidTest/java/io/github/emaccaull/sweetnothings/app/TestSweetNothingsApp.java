@@ -17,7 +17,7 @@
 package io.github.emaccaull.sweetnothings.app;
 
 import io.github.emaccaull.sweetnothings.glue.Configuration;
-import io.github.emaccaull.sweetnothings.testsupport.TestConfiguration;
+import io.github.emaccaull.sweetnothings.testsupport.DaggerTestConfiguration;
 
 /**
  * Perform common setup for Espresso tests.
@@ -26,6 +26,6 @@ public class TestSweetNothingsApp extends SweetNothingsApp {
 
     @Override
     protected Configuration createConfiguration() {
-        return new TestConfiguration();
+        return DaggerTestConfiguration.builder().application(this).build();
     }
 }
