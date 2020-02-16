@@ -69,7 +69,7 @@ public final class Injection {
         INSTANCE.config = config;
     }
 
-    private static synchronized Configuration getConfiguration() {
+    public static synchronized Configuration getConfiguration() {
         return checkNotNull(INSTANCE.config, "config is null");
     }
 

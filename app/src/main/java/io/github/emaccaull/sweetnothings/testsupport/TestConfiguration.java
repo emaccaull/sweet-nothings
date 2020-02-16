@@ -20,12 +20,12 @@ import android.app.Application;
 import androidx.annotation.RestrictTo;
 import dagger.BindsInstance;
 import dagger.Provides;
+import io.github.emaccaull.sweetnothings.app.ProdConfiguration;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
-import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
 import io.github.emaccaull.sweetnothings.ui.framework.AppViewModelFactory;
@@ -41,7 +41,7 @@ import javax.inject.Singleton;
         AppViewModelFactory.Binding.class,
         TestConfiguration.TestModule.class
 })
-public interface TestConfiguration extends Configuration {
+public interface TestConfiguration extends ProdConfiguration {
 
     @dagger.Module
     abstract class TestModule {

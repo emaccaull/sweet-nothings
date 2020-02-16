@@ -38,7 +38,7 @@ import javax.inject.Singleton;
         AppViewModelFactory.Binding.class,
         ProdConfiguration.ProdModule.class
 })
-interface ProdConfiguration extends Configuration {
+public interface ProdConfiguration extends Configuration {
 
     @dagger.Module
     abstract class ProdModule {

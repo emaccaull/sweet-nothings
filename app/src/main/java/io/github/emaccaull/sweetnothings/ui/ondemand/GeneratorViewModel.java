@@ -26,6 +26,8 @@ import io.reactivex.disposables.Disposable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+
 /**
  * Generate/fetch a Random SweetNothing on demand.
  */
@@ -38,6 +40,7 @@ final class GeneratorViewModel extends RxViewModel {
     private final GetRandomSweetNothing getRandomSweetNothing;
     private final MarkUsed markUsed;
 
+    @Inject
     @SuppressWarnings("WeakerAccess")
     public GeneratorViewModel(SchedulerProvider schedulerProvider,
             GetRandomSweetNothing getRandomSweetNothing, MarkUsed markUsed) {

@@ -41,8 +41,12 @@ public class SweetNothingsApp extends MultiDexApplication {
         Injection.setConfiguration(config);
     }
 
-    protected Configuration createConfiguration() {
+    protected ProdConfiguration createConfiguration() {
         return DaggerProdConfiguration.builder().application(this).build();
+    }
+
+    public ProdConfiguration getConfiguration() {
+        return (ProdConfiguration) Injection.getConfiguration();
     }
 
     private void initialize()  {

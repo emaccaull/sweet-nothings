@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Emmanuel MacCaull
+ * Copyright (C) 2020 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.app;
+package io.github.emaccaull.sweetnothings.ui.ondemand;
 
-import io.github.emaccaull.sweetnothings.testsupport.DaggerTestConfiguration;
+import androidx.lifecycle.ViewModel;
+import dagger.Binds;
+import dagger.Provides;
+import dagger.multibindings.IntoMap;
+import io.github.emaccaull.sweetnothings.ui.framework.ViewModelKey;
 
 /**
- * Perform common setup for Espresso tests.
+ * Describes how to add Generator* objects to the Dagger graph.
  */
-public class TestSweetNothingsApp extends SweetNothingsApp {
+@dagger.Module
+abstract class GeneratorModule {
 
-    @Override
-    protected ProdConfiguration createConfiguration() {
-        return DaggerTestConfiguration.builder().application(this).build();
-    }
+    @Binds
+    @IntoMap
+    @ViewModelKey(GeneratorViewModel.class)
+    abstract ViewModel bindGeneratorViewModel(GeneratorViewModel viewModel);
 }
