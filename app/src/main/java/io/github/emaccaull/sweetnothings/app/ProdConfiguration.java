@@ -17,6 +17,8 @@
 package io.github.emaccaull.sweetnothings.app;
 
 import android.app.Application;
+import dagger.BindsInstance;
+import dagger.Provides;
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
@@ -25,34 +27,49 @@ import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
 
+import javax.inject.Singleton;
+
 /**
  * Configuration used for production builds.
  */
-class ProdConfiguration implements Configuration {
+@Singleton
+@dagger.Component(modules = {ProdConfiguration.ProdModule.class})
+interface ProdConfiguration extends Configuration {
 
-    private final Application context;
+    @dagger.Module
+    abstract class ProdModule {
 
-    ProdConfiguration(Application context) {
-        this.context = context;
+        @Singleton
+        @Provides
+        static SchedulerProvider provideSchedulerProvider() {
+            return new AppSchedulerProvider();
+        }
+
+        @Singleton
+        @Provides
+        static MessageDataSource provideMessageDataSource(Application application) {
+            return new LocalMessageDataSource(application);
+        }
+
+        @Singleton
+        @Provides
+        static InitializationTasksPlugin provideInitializationTasksPlugin() {
+            return new InitializationTasksPluginImpl();
+        }
+
+        @Singleton
+        @Provides
+        static StockMessageProvider provideStockMessageProvider(Application application) {
+            return new AppStockMessageProvider(application);
+        }
     }
 
-    @Override
-    public SchedulerProvider schedulerProvider() {
-        return new AppSchedulerProvider();
-    }
+    @dagger.Component.Builder
+    interface Builder {
 
-    @Override
-    public MessageDataSource messageDataSource() {
-        return new LocalMessageDataSource(context);
-    }
+        @BindsInstance
+        Builder application(Application application);
 
-    @Override
-    public InitializationTasksPlugin initializationTasksPlugin() {
-        return new InitializationTasksPluginImpl();
-    }
-
-    @Override
-    public StockMessageProvider stockMessageProvider() {
-        return new AppStockMessageProvider(context);
+        ProdConfiguration build();
     }
 }

@@ -42,7 +42,7 @@ public class SweetNothingsApp extends MultiDexApplication {
     }
 
     protected Configuration createConfiguration() {
-        return new ProdConfiguration(this);
+        return DaggerProdConfiguration.builder().application(this).build();
     }
 
     private void initialize()  {

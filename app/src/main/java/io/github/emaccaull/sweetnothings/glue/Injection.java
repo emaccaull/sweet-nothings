@@ -66,10 +66,10 @@ public final class Injection {
     }
 
     public static synchronized void setConfiguration(Configuration config) {
-        INSTANCE.config = new InstanceCachingConfiguration(config);
+        INSTANCE.config = config;
     }
 
-    static synchronized Configuration getConfiguration() {
+    private static synchronized Configuration getConfiguration() {
         return checkNotNull(INSTANCE.config, "config is null");
     }
 

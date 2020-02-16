@@ -45,26 +45,6 @@ public class InjectionTest {
     private final SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
 
     @Test
-    public void dependenciesAreSharedInstances() {
-        // Given that each invocation of the config yields a new instance
-        when(config.messageDataSource()).then(invocation -> mock(MessageDataSource.class));
-        when(config.schedulerProvider()).then(invocation -> mock(SchedulerProvider.class));
-        Injection.setConfiguration(config);
-
-        // When requesting data
-        Configuration config = Injection.getConfiguration();
-
-        // Then the config should cache the first value
-        MessageDataSource aMds = config.messageDataSource();
-        MessageDataSource bMds = config.messageDataSource();
-        assertThat(aMds, is(bMds));
-
-        SchedulerProvider aSp = config.schedulerProvider();
-        SchedulerProvider bSp = config.schedulerProvider();
-        assertThat(aSp, is(bSp));
-    }
-
-    @Test
     public void provideGetRandomSweetNothing() {
         when(config.messageDataSource()).thenReturn(messageDataSource);
 
