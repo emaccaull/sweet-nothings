@@ -22,6 +22,8 @@ import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.reactivex.Maybe;
 
+import javax.inject.Inject;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -33,6 +35,7 @@ public class GetRandomSweetNothing {
     private final MessageDataSource dataSource;
     private final MessageFilter filter;
 
+    @Inject
     public GetRandomSweetNothing(MessageDataSource dataSource) {
         this.dataSource = checkNotNull(dataSource, "dataSource is null");
         this.filter = MessageFilter.builder().includeUsed(false).build();

@@ -21,6 +21,8 @@ import io.github.emaccaull.sweetnothings.core.UseCase;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.reactivex.Maybe;
 
+import javax.inject.Inject;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -31,6 +33,7 @@ public class GetSweetNothing {
 
     private final MessageDataSource dataSource;
 
+    @Inject
     public GetSweetNothing(MessageDataSource dataSource) {
         this.dataSource = checkNotNull(dataSource, "dataSource is null");
     }
