@@ -26,6 +26,7 @@ import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
+import io.github.emaccaull.sweetnothings.ui.framework.AppViewModelFactory;
 
 import javax.inject.Singleton;
 
@@ -33,7 +34,10 @@ import javax.inject.Singleton;
  * Configuration used for production builds.
  */
 @Singleton
-@dagger.Component(modules = {ProdConfiguration.ProdModule.class})
+@dagger.Component(modules = {
+        AppViewModelFactory.Binding.class,
+        ProdConfiguration.ProdModule.class
+})
 interface ProdConfiguration extends Configuration {
 
     @dagger.Module
