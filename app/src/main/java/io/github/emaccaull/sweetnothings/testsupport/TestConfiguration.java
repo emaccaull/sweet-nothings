@@ -28,7 +28,6 @@ import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
-import io.github.emaccaull.sweetnothings.ui.framework.AppViewModelFactory;
 
 import javax.inject.Singleton;
 
@@ -38,7 +37,6 @@ import javax.inject.Singleton;
 @RestrictTo(RestrictTo.Scope.TESTS)
 @Singleton
 @dagger.Component(modules = {
-        AppViewModelFactory.Binding.class,
         TestConfiguration.TestModule.class
 })
 public interface TestConfiguration extends ProdConfiguration {

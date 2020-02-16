@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.ondemand;
+package io.github.emaccaull.sweetnothings.ui.framework;
 
-import androidx.lifecycle.ViewModel;
-import dagger.Binds;
-import dagger.Provides;
-import dagger.multibindings.IntoMap;
-import io.github.emaccaull.sweetnothings.ui.framework.ViewModelKey;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import javax.inject.Scope;
 
 /**
- * Describes how to add Generator* objects to the Dagger graph.
+ * Denotes a component or object that exists for the lifetime of a single Fragment instance.
  */
-@dagger.Module
-abstract class GeneratorModule {
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(GeneratorViewModel.class)
-    abstract ViewModel bindGeneratorViewModel(GeneratorViewModel viewModel);
+@Scope
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+public @interface FragmentScope {
 }

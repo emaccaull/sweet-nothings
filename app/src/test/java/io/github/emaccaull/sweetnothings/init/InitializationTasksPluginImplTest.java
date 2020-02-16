@@ -16,9 +16,9 @@
 
 package io.github.emaccaull.sweetnothings.init;
 
+import io.github.emaccaull.sweetnothings.UnitTestConfiguration;
 import io.github.emaccaull.sweetnothings.data.init.DataSourceInitializationTask;
 import io.github.emaccaull.sweetnothings.glue.Injection;
-import io.github.emaccaull.sweetnothings.testsupport.TestConfiguration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,6 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 
 public class InitializationTasksPluginImplTest {
@@ -36,7 +35,7 @@ public class InitializationTasksPluginImplTest {
 
     @Before
     public void setUp() {
-        Injection.setConfiguration(new TestConfiguration());
+        Injection.setConfiguration(new UnitTestConfiguration());
     }
 
     @After

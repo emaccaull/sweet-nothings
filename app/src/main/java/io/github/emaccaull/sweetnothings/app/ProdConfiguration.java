@@ -26,7 +26,7 @@ import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource;
 import io.github.emaccaull.sweetnothings.glue.Configuration;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
 import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
-import io.github.emaccaull.sweetnothings.ui.framework.AppViewModelFactory;
+import io.github.emaccaull.sweetnothings.ui.ondemand.OnDemandBuilder;
 
 import javax.inject.Singleton;
 
@@ -35,10 +35,9 @@ import javax.inject.Singleton;
  */
 @Singleton
 @dagger.Component(modules = {
-        AppViewModelFactory.Binding.class,
         ProdConfiguration.ProdModule.class
 })
-public interface ProdConfiguration extends Configuration {
+public interface ProdConfiguration extends Configuration, OnDemandBuilder.ParentComponent {
 
     @dagger.Module
     abstract class ProdModule {
