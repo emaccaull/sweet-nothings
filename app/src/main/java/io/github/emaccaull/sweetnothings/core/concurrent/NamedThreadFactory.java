@@ -19,6 +19,8 @@ package io.github.emaccaull.sweetnothings.core.concurrent;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import androidx.annotation.NonNull;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -34,7 +36,7 @@ public final class NamedThreadFactory implements ThreadFactory {
     }
 
     @Override
-    public Thread newThread(Runnable r) {
+    public Thread newThread(@NonNull Runnable r) {
         return new Thread(r, name + " #" + count.getAndIncrement());
     }
 }

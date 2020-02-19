@@ -23,12 +23,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,10 +44,6 @@ import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import io.github.emaccaull.sweetnothings.ui.util.InformationalDialog;
 import io.github.emaccaull.sweetnothings.ui.util.ShareUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
 
 /**
  * Generate/fetch a Random SweetNothing on demand.
@@ -103,7 +104,7 @@ public class GeneratorFragment extends Fragment
     }
 
     private GeneratorViewModel obtainViewModel() {
-        return ViewModelProviders.of(this, viewModelFactory).get(GeneratorViewModel.class);
+        return new ViewModelProvider(this, viewModelFactory).get(GeneratorViewModel.class);
     }
 
     private void updateViewState(ViewState state) {
@@ -123,7 +124,7 @@ public class GeneratorFragment extends Fragment
         String message = sweetNothing.getMessage();
         MessageDialog dialog =
                 MessageDialog.newInstance(id, message, R.string.generate_found_message_title, this);
-        FragmentUtils.showDialog(requireFragmentManager(), dialog, CONFIRMATION_TAG);
+        FragmentUtils.showDialog(getParentFragmentManager(), dialog, CONFIRMATION_TAG);
     }
 
     @Override
@@ -148,6 +149,6 @@ public class GeneratorFragment extends Fragment
     private void apologize() {
         InformationalDialog dialog = InformationalDialog.newInstance(
                 R.string.generate_failed_message_title, R.string.generate_failed_message_body);
-        FragmentUtils.showDialog(requireFragmentManager(), dialog, APOLOGY_TAG);
+        FragmentUtils.showDialog(getParentFragmentManager(), dialog, APOLOGY_TAG);
     }
 }
