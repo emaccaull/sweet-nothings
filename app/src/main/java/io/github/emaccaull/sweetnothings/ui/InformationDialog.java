@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Emmanuel MacCaull
+ * Copyright (C) 2020 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.util;
+package io.github.emaccaull.sweetnothings.ui;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -23,23 +23,23 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
 import io.github.emaccaull.sweetnothings.R;
 
 /**
  * Dialog for displaying a generic message to the user where the only action is to dismiss the
  * dialog.
  */
-public class InformationalDialog extends DialogFragment {
+public class InformationDialog extends DialogFragment {
     private static final String ARG_TITLE_ID = "title_id";
     private static final String ARG_MESSAGE_ID = "message_id";
 
-    public static InformationalDialog newInstance(
-            @StringRes int titleId, @StringRes int messageId) {
+    public static InformationDialog newInstance(@StringRes int titleId, @StringRes int messageId) {
         Bundle args = new Bundle();
         args.putInt(ARG_TITLE_ID, titleId);
         args.putInt(ARG_MESSAGE_ID, messageId);
 
-        InformationalDialog dialog = new InformationalDialog();
+        InformationDialog dialog = new InformationDialog();
         dialog.setArguments(args);
         return dialog;
     }

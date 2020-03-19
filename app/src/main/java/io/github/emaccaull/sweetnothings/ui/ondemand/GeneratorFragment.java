@@ -36,7 +36,7 @@ import butterknife.Unbinder;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.app.SweetNothingsApp;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
-import io.github.emaccaull.sweetnothings.ui.util.InformationalDialog;
+import io.github.emaccaull.sweetnothings.ui.InformationDialog;
 import io.github.emaccaull.sweetnothings.ui.util.ShareUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,7 +137,7 @@ public class GeneratorFragment extends Fragment {
     /// Apologies
 
     private void apologize() {
-        InformationalDialog dialog = InformationalDialog.newInstance(
+        InformationDialog dialog = InformationDialog.newInstance(
                 R.string.generate_failed_message_title, R.string.generate_failed_message_body);
         FragmentUtils.showDialog(getParentFragmentManager(), dialog, APOLOGY_TAG);
     }
