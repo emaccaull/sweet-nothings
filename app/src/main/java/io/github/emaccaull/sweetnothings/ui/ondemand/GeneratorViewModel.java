@@ -18,6 +18,7 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
 import io.github.emaccaull.sweetnothings.core.usecase.MarkUsed;
@@ -50,23 +51,31 @@ final class GeneratorViewModel extends RxViewModel {
         resetViewState();
     }
 
+    void requestInitialMessage() {
+        loadRandomMessage(ViewState.initial());
+    }
+
     /**
      * Finds an unused sweet nothing and updates the view state.
      */
     void requestNewMessage() {
+        loadRandomMessage(ViewState.noMessageFound());
+    }
+
+    private void loadRandomMessage(ViewState defaultIfNotFound) {
         logger.info("Requesting a new sweet nothing");
 
         Disposable d = getRandomSweetNothing.apply().toObservable()
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .map(ViewState::loaded)
-                .defaultIfEmpty(ViewState.noMessageFound())
+                .defaultIfEmpty(defaultIfNotFound)
                 .startWith(ViewState.loading())
                 .subscribe(
                         viewState::setValue,
                         throwable -> {
                             logger.error("Couldn't load sweet nothing", throwable);
-                            viewState.setValue(ViewState.noMessageFound());
+                            viewState.setValue(defaultIfNotFound);
                         }
                 );
 
@@ -76,17 +85,17 @@ final class GeneratorViewModel extends RxViewModel {
     /**
      * Computes the next view state once a sweet nothing has been successfully shared.
      */
-    void onShareSuccessful(String id) {
-        logger.info("Sharing a sweet nothing; id='{}'", id);
+    void onShareSuccessful(String message) {
+        logger.info("Sharing a sweet nothing; message='{}'", message);
 
-        Disposable d = markUsed.apply(id)
+        Disposable d = markUsed.apply(message)
                 .subscribeOn(schedulerProvider.io())
                 .subscribe(this::resetViewState);
 
         add(d);
     }
 
-    void onShareFailed(String id) {
+    void onShareFailed(String message) {
         // Reset the view for now. TODO notify user.
         resetViewState();
     }

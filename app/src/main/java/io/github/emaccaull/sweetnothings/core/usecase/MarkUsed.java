@@ -39,7 +39,8 @@ public class MarkUsed {
         this.dataSource = checkNotNull(dataSource, "dataSource is null");
     }
 
-    public Completable apply(String id) {
-        return dataSource.markUsed(id);
+    public Completable apply(String message) {
+        return dataSource.search(message)
+                .flatMapCompletable(sweetNothing -> dataSource.markUsed(sweetNothing.getId()));
     }
 }

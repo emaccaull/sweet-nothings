@@ -80,6 +80,36 @@ public class GeneratorViewModelTest {
     }
 
     @Test
+    public void requestInitialMessage() {
+        SweetNothing sn = withRandomSweetNothing("$()$");
+
+        // When requesting an initial sweet nothing
+        viewModel.requestInitialMessage();
+
+        // Then the view should be updated
+        InOrder inOrder = Mockito.inOrder(observer);
+        inOrder.verify(observer).onChanged(ViewState.loading());
+        inOrder.verify(observer).onChanged(ViewState.loaded(sn));
+
+        verify(observer, never()).onChanged(ViewState.noMessageFound());
+    }
+
+    @Test
+    public void requestInitialSweetNothing_whenNoMessageAvailable() {
+        withNoSweetNothing();
+
+        // When requesting a sweet nothing and none are available
+        viewModel.requestInitialMessage();
+
+        // Then the view should updated with an empty message
+        InOrder inOrder = Mockito.inOrder(observer);
+        inOrder.verify(observer).onChanged(ViewState.loading());
+        inOrder.verify(observer).onChanged(ViewState.initial());
+
+        verify(observer, never()).onChanged(ViewState.noMessageFound());
+    }
+
+    @Test
     public void requestNewMessage_registersDisposable() {
         withRandomSweetNothing("<3<3");
 
@@ -140,10 +170,10 @@ public class GeneratorViewModelTest {
         viewModel.requestNewMessage();
 
         // When the user has sent the message
-        viewModel.onShareSuccessful("snId");
+        viewModel.onShareSuccessful("Some Message <3");
 
         // Then the sweet nothing should be marked as used
-        verify(markUsed).apply("snId");
+        verify(markUsed).apply("Some Message <3");
 
         // And the view state should be reset
         InOrder inOrder = Mockito.inOrder(observer);
@@ -158,10 +188,10 @@ public class GeneratorViewModelTest {
         viewModel.requestNewMessage();
 
         // When sharing the message failed
-        viewModel.onShareFailed("snId");
+        viewModel.onShareFailed("Some Message <3");
 
         // Then the sweet nothing should not be marked as used
-        verify(markUsed, never()).apply("snId");
+        verify(markUsed, never()).apply("Some Message <3");
 
         // And the view state should be reset
         InOrder inOrder = Mockito.inOrder(observer);

@@ -16,9 +16,10 @@
 
 package io.github.emaccaull.sweetnothings.core.usecase;
 
+import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.reactivex.Completable;
-import io.reactivex.observers.TestObserver;
+import io.reactivex.Maybe;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,11 +45,13 @@ public class MarkUsedTest {
     public void apply() {
         // Given that the data source will complete successfully when an item is marked as used.
         when(messageDataSource.markUsed("theId")).thenReturn(Completable.complete());
+        // And that the data source has a SweetNothing for the given message
+        SweetNothing sweetNothing = SweetNothing.builder("theId").message("my message").build();
+        when(messageDataSource.search("my message")).thenReturn(Maybe.just(sweetNothing));
 
         // When applying the use case
-        TestObserver<Void> observer = markUsed.apply("theId").test();
-
-        // Then the observer should complete
-        observer.assertComplete();
+        markUsed.apply("my message")
+                // Then it should complete
+                .test().assertComplete();
     }
 }

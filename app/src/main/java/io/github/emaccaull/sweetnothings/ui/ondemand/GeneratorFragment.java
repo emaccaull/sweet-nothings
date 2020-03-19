@@ -27,7 +27,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import butterknife.BindView;
@@ -89,7 +88,7 @@ public class GeneratorFragment extends Fragment {
 
         viewModel = obtainViewModel();
         viewModel.getViewState().observe(getViewLifecycleOwner(), this::updateViewState);
-        viewModel.requestNewMessage();
+        viewModel.requestInitialMessage();
 
         return view;
     }
@@ -103,6 +102,11 @@ public class GeneratorFragment extends Fragment {
     @OnClick(R.id.search_button)
     void onSearchClicked(View view) {
         viewModel.requestNewMessage();
+    }
+
+    @OnClick(R.id.send_button)
+    void onSendClicked(View view) {
+        onShareMessage(messageContent.getText());
     }
 
     private GeneratorViewModel obtainViewModel() {
@@ -119,13 +123,14 @@ public class GeneratorFragment extends Fragment {
         }
     }
 
-    public void onShareMessage(String messageId, CharSequence message) {
+    private void onShareMessage(CharSequence message) {
         Intent shareIntent = ShareUtils.createShareIntent(requireActivity(), message);
+        String actualMessage = message.toString();
         if (shareIntent != null) {
             startActivity(shareIntent);
-            viewModel.onShareSuccessful(messageId);
+            viewModel.onShareSuccessful(actualMessage);
         } else {
-            viewModel.onShareFailed(messageId);
+            viewModel.onShareFailed(actualMessage);
         }
     }
 

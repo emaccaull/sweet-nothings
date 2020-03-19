@@ -19,8 +19,6 @@ package io.github.emaccaull.sweetnothings.ui;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import androidx.fragment.app.FragmentActivity;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -37,7 +35,6 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.Intents.intending;
@@ -56,19 +53,19 @@ public class MainActivityTest {
     public final IntentsTestRule<MainActivity> activityRule =
             new IntentsTestRule<>(MainActivity.class);
 
-    private InMemoryMessageDataSource inMemoryMessageDataSource;
+    private InMemoryMessageDataSource messageDataSource;
 
     @Before
     public void setUp() {
         // DataSource is configured by TestSweetNothingsApp
-        inMemoryMessageDataSource =
+        messageDataSource =
                 (InMemoryMessageDataSource)
                         activityRule.getActivity().getConfiguration().messageDataSource();
     }
 
     @After
     public void tearDown() {
-        inMemoryMessageDataSource.clear();
+        messageDataSource.clear();
     }
 
     @Test
@@ -78,15 +75,11 @@ public class MainActivityTest {
 
     @Test
     public void selectingGenerate_thenSend_sharesMessage() {
-        onView(withText(R.string.generate_found_message_title)).check(doesNotExist());
-        onView(withText(R.string.generate_send)).check(doesNotExist());
-        onView(withText(R.string.cancel)).check(doesNotExist());
-
         // Given that there is a sweet nothing available
         SweetNothing message = SweetNothing.builder("xyz").message("<3 u").used(false).build();
-        inMemoryMessageDataSource.add(message);
+        messageDataSource.add(message);
 
-        // When the generate button is clicked
+        // When the search button is clicked
         onView(withId(R.id.search_button)).perform(click());
 
         // Then we should have the option of sending the sweet nothing
@@ -102,43 +95,20 @@ public class MainActivityTest {
         intended(MoreIntentMatchers.hasShareIntent("<3 u"));
 
         // And the sweet nothing should be marked as used
-        SweetNothing used = inMemoryMessageDataSource.fetchMessage("xyz").blockingGet();
+        SweetNothing used = messageDataSource.fetchMessage("xyz").blockingGet();
         assertThat(used.isUsed(), is(true));
-    }
-
-    @Test
-    public void selectingGenerate_thenCancel_dismissesDialog() {
-        // Given that there is a sweet nothing available
-        SweetNothing message = SweetNothing.builder("xyz").message("<3 u").used(false).build();
-        inMemoryMessageDataSource.add(message);
-
-        // And the generate button is clicked
-        onView(withId(R.id.search_button)).perform(click());
-
-        // When cancel is clicked
-        onView(withText(R.string.cancel)).perform(click());
-
-        // Then the dialog should be dismissed
-        onView(withText(R.string.generate_found_message_title)).check(doesNotExist());
-
-        // Even after rotation
-        FragmentActivity activity = activityRule.getActivity();
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        onView(withText(R.string.generate_found_message_title)).check(doesNotExist());
     }
 
     @Test
     public void selectingGenerate_whenNoMessagesAvailable_notifiesUser() {
         // Given that no sweet nothings are available (only used one present)
         SweetNothing message = SweetNothing.builder("abc").message("<3 u").used(true).build();
-        inMemoryMessageDataSource.add(message);
+        messageDataSource.add(message);
 
         // When the generate button is clicked
         onView(withId(R.id.search_button)).perform(click());
 
         // Then a message should tell the user that they will have to check back later
-        onView(withText(R.string.generate_found_message_title)).check(doesNotExist());
         onView(withText(R.string.generate_failed_message_title)).check(matches(isDisplayed()));
         onView(withText(R.string.generate_failed_message_body)).check(matches(isDisplayed()));
         onView(withText(R.string.ok)).perform(click());
