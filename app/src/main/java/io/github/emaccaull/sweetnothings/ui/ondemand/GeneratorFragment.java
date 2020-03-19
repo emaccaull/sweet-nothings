@@ -35,8 +35,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.app.SweetNothingsApp;
-import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import io.github.emaccaull.sweetnothings.ui.InformationDialog;
+import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import io.github.emaccaull.sweetnothings.ui.util.ShareUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +106,10 @@ public class GeneratorFragment extends Fragment {
 
     @OnClick(R.id.send_button)
     void onSendClicked(View view) {
-        onShareMessage(messageContent.getText());
+        CharSequence text = messageContent.getText();
+        if (text != null) {
+            onShareMessage(text.toString());
+        }
     }
 
     private GeneratorViewModel obtainViewModel() {
@@ -123,14 +126,13 @@ public class GeneratorFragment extends Fragment {
         }
     }
 
-    private void onShareMessage(CharSequence message) {
+    private void onShareMessage(String message) {
         Intent shareIntent = ShareUtils.createShareIntent(requireActivity(), message);
-        String actualMessage = message.toString();
         if (shareIntent != null) {
             startActivity(shareIntent);
-            viewModel.onShareSuccessful(actualMessage);
+            viewModel.onShareSuccessful(message);
         } else {
-            viewModel.onShareFailed(actualMessage);
+            viewModel.onShareFailed(message);
         }
     }
 
