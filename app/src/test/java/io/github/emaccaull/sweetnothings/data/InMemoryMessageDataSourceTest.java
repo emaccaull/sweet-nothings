@@ -98,6 +98,30 @@ public class InMemoryMessageDataSourceTest {
     }
 
     @Test
+    public void search() {
+        // Given that there is a sweet nothing with the given message
+        SweetNothing sweetNothing = SweetNothing.builder("ID").message("miss u").build();
+        dataSource.add(sweetNothing);
+
+        // When searching for the message
+        dataSource.search("miss u")
+                // Then the sweet nothing should be returned
+                .test()
+                .assertComplete()
+                .assertValue(sweetNothing);
+    }
+
+    @Test
+    public void search_whenNoMatchFound() {
+        // When searching for a message that is not present
+        dataSource.search("something")
+                // Then nothing should be found
+                .test()
+                .assertComplete()
+                .assertNoValues();
+    }
+
+    @Test
     public void markUsed() {
         // Given that there is a sweet nothing with the given id
         SweetNothing message = SweetNothing.builder("1234").message("foo").build();

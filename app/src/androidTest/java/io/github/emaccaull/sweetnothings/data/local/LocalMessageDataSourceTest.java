@@ -19,6 +19,7 @@ package io.github.emaccaull.sweetnothings.data.local;
 import android.content.Context;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import org.junit.Before;
@@ -84,6 +85,32 @@ public class LocalMessageDataSourceTest {
 
         // Then it should be the message that was added
         assertThat(retrieved, is(added));
+    }
+
+    @Test
+    public void search() {
+        // Given that there is a sweet nothing with an exact content match
+        SweetNothing added = SweetNothing.builder("id123").message("i <3 u").build();
+        dataSource.add(added);
+
+        // When search for that item
+        SweetNothing retrieved = dataSource.search("i <3 u").blockingGet();
+
+        // Then it should be the message that was added
+        assertThat(retrieved, is(added));
+    }
+
+    @Test
+    public void search_whenNoMatchPresent() {
+        // Given that a partial match is present
+        SweetNothing added = SweetNothing.builder("id789").message("some content").build();
+        dataSource.add(added);
+
+        // When searching for that item with a partial match
+        SweetNothing retrieved = dataSource.search("some").blockingGet();
+
+        // Then not items are found
+        assertThat(retrieved, is(nullValue()));
     }
 
     @Test

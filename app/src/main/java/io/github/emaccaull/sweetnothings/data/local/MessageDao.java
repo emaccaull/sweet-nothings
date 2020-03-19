@@ -21,6 +21,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
 import io.reactivex.Maybe;
 
 import java.util.List;
@@ -65,6 +66,15 @@ interface MessageDao {
      */
     @Query("SELECT * FROM " + Message.TABLE_NAME + " WHERE id = :id")
     Maybe<Message> selectById(String id);
+
+    /**
+     * Searches for a Message with the given text {@code content}.
+     *
+     * @param content the exact text of the message contents to fetch.
+     * @return a {@link Message} if it can be found.
+     */
+    @Query("SELECT * FROM " + Message.TABLE_NAME + " WHERE content = :content")
+    Maybe<Message> selectByMessage(String content);
 
     /**
      * Retrieves all messages from the database.

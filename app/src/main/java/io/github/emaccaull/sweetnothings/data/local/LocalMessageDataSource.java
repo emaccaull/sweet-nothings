@@ -17,6 +17,7 @@
 package io.github.emaccaull.sweetnothings.data.local;
 
 import android.content.Context;
+
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.AbstractMessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
@@ -62,6 +63,12 @@ public class LocalMessageDataSource extends AbstractMessageDataSource {
     public Maybe<SweetNothing> fetchMessage(String id) {
         MessageDao dao = getMessageDao();
         return dao.selectById(id).map(Message::toSweetNothing);
+    }
+
+    @Override
+    public Maybe<SweetNothing> search(String exactMessage) {
+        MessageDao dao = getMessageDao();
+        return dao.selectByMessage(exactMessage).map(Message::toSweetNothing);
     }
 
     @Override

@@ -45,6 +45,16 @@ public interface MessageDataSource {
     Maybe<SweetNothing> fetchMessage(String id);
 
     /**
+     * Searches for a {@link SweetNothing} with the message {@code exactMessage}. Only an exact
+     * match will return a result. If more than one {@code SweetNothing} matches, then one of them
+     * will be returned.
+     *
+     * @param exactMessage the exact message to match in the search.
+     * @return one of the matching {@code SweetNothing} if at least one could be found.
+     */
+    Maybe<SweetNothing> search(String exactMessage);
+
+    /**
      * Marks the SweetNothing with the given {@code id} as used. Once a SweetNothing is used, it can
      * be excluded from subsequent queries by using the appropriate {@link MessageFilter}.
      *

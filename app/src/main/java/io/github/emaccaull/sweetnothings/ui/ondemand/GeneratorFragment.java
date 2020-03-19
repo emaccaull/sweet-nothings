@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -35,7 +36,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.app.SweetNothingsApp;
-import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import io.github.emaccaull.sweetnothings.ui.util.InformationalDialog;
 import io.github.emaccaull.sweetnothings.ui.util.ShareUtils;
@@ -47,8 +47,7 @@ import javax.inject.Inject;
 /**
  * Generate/fetch a Random SweetNothing on demand.
  */
-public class GeneratorFragment extends Fragment
-        implements MessageDialog.MessageSharedListener {
+public class GeneratorFragment extends Fragment {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorFragment.class);
 
     private static final String CONFIRMATION_TAG = "ui.ondemand.confirm";
@@ -59,8 +58,11 @@ public class GeneratorFragment extends Fragment
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    @BindView(R.id.generate_phrase_btn)
-    Button generatePhraseButton;
+    @BindView(R.id.message_content)
+    EditText messageContent;
+
+    @BindView(R.id.search_button)
+    Button searchButton;
 
     private Unbinder unbinder;
 
@@ -87,6 +89,7 @@ public class GeneratorFragment extends Fragment
 
         viewModel = obtainViewModel();
         viewModel.getViewState().observe(getViewLifecycleOwner(), this::updateViewState);
+        viewModel.requestNewMessage();
 
         return view;
     }
@@ -97,8 +100,8 @@ public class GeneratorFragment extends Fragment
         unbinder.unbind();
     }
 
-    @OnClick(R.id.generate_phrase_btn)
-    void onGenerateClicked(View view) {
+    @OnClick(R.id.search_button)
+    void onSearchClicked(View view) {
         viewModel.requestNewMessage();
     }
 
@@ -107,40 +110,23 @@ public class GeneratorFragment extends Fragment
     }
 
     private void updateViewState(ViewState state) {
-        generatePhraseButton.setEnabled(!state.isLoading());
+        searchButton.setEnabled(!state.isLoading());
 
         if (state.getSweetNothing() != null) {
-            confirmSend(state.getSweetNothing());
+            messageContent.setText(state.getSweetNothing().getMessage());
         } else if (state.isNotFound()) {
             apologize();
         }
     }
 
-    /// MessageDialog
-
-    private void confirmSend(SweetNothing sweetNothing) {
-        String id = sweetNothing.getId();
-        String message = sweetNothing.getMessage();
-        MessageDialog dialog =
-                MessageDialog.newInstance(id, message, R.string.generate_found_message_title, this);
-        FragmentUtils.showDialog(getParentFragmentManager(), dialog, CONFIRMATION_TAG);
-    }
-
-    @Override
     public void onShareMessage(String messageId, CharSequence message) {
-        FragmentActivity activity = requireActivity();
-        Intent shareIntent = ShareUtils.createShareIntent(activity, message);
+        Intent shareIntent = ShareUtils.createShareIntent(requireActivity(), message);
         if (shareIntent != null) {
             startActivity(shareIntent);
             viewModel.onShareSuccessful(messageId);
         } else {
             viewModel.onShareFailed(messageId);
         }
-    }
-
-    @Override
-    public void onCancelled() {
-        viewModel.resetViewState();
     }
 
     /// Apologies

@@ -109,6 +109,11 @@ public class AbstractMessageDataSourceTest {
         }
 
         @Override
+        public Maybe<SweetNothing> search(String exactMessage) {
+            return null;
+        }
+
+        @Override
         public Completable markUsed(String id) {
             return null;
         }

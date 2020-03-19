@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+
 import io.github.emaccaull.sweetnothings.MoreIntentMatchers;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
@@ -86,17 +87,16 @@ public class MainActivityTest {
         inMemoryMessageDataSource.add(message);
 
         // When the generate button is clicked
-        onView(withId(R.id.generate_phrase_btn)).perform(click());
+        onView(withId(R.id.search_button)).perform(click());
 
         // Then we should have the option of sending the sweet nothing
-        onView(withText(R.string.generate_found_message_title)).check(matches(isDisplayed()));
-        onView(withText("<3 u")).check(matches(isDisplayed()));
+        onView(withId(R.id.message_content)).check(matches(withText("<3 u")));
 
         // Stub out the share action...
         withStubbedShareAction();
 
         // When selecting Send
-        onView(withText(R.string.generate_send)).perform(click());
+        onView(withId(R.id.send_button)).perform(click());
 
         // Then a share intent should be sent
         intended(MoreIntentMatchers.hasShareIntent("<3 u"));
@@ -113,7 +113,7 @@ public class MainActivityTest {
         inMemoryMessageDataSource.add(message);
 
         // And the generate button is clicked
-        onView(withId(R.id.generate_phrase_btn)).perform(click());
+        onView(withId(R.id.search_button)).perform(click());
 
         // When cancel is clicked
         onView(withText(R.string.cancel)).perform(click());
@@ -135,7 +135,7 @@ public class MainActivityTest {
         inMemoryMessageDataSource.add(message);
 
         // When the generate button is clicked
-        onView(withId(R.id.generate_phrase_btn)).perform(click());
+        onView(withId(R.id.search_button)).perform(click());
 
         // Then a message should tell the user that they will have to check back later
         onView(withText(R.string.generate_found_message_title)).check(doesNotExist());

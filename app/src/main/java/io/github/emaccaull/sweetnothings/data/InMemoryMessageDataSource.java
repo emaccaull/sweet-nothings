@@ -23,6 +23,7 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -59,6 +60,19 @@ public class InMemoryMessageDataSource extends AbstractMessageDataSource {
             }
 
             return Maybe.just(sweetNothing);
+        });
+    }
+
+    @Override
+    public Maybe<SweetNothing> search(String exactMessage) {
+        return Maybe.fromCallable(() -> {
+            for (Map.Entry<String, SweetNothing> entry : store.entrySet()) {
+                SweetNothing value = entry.getValue();
+                if (exactMessage.equals(value.getMessage())) {
+                    return value;
+                }
+            }
+            return null;
         });
     }
 
