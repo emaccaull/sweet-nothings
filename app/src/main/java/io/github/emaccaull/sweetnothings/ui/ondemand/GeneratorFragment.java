@@ -49,7 +49,6 @@ import javax.inject.Inject;
 public class GeneratorFragment extends Fragment {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorFragment.class);
 
-    private static final String CONFIRMATION_TAG = "ui.ondemand.confirm";
     private static final String APOLOGY_TAG = "ui.ondemand.notfound";
 
     private GeneratorViewModel viewModel;
