@@ -23,13 +23,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Scheduler provider used by the app in production.
- */
+/** Scheduler provider used by the app in production. */
 class AppSchedulerProvider implements SchedulerProvider {
 
     private static final Scheduler IO_SCHEDULER;
@@ -39,9 +37,14 @@ class AppSchedulerProvider implements SchedulerProvider {
         int maxPoolSize      = cpuCount * 2 + 1;
         int keepAliveSeconds = 30;
 
-        final Executor ioExecutor = new ThreadPoolExecutor(
-                corePoolSize, maxPoolSize, keepAliveSeconds, TimeUnit.SECONDS,
-                new LinkedBlockingDeque<>(128), new NamedThreadFactory("IO"));
+        final Executor ioExecutor =
+                new ThreadPoolExecutor(
+                        corePoolSize,
+                        maxPoolSize,
+                        keepAliveSeconds,
+                        TimeUnit.SECONDS,
+                        new LinkedBlockingQueue<>(),
+                        new NamedThreadFactory("IO"));
 
         IO_SCHEDULER = Schedulers.from(ioExecutor);
     }
