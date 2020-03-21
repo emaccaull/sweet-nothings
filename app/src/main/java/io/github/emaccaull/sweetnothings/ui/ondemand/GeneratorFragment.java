@@ -19,6 +19,7 @@ package io.github.emaccaull.sweetnothings.ui.ondemand;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import androidx.lifecycle.ViewModelProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.app.SweetNothingsApp;
@@ -62,6 +64,9 @@ public class GeneratorFragment extends Fragment {
     @BindView(R.id.search_button)
     Button searchButton;
 
+    @BindView(R.id.send_button)
+    Button sendButton;
+
     private Unbinder unbinder;
 
     public static GeneratorFragment newInstance() {
@@ -84,12 +89,14 @@ public class GeneratorFragment extends Fragment {
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.generator_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         viewModel = obtainViewModel();
         viewModel.getViewState().observe(getViewLifecycleOwner(), this::updateViewState);
         viewModel.requestInitialMessage();
-
-        return view;
     }
 
     @Override
@@ -111,6 +118,12 @@ public class GeneratorFragment extends Fragment {
         }
     }
 
+    @OnTextChanged(value = R.id.message_content, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void onMessageContentChanged(CharSequence text) {
+        // TODO: is there a way to manage this state from the ViewModel?
+        sendButton.setEnabled(!TextUtils.isEmpty(text));
+    }
+
     private GeneratorViewModel obtainViewModel() {
         return new ViewModelProvider(this, viewModelFactory).get(GeneratorViewModel.class);
     }
@@ -118,10 +131,13 @@ public class GeneratorFragment extends Fragment {
     private void updateViewState(ViewState state) {
         searchButton.setEnabled(!state.isLoading());
 
-        if (state.getSweetNothing() != null) {
-            messageContent.setText(state.getSweetNothing().getMessage());
-        } else if (state.isNotFound()) {
+        if (state.isNotFound()) {
             apologize();
+        } else if (state.getSweetNothing() != null) {
+            messageContent.setText(state.getSweetNothing().getMessage());
+        } else {
+            // Initial state
+            messageContent.setText(null);
         }
     }
 

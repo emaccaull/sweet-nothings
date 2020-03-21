@@ -34,16 +34,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -97,6 +100,32 @@ public class MainActivityTest {
         // And the sweet nothing should be marked as used
         SweetNothing used = messageDataSource.fetchMessage("xyz").blockingGet();
         assertThat(used.isUsed(), is(true));
+    }
+
+    @Test
+    public void sendButton_isDisabled_whenInitialInputIsEmpty() {
+        // Given that the text box is empty
+        onView(withId(R.id.message_content)).check(matches(withText("")));
+
+        // Then the send button should be disabled
+        onView(withId(R.id.send_button)).check(matches(not(isEnabled())));
+    }
+
+    @Test
+    public void sendButton_isDisabled_whenModifiedInputIsEmpty() {
+        // Given that there is a sweet nothing available
+        SweetNothing message = SweetNothing.builder("acai").message("<3 u").used(false).build();
+        messageDataSource.add(message);
+        onView(withId(R.id.search_button)).perform(click()); // Load the sweet nothing
+
+        // Then the button should be enabled
+        onView(withId(R.id.send_button)).check(matches(isEnabled()));
+
+        // After the text has been edited
+        onView(withId(R.id.message_content)).perform(clearText());
+
+        // Then the send button should be disabled
+        onView(withId(R.id.send_button)).check(matches(not(isEnabled())));
     }
 
     @Test
