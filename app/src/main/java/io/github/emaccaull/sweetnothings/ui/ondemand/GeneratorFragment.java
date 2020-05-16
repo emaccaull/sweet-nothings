@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jakewharton.rxbinding3.widget.RxTextView;
+import com.jakewharton.rxbinding3.widget.TextViewAfterTextChangeEvent;
 
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.app.SweetNothingsApp;
@@ -83,8 +84,10 @@ public class GeneratorFragment extends Fragment {
         binding.searchButton.setOnClickListener(this::onSearchClicked);
         binding.sendButton.setOnClickListener(this::onSendClicked);
 
-        Disposable d = RxTextView.afterTextChangeEvents(binding.messageContent)
-                .subscribe(event -> onMessageContentChanged(event.getEditable()));
+        Disposable d =
+                RxTextView.afterTextChangeEvents(binding.messageContent)
+                        .map(TextViewAfterTextChangeEvent::getEditable)
+                        .subscribe(this::onMessageContentChanged);
         viewDisposables.add(d);
 
         return binding.getRoot();
