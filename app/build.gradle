@@ -34,9 +34,13 @@ android {
         }
     }
 
+    viewBinding {
+        enabled = true
+    }
+
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled = true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -78,6 +82,7 @@ dependencies {
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    implementation 'com.jakewharton.rxbinding3:rxbinding-core:3.1.0'
 
     // Dependency Injection
     api 'com.google.dagger:dagger:2.26'
@@ -91,8 +96,6 @@ dependencies {
 
     // Utilities
     implementation "com.google.guava:guava:$guava_version"
-    implementation "com.jakewharton:butterknife:$butterknife_version"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
 
     // Dependency Management
     implementation "javax.inject:javax.inject:$javax_inject_version"

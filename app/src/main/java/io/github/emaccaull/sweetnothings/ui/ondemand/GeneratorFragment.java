@@ -23,23 +23,21 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
-import butterknife.Unbinder;
+import com.jakewharton.rxbinding3.widget.RxTextView;
+
 import io.github.emaccaull.sweetnothings.R;
 import io.github.emaccaull.sweetnothings.app.SweetNothingsApp;
+import io.github.emaccaull.sweetnothings.databinding.GeneratorFragmentBinding;
 import io.github.emaccaull.sweetnothings.ui.InformationDialog;
 import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils;
 import io.github.emaccaull.sweetnothings.ui.util.ShareUtils;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,21 +51,14 @@ public class GeneratorFragment extends Fragment {
 
     private static final String APOLOGY_TAG = "ui.ondemand.notfound";
 
+    private final CompositeDisposable viewDisposables = new CompositeDisposable();
+
     private GeneratorViewModel viewModel;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    @BindView(R.id.message_content)
-    EditText messageContent;
-
-    @BindView(R.id.search_button)
-    Button searchButton;
-
-    @BindView(R.id.send_button)
-    Button sendButton;
-
-    private Unbinder unbinder;
+    private GeneratorFragmentBinding binding;
 
     public static GeneratorFragment newInstance() {
         return new GeneratorFragment();
@@ -87,9 +78,16 @@ public class GeneratorFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.generator_fragment, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
+        binding = GeneratorFragmentBinding.inflate(inflater, container, false);
+
+        binding.searchButton.setOnClickListener(this::onSearchClicked);
+        binding.sendButton.setOnClickListener(this::onSendClicked);
+
+        Disposable d = RxTextView.afterTextChangeEvents(binding.messageContent)
+                .subscribe(event -> onMessageContentChanged(event.getEditable()));
+        viewDisposables.add(d);
+
+        return binding.getRoot();
     }
 
     @Override
@@ -102,26 +100,24 @@ public class GeneratorFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        viewDisposables.clear();
+        binding = null;
     }
 
-    @OnClick(R.id.search_button)
-    void onSearchClicked(View view) {
+    private void onSearchClicked(View view) {
         viewModel.requestNewMessage();
     }
 
-    @OnClick(R.id.send_button)
-    void onSendClicked(View view) {
-        CharSequence text = messageContent.getText();
+    private void onSendClicked(View view) {
+        CharSequence text = binding.messageContent.getText();
         if (text != null) {
             onShareMessage(text.toString());
         }
     }
 
-    @OnTextChanged(value = R.id.message_content, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    void onMessageContentChanged(CharSequence text) {
+    private void onMessageContentChanged(CharSequence text) {
         // TODO: is there a way to manage this state from the ViewModel?
-        sendButton.setEnabled(!TextUtils.isEmpty(text));
+        binding.sendButton.setEnabled(!TextUtils.isEmpty(text));
     }
 
     private GeneratorViewModel obtainViewModel() {
@@ -129,15 +125,15 @@ public class GeneratorFragment extends Fragment {
     }
 
     private void updateViewState(ViewState state) {
-        searchButton.setEnabled(!state.isLoading());
+        binding.searchButton.setEnabled(!state.isLoading());
 
         if (state.isNotFound()) {
             apologize();
         } else if (state.getSweetNothing() != null) {
-            messageContent.setText(state.getSweetNothing().getMessage());
+            binding.messageContent.setText(state.getSweetNothing().getMessage());
         } else {
             // Initial state
-            messageContent.setText(null);
+            binding.messageContent.setText(null);
         }
     }
 
