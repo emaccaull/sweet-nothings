@@ -55,7 +55,7 @@ public class InitializationTasksPluginImpl implements InitializationTasksPlugin 
 
         @Override
         public void run(Application app) {
-            logger.debug(message);
+            logger.info(message);
         }
     }
 }
