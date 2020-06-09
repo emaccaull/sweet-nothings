@@ -60,11 +60,6 @@ public interface ProdConfiguration extends Configuration, OnDemandBuilder.Parent
         }
 
         @Singleton
-        @Binds
-        abstract InitializationTasksPlugin provideInitializationTasksPlugin(
-                InitializationTasksPluginImpl impl);
-
-        @Singleton
         @Provides
         static StockMessageProvider provideStockMessageProvider(Application application) {
             return new AppStockMessageProvider(application);

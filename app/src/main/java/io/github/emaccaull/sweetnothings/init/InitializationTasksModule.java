@@ -21,6 +21,8 @@ import dagger.Module;
 import dagger.multibindings.IntoSet;
 import io.github.emaccaull.sweetnothings.data.init.DataSourceInitializationTask;
 
+import javax.inject.Singleton;
+
 /**
  * Makes initialization tasks available to the task runner.
  * TODO(emmanuel): determine if this module should be split into several modules (one for each task)
@@ -33,4 +35,9 @@ public abstract class InitializationTasksModule {
     @Binds
     @IntoSet
     abstract InitializationTask bindDataSourceInitializationTask(DataSourceInitializationTask task);
+
+    @Singleton
+    @Binds
+    abstract InitializationTasksPlugin provideInitializationTasksPlugin(
+            InitializationTasksPluginImpl impl);
 }

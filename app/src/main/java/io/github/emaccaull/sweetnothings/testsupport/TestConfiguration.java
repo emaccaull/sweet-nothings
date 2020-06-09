@@ -61,11 +61,6 @@ public interface TestConfiguration extends ProdConfiguration {
             return new InMemoryMessageDataSource();
         }
 
-        @Singleton
-        @Binds
-        abstract InitializationTasksPlugin provideInitializationTasksPlugin(
-                InitializationTasksPluginImpl impl);
-
         @Provides
         @Singleton
         static StockMessageProvider stockMessageProvider() {
