@@ -13,26 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.app
 
-package io.github.emaccaull.sweetnothings.app;
-
-import android.content.Context;
-import io.github.emaccaull.sweetnothings.R;
-import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
+import android.content.Context
+import io.github.emaccaull.sweetnothings.R
+import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider
 
 /**
  * Production stock message provider.
  */
-class AppStockMessageProvider implements StockMessageProvider {
+internal class AppStockMessageProvider(private val context: Context) : StockMessageProvider {
 
-    private final Context context;
-
-    AppStockMessageProvider(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public String[] getMessages() {
-        return context.getResources().getStringArray(R.array.canned_messages);
+    override fun getMessages(): Array<String> {
+        return context.resources.getStringArray(R.array.canned_messages)
     }
 }
