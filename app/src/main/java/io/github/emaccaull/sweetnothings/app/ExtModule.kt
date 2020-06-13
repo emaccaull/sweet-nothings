@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.app
 
-package io.github.emaccaull.sweetnothings.app;
-
-import dagger.Provides;
-import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
-import io.github.emaccaull.sweetnothings.glue.IOScheduler;
-import io.github.emaccaull.sweetnothings.glue.UIScheduler;
-import io.reactivex.Scheduler;
+import dagger.Module
+import dagger.Provides
+import io.github.emaccaull.sweetnothings.core.SchedulerProvider
+import io.github.emaccaull.sweetnothings.glue.IOScheduler
+import io.github.emaccaull.sweetnothings.glue.UIScheduler
+import io.reactivex.Scheduler
 
 /**
  * Provides convenience bindings.
  */
-@dagger.Module
-public abstract class ExtModule {
+@Module
+object ExtModule {
 
     @Provides
     @IOScheduler
-    static Scheduler provideIOScheduler(SchedulerProvider schedulerProvider) {
-        return schedulerProvider.io();
+    fun provideIOScheduler(schedulerProvider: SchedulerProvider): Scheduler {
+        return schedulerProvider.io()
     }
 
     @Provides
     @UIScheduler
-    static Scheduler provideUIScheduler(SchedulerProvider schedulerProvider) {
-        return schedulerProvider.ui();
+    fun provideUIScheduler(schedulerProvider: SchedulerProvider): Scheduler {
+        return schedulerProvider.ui()
     }
 }
