@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.core.data;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
@@ -37,7 +38,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AbstractMessageDataSourceTest {
+public class AbstractMessageDataSourceTest extends BaseTestFixture {
 
     @Mock
     private Ids ids;

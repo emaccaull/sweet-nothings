@@ -16,13 +16,14 @@
 
 package io.github.emaccaull.sweetnothings.core;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import io.reactivex.schedulers.Schedulers;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class TrampolineSchedulerProviderTest {
+public class TrampolineSchedulerProviderTest extends BaseTestFixture {
 
     private final SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
 

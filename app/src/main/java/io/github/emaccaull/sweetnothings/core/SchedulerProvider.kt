@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.core
 
-package io.github.emaccaull.sweetnothings.core;
-
-import io.reactivex.Scheduler;
+import io.reactivex.Scheduler
 
 /**
  * Defines schedulers to use for background operations.
  */
-public interface SchedulerProvider {
+interface SchedulerProvider {
 
     /**
-     * Returns a default, shared {@link Scheduler} instance intended for IO-bound work.
+     * Returns a default, shared [Scheduler] instance intended for IO-bound work.
      */
-    Scheduler io();
+    fun io(): Scheduler
 
     /**
-     * A {@link Scheduler} which executes actions on the main thread.
+     * A [Scheduler] which executes actions on the main thread.
      */
-    Scheduler ui();
+    fun ui(): Scheduler
 }

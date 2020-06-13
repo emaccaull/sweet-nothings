@@ -17,6 +17,8 @@
 package io.github.emaccaull.sweetnothings.data.init;
 
 import android.app.Application;
+
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
@@ -34,7 +36,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DataSourceStartupTaskTest {
+public class DataSourceStartupTaskTest extends BaseTestFixture {
 
     private final Scheduler scheduler = Schedulers.trampoline();
 

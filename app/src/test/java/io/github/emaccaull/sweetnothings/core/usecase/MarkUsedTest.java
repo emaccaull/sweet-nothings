@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.core.usecase;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.reactivex.Completable;
@@ -29,7 +30,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MarkUsedTest {
+public class MarkUsedTest extends BaseTestFixture {
 
     @Mock
     private MessageDataSource messageDataSource;

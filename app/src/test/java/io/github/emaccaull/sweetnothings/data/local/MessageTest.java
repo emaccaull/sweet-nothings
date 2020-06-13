@@ -16,13 +16,14 @@
 
 package io.github.emaccaull.sweetnothings.data.local;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class MessageTest {
+public class MessageTest extends BaseTestFixture {
 
     @Test
     public void toSweetNothing() {

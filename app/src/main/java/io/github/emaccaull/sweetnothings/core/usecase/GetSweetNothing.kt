@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.core.usecase
 
-package io.github.emaccaull.sweetnothings.ui.ondemand;
+import io.github.emaccaull.sweetnothings.core.SweetNothing
+import io.github.emaccaull.sweetnothings.core.UseCase
+import io.github.emaccaull.sweetnothings.core.data.MessageDataSource
+import io.reactivex.Maybe
+import javax.inject.Inject
 
-import io.github.emaccaull.sweetnothings.BaseTestFixture;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+/**
+ * Retrieve a [io.github.emaccaull.sweetnothings.core.SweetNothing] by ID.
+ */
+@UseCase
+class GetSweetNothing @Inject constructor(private val dataSource: MessageDataSource) {
 
-public class ViewStateTest extends BaseTestFixture {
-
-    @Test
-    public void equals() {
-        EqualsVerifier.forClass(ViewState.class).verify();
+    fun apply(id: String): Maybe<SweetNothing> {
+        return dataSource.fetchMessage(id)
     }
 }

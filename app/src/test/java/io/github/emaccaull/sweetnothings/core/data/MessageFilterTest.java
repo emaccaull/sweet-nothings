@@ -16,13 +16,14 @@
 
 package io.github.emaccaull.sweetnothings.core.data;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class MessageFilterTest {
+public class MessageFilterTest extends BaseTestFixture {
 
     @Test
     public void builder_defaultIncludesAll() {

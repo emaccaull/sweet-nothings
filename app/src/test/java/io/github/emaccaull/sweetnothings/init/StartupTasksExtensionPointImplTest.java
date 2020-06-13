@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.init;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import io.github.emaccaull.sweetnothings.data.init.DataSourceStartupTask;
 import org.junit.Test;
 
@@ -28,7 +29,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.mockito.Mockito.mock;
 
-public class StartupTasksExtensionPointImplTest {
+public class StartupTasksExtensionPointImplTest extends BaseTestFixture {
 
     private final Set<StartupTask> tasks = new HashSet<>();
 

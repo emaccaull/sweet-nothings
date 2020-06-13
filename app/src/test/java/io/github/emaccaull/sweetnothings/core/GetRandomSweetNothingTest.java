@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.core;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing;
@@ -30,7 +31,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GetRandomSweetNothingTest {
+public class GetRandomSweetNothingTest extends BaseTestFixture {
 
     @Mock
     private MessageDataSource messageDataSource;

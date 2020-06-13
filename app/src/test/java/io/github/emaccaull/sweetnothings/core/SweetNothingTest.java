@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.core;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SweetNothingTest {
+public class SweetNothingTest extends BaseTestFixture {
 
     @Test
     public void getMessage() {

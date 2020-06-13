@@ -13,16 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.core.usecase
 
-package io.github.emaccaull.sweetnothings.core.usecase;
-
-import io.github.emaccaull.sweetnothings.core.UseCase;
-import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
-import io.reactivex.Completable;
-
-import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import io.github.emaccaull.sweetnothings.core.SweetNothing
+import io.github.emaccaull.sweetnothings.core.UseCase
+import io.github.emaccaull.sweetnothings.core.data.MessageDataSource
+import io.reactivex.Completable
+import javax.inject.Inject
 
 /**
  * Marks that a particular SweetNothing has been sent to someone.
@@ -31,16 +28,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Future enhancement -- mark used for a particular contact.
  */
 @UseCase
-public class MarkUsed {
-    private final MessageDataSource dataSource;
+class MarkUsed @Inject constructor(private val dataSource: MessageDataSource) {
 
-    @Inject
-    public MarkUsed(MessageDataSource dataSource) {
-        this.dataSource = checkNotNull(dataSource, "dataSource is null");
-    }
-
-    public Completable apply(String message) {
+    fun apply(message: String): Completable {
         return dataSource.search(message)
-                .flatMapCompletable(sweetNothing -> dataSource.markUsed(sweetNothing.getId()));
+            .flatMapCompletable { sweetNothing: SweetNothing ->
+                dataSource.markUsed(
+                    sweetNothing.id
+                )
+            }
     }
 }

@@ -16,12 +16,13 @@
 
 package io.github.emaccaull.sweetnothings.core.concurrent;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class NamedThreadFactoryTest {
+public class NamedThreadFactoryTest extends BaseTestFixture {
 
     @Test
     public void newThread() {

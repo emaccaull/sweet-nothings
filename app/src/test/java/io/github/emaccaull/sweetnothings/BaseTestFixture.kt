@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Emmanuel MacCaull
+ * Copyright (C) 2020 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.emaccaull.sweetnothings.ui.ondemand;
+package io.github.emaccaull.sweetnothings
 
-import io.github.emaccaull.sweetnothings.BaseTestFixture;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.After
+import org.mockito.Mockito
 
-public class ViewStateTest extends BaseTestFixture {
+open class BaseTestFixture {
 
-    @Test
-    public void equals() {
-        EqualsVerifier.forClass(ViewState.class).verify();
+    /**
+     * See [Memory leak in mockito-inline...](https://github.com/mockito/mockito/issues/1614)
+     */
+    @After
+    fun clearMock() {
+        // Recommended, but seems to crash the tests... hmmm
+        //Mockito.framework().clearInlineMocks()
     }
 }

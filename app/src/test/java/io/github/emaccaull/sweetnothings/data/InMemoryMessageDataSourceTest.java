@@ -16,6 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.data;
 
+import io.github.emaccaull.sweetnothings.BaseTestFixture;
 import io.github.emaccaull.sweetnothings.core.SweetNothing;
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter;
 import org.junit.Before;
@@ -26,7 +27,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class InMemoryMessageDataSourceTest {
+public class InMemoryMessageDataSourceTest extends BaseTestFixture {
 
     private InMemoryMessageDataSource dataSource;
 
