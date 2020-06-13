@@ -18,7 +18,7 @@ package io.github.emaccaull.sweetnothings.testsupport;
 
 import android.app.Application;
 import androidx.annotation.RestrictTo;
-import dagger.Binds;
+
 import dagger.BindsInstance;
 import dagger.Provides;
 import io.github.emaccaull.sweetnothings.app.ExtModule;
@@ -28,9 +28,7 @@ import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider;
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
 import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource;
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
-import io.github.emaccaull.sweetnothings.init.InitializationTasksModule;
-import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
-import io.github.emaccaull.sweetnothings.init.InitializationTasksPluginImpl;
+import io.github.emaccaull.sweetnothings.init.StartupTasksModule;
 
 import javax.inject.Singleton;
 
@@ -41,7 +39,7 @@ import javax.inject.Singleton;
         modules = {
             TestConfiguration.TestModule.class,
             ExtModule.class,
-            InitializationTasksModule.class
+            StartupTasksModule.class
         })
 public interface TestConfiguration extends ProdConfiguration {
 

@@ -26,27 +26,27 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 
-public class InitializationTasksPluginImpl implements InitializationTasksPlugin {
+public class StartupTasksExtensionPointImpl implements StartupTasksExtensionPoint {
     private static final Logger logger =
-            LoggerFactory.getLogger(InitializationTasksPluginImpl.class);
+            LoggerFactory.getLogger(StartupTasksExtensionPointImpl.class);
 
-    private final Set<InitializationTask> tasksSet;
+    private final Set<StartupTask> tasksSet;
 
     @Inject
-    InitializationTasksPluginImpl(Set<InitializationTask> tasks) {
+    StartupTasksExtensionPointImpl(Set<StartupTask> tasks) {
         this.tasksSet = tasks;
     }
 
     @Override
-    public List<InitializationTask> getTasks() {
-        List<InitializationTask> tasks = new ArrayList<>(tasksSet.size() + 2);
+    public List<StartupTask> getTasks() {
+        List<StartupTask> tasks = new ArrayList<>(tasksSet.size() + 2);
         tasks.add(new LogTask("Started running initialization tasks"));
         tasks.addAll(tasksSet);
         tasks.add(new LogTask("Finished running initialization tasks"));
         return Collections.unmodifiableList(tasks);
     }
 
-    private static final class LogTask implements InitializationTask {
+    private static final class LogTask implements StartupTask {
         private final String message;
 
         LogTask(String message) {

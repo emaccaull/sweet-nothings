@@ -16,7 +16,7 @@
 
 package io.github.emaccaull.sweetnothings.init;
 
-import io.github.emaccaull.sweetnothings.data.init.DataSourceInitializationTask;
+import io.github.emaccaull.sweetnothings.data.init.DataSourceStartupTask;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -28,20 +28,20 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.mockito.Mockito.mock;
 
-public class InitializationTasksPluginImplTest {
+public class StartupTasksExtensionPointImplTest {
 
-    private final Set<InitializationTask> tasks = new HashSet<>();
+    private final Set<StartupTask> tasks = new HashSet<>();
 
     @Test
     public void load() {
         // Given
-        tasks.add(mock(DataSourceInitializationTask.class));
-        InitializationTasksPluginImpl plugins = new InitializationTasksPluginImpl(tasks);
+        tasks.add(mock(DataSourceStartupTask.class));
+        StartupTasksExtensionPointImpl plugins = new StartupTasksExtensionPointImpl(tasks);
 
         // When
-        List<InitializationTask> tasks = plugins.getTasks();
+        List<StartupTask> tasks = plugins.getTasks();
 
         // Then
-        assertThat(tasks, hasItem(instanceOf(DataSourceInitializationTask.class)));
+        assertThat(tasks, hasItem(instanceOf(DataSourceStartupTask.class)));
     }
 }

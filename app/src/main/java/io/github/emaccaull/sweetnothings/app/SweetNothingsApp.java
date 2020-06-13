@@ -17,8 +17,8 @@
 package io.github.emaccaull.sweetnothings.app;
 
 import androidx.multidex.MultiDexApplication;
-import io.github.emaccaull.sweetnothings.init.InitializationTask;
-import io.github.emaccaull.sweetnothings.init.InitializationTasksPlugin;
+import io.github.emaccaull.sweetnothings.init.StartupTask;
+import io.github.emaccaull.sweetnothings.init.StartupTasksExtensionPoint;
 
 import javax.inject.Inject;
 
@@ -32,7 +32,7 @@ public class SweetNothingsApp extends MultiDexApplication {
     private ProdConfiguration configuration;
 
     @Inject
-    InitializationTasksPlugin initializationTasksPlugin;
+    StartupTasksExtensionPoint startupTasksExtensionPoint;
 
     @Override
     public void onCreate() {
@@ -55,7 +55,7 @@ public class SweetNothingsApp extends MultiDexApplication {
     }
 
     private void initialize()  {
-        for (InitializationTask task : initializationTasksPlugin.getTasks()) {
+        for (StartupTask task : startupTasksExtensionPoint.getTasks()) {
             task.run(this);
         }
     }

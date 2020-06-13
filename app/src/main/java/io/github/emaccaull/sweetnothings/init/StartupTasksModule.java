@@ -19,25 +19,25 @@ package io.github.emaccaull.sweetnothings.init;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoSet;
-import io.github.emaccaull.sweetnothings.data.init.DataSourceInitializationTask;
+import io.github.emaccaull.sweetnothings.data.init.DataSourceStartupTask;
 
 import javax.inject.Singleton;
 
 /**
- * Makes initialization tasks available to the task runner.
+ * Makes startup tasks available to the task runner.
  * TODO(emmanuel): determine if this module should be split into several modules (one for each task)
  *
- * @see InitializationTasksPluginImpl
+ * @see StartupTasksExtensionPointImpl
  */
 @Module
-public abstract class InitializationTasksModule {
+public abstract class StartupTasksModule {
 
     @Binds
     @IntoSet
-    abstract InitializationTask bindDataSourceInitializationTask(DataSourceInitializationTask task);
+    abstract StartupTask bindDataSourceInitializationTask(DataSourceStartupTask task);
 
     @Singleton
     @Binds
-    abstract InitializationTasksPlugin provideInitializationTasksPlugin(
-            InitializationTasksPluginImpl impl);
+    abstract StartupTasksExtensionPoint provideInitializationTasksPlugin(
+            StartupTasksExtensionPointImpl impl);
 }

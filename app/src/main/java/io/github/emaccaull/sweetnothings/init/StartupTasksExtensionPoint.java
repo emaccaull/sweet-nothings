@@ -19,10 +19,10 @@ package io.github.emaccaull.sweetnothings.init;
 import java.util.List;
 
 /**
- * Provides {@link InitializationTask InitializationTasks} to the application.
+ * Provides {@link StartupTask StartupTasks} to the application.
  */
-public interface InitializationTasksPlugin {
+public interface StartupTasksExtensionPoint {
 
-    /** @return a list of initialization tasks to run before any Activity is created. */
-    List<InitializationTask> getTasks();
+    /** @return a list of tasks to run before any Activity is created. */
+    List<StartupTask> getTasks();
 }

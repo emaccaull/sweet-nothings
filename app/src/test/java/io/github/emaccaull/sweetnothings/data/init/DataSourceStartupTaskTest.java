@@ -34,7 +34,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DataSourceInitializationTaskTest {
+public class DataSourceStartupTaskTest {
 
     private final Scheduler scheduler = Schedulers.trampoline();
 
@@ -47,11 +47,11 @@ public class DataSourceInitializationTaskTest {
     @Mock
     private Application application;
 
-    private DataSourceInitializationTask task;
+    private DataSourceStartupTask task;
 
     @Before
     public void setUp() {
-        task = new DataSourceInitializationTask(messageProvider, dataSource, scheduler);
+        task = new DataSourceStartupTask(messageProvider, dataSource, scheduler);
     }
 
     @Test
