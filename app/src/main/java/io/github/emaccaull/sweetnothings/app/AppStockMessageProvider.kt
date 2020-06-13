@@ -24,7 +24,6 @@ import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider
  */
 internal class AppStockMessageProvider(private val context: Context) : StockMessageProvider {
 
-    override fun getMessages(): Array<String> {
-        return context.resources.getStringArray(R.array.canned_messages)
-    }
+    override val messages: Array<String>
+        get() = context.resources.getStringArray(R.array.canned_messages)
 }

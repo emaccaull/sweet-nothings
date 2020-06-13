@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package io.github.emaccaull.sweetnothings.data.init;
+package io.github.emaccaull.sweetnothings.data.init
 
 /**
  * Provides stock sweet nothing messages.
  */
-public interface StockMessageProvider {
+interface StockMessageProvider {
 
-    String[] getMessages();
+    val messages: Array<String>
 }
