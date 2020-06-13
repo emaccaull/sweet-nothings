@@ -34,26 +34,19 @@ public class SweetNothingTest extends BaseTestFixture {
         assertThat(sn.getMessage(), is("hi"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void builder_whenNullMessage_throwsException() {
         // When building a sweet nothing that doesn't have a message
         SweetNothing.builder("123").message(null).build();
         // Then an exception should be thrown
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void builder_whenEmptyMessage_throwsException() {
         // When building a sweet nothing that doesn't have a message
         SweetNothing.builder("6473")
                 .message("")
                 .build();
-        // Then an exception should be thrown
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void builder_whenIdEmpty_throwsException() {
-        // When building a sweet nothing that doesn't have an ID
-        SweetNothing.builder((String)null).message("foo").build();
         // Then an exception should be thrown
     }
 

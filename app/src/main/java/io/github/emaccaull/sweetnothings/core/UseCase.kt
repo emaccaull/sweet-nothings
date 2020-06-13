@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package io.github.emaccaull.sweetnothings.core;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package io.github.emaccaull.sweetnothings.core
 
 /**
  * Marks a class as a use case.
- * <p>
+ *
  * A use case is a single action that can be applied to a set of data sources. By convention, each
- * use case has a single public method called {@code apply} which is used to construct an RxJava
+ * use case has a single public method called `apply` which is used to construct an RxJava
  * stream which transforms data source operations to a higher level action.
  */
-@Documented
-@Retention(RetentionPolicy.CLASS)
-@Target(ElementType.TYPE)
-public @interface UseCase {
-}
+@MustBeDocumented
+@Retention(AnnotationRetention.BINARY)
+@Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.CLASS)
+annotation class UseCase

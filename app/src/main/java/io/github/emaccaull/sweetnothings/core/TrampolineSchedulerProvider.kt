@@ -13,25 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.core
 
-package io.github.emaccaull.sweetnothings.core;
-
-import io.reactivex.Scheduler;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.Scheduler
+import io.reactivex.schedulers.Schedulers
 
 /**
  * A scheduler provider that schedules all work on the current thread.
  */
-public enum TrampolineSchedulerProvider implements SchedulerProvider {
-    INSTANCE;
+object TrampolineSchedulerProvider : SchedulerProvider {
 
-    @Override
-    public Scheduler io() {
-        return Schedulers.trampoline();
+    override fun io(): Scheduler {
+        return Schedulers.trampoline()
     }
 
-    @Override
-    public Scheduler ui() {
-        return Schedulers.trampoline();
+    override fun ui(): Scheduler {
+        return Schedulers.trampoline()
     }
 }
