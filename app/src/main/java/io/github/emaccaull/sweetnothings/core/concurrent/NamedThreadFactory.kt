@@ -13,30 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.core.concurrent
 
-package io.github.emaccaull.sweetnothings.core.concurrent;
-
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import androidx.annotation.NonNull;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * A nameable thread factory. Each new thread is named "$name #n" where n the the nth created
  * thread.
  */
-public final class NamedThreadFactory implements ThreadFactory {
-    private final String name;
-    private final AtomicInteger count = new AtomicInteger(1);
+class NamedThreadFactory(private val name: String) : ThreadFactory {
 
-    public NamedThreadFactory(String name) {
-        this.name = checkNotNull(name, "name is null");
-    }
+    private val count = AtomicInteger(1)
 
-    @Override
-    public Thread newThread(@NonNull Runnable r) {
-        return new Thread(r, name + " #" + count.getAndIncrement());
+    override fun newThread(r: Runnable): Thread {
+        return Thread(r, name + " #" + count.getAndIncrement())
     }
 }

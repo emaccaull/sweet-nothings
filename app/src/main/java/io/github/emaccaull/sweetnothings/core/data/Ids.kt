@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.core.data
 
-package io.github.emaccaull.sweetnothings.core.data;
-
-import java.util.UUID;
+import java.util.*
 
 /**
  * Creates UUIDs.
  */
-public class Ids {
-    private static final Ids INSTANCE = new Ids();
+open class Ids private constructor() {
 
-    private Ids() {}
-
-    public static Ids getInstance() {
-        return INSTANCE;
+    /**
+     * Creates a new UUID for use in persisting data.
+     */
+    open fun nextUuid(): String {
+        return UUID.randomUUID().toString()
     }
 
-    /** Creates a new UUID for use in persisting data. */
-    public String nextUuid() {
-        return UUID.randomUUID().toString();
+    companion object {
+        val instance = Ids()
     }
 }
