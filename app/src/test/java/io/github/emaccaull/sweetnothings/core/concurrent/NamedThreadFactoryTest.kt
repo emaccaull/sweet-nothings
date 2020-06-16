@@ -13,26 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.core.concurrent
 
-package io.github.emaccaull.sweetnothings.core.concurrent;
+import com.google.common.truth.Truth.assertThat
+import io.github.emaccaull.sweetnothings.BaseTestFixture
+import org.junit.Test
 
-import io.github.emaccaull.sweetnothings.BaseTestFixture;
-import org.junit.Test;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
-public class NamedThreadFactoryTest extends BaseTestFixture {
+class NamedThreadFactoryTest : BaseTestFixture() {
 
     @Test
-    public void newThread() {
+    fun newThread() {
         // Given
-        NamedThreadFactory factory = new NamedThreadFactory("NetworkIO");
+        val factory = NamedThreadFactory("NetworkIO")
 
         // When
-        Thread t = factory.newThread(() -> {});
+        val t = factory.newThread {}
 
         // Then
-        assertThat(t.getName(), is("NetworkIO #1"));
+        assertThat(t.name).isEqualTo("NetworkIO #1")
     }
 }

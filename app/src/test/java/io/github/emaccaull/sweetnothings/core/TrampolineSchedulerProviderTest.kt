@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.core
 
-package io.github.emaccaull.sweetnothings.core;
+import com.google.common.truth.Truth.assertThat
+import io.github.emaccaull.sweetnothings.BaseTestFixture
+import io.reactivex.schedulers.Schedulers
+import org.junit.Test
 
-import io.github.emaccaull.sweetnothings.BaseTestFixture;
-import io.reactivex.schedulers.Schedulers;
-import org.junit.Test;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
-public class TrampolineSchedulerProviderTest extends BaseTestFixture {
-
-    private final SchedulerProvider schedulerProvider = TrampolineSchedulerProvider.INSTANCE;
+class TrampolineSchedulerProviderTest : BaseTestFixture() {
+    private val schedulerProvider: SchedulerProvider = TrampolineSchedulerProvider
 
     @Test
-    public void diskIO() {
-        assertThat(schedulerProvider.io(), is(Schedulers.trampoline()));
+    fun io() {
+        assertThat(schedulerProvider.io()).isEqualTo(Schedulers.trampoline())
     }
 
     @Test
-    public void ui() {
-        assertThat(schedulerProvider.ui(), is(Schedulers.trampoline()));
+    fun ui() {
+        assertThat(schedulerProvider.ui()).isEqualTo(Schedulers.trampoline())
     }
 }
