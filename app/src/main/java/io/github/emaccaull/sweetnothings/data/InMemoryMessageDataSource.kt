@@ -22,7 +22,6 @@ import io.github.emaccaull.sweetnothings.core.data.MessageFilter
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 /**
  * In-memory store of SweetNothings.
@@ -32,7 +31,7 @@ class InMemoryMessageDataSource : AbstractMessageDataSource() {
 
     override fun fetchRandomMessage(filter: MessageFilter): Maybe<SweetNothing> = Maybe.defer {
         for (sweetNothing in store.values) {
-            if (!filter.includeUsed() && sweetNothing.isUsed) {
+            if (!filter.includeUsed && sweetNothing.isUsed) {
                 continue
             }
             return@defer Maybe.just(sweetNothing)

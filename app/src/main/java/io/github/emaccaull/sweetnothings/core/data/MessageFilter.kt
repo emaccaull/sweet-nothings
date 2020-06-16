@@ -15,58 +15,21 @@
  */
 package io.github.emaccaull.sweetnothings.core.data
 
-import com.google.common.base.Objects
-
 /**
  * Allows retrieving a subset of SweetNothings based on some criteria.
  */
-class MessageFilter private constructor(builder: Builder) {
+data class MessageFilter(
+    val includeUsed: Boolean = true
+) {
 
     internal object SelectAllHolder {
-        val FILTER = builder().build()
-    }
-
-    private val includeUsed: Boolean
-
-    init {
-        includeUsed = builder.includeUsed
-    }
-
-    fun includeUsed(): Boolean {
-        return includeUsed
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is MessageFilter) return false
-        return includeUsed == other.includeUsed
-    }
-
-    override fun hashCode(): Int {
-        return Objects.hashCode(includeUsed)
-    }
-
-    class Builder internal constructor() {
-        internal var includeUsed = true
-
-        fun includeUsed(includeUsed: Boolean): Builder {
-            this.includeUsed = includeUsed
-            return this
-        }
-
-        fun build(): MessageFilter {
-            return MessageFilter(this)
-        }
+        val FILTER = MessageFilter()
     }
 
     companion object {
-
-        @JvmStatic fun selectAll(): MessageFilter {
+        @JvmStatic
+        fun selectAll(): MessageFilter {
             return SelectAllHolder.FILTER
-        }
-
-        @JvmStatic fun builder(): Builder {
-            return Builder()
         }
     }
 }

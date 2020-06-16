@@ -18,7 +18,7 @@ package io.github.emaccaull.sweetnothings.core
 import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.github.emaccaull.sweetnothings.core.SweetNothing.Companion.builder
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource
-import io.github.emaccaull.sweetnothings.core.data.MessageFilter.Companion.builder
+import io.github.emaccaull.sweetnothings.core.data.MessageFilter
 import io.github.emaccaull.sweetnothings.core.usecase.GetRandomSweetNothing
 import io.mockk.every
 import io.mockk.mockk
@@ -33,7 +33,7 @@ class GetRandomSweetNothingTest : BaseTestFixture() {
     @Test
     fun apply() {
         // Given that the data source will return a SweetNothing for our filter
-        val filter = builder().includeUsed(false).build()
+        val filter = MessageFilter(includeUsed = false)
         val message = builder("id123").message("howdy").build()
         every { messageDataSource.fetchRandomMessage(filter) } returns Maybe.just(message)
 

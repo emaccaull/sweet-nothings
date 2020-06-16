@@ -55,7 +55,7 @@ class InMemoryMessageDataSourceTest : BaseTestFixture() {
         dataSource.add(message)
 
         // When requesting non-blacklisted items
-        val filter = MessageFilter.builder().includeUsed(false).build()
+        val filter = MessageFilter(includeUsed = false)
         dataSource.fetchRandomMessage(filter) // Then an empty maybe should be returned
             .test()
             .assertNoValues()

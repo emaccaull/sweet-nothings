@@ -17,39 +17,25 @@ package io.github.emaccaull.sweetnothings.core.data
 
 import com.google.common.truth.Truth.assertThat
 import io.github.emaccaull.sweetnothings.BaseTestFixture
-import io.github.emaccaull.sweetnothings.core.data.MessageFilter.Companion.builder
-import io.github.emaccaull.sweetnothings.core.data.MessageFilter.Companion.selectAll
-import nl.jqno.equalsverifier.EqualsVerifier
 import org.junit.Test
 
 class MessageFilterTest : BaseTestFixture() {
 
     @Test
-    fun builder_defaultIncludesAll() {
-        val filter = builder().build()
-        assertThat(filter.includeUsed()).isTrue()
+    fun defaultIncludesAll() {
+        val filter = MessageFilter()
+        assertThat(filter.includeUsed).isTrue()
     }
 
     @Test
-    fun builder_whenIgnoreUsed_filterDoesNotIncludeUsed() {
-        // Given that we can create a builder that excludes used messages
-        val builder = builder().includeUsed(false)
-
-        // When constructing a MessageFilter from that builder
-        val filter = builder.build()
-
-        // Then the filter should also exclude used messages
-        assertThat(filter.includeUsed()).isFalse()
+    fun construct_whenIgnoreUsed_filterDoesNotIncludeUsed() {
+        val filter = MessageFilter(includeUsed = false)
+        assertThat(filter.includeUsed).isFalse()
     }
 
     @Test
     fun selectAll_IncludesAll() {
-        val filter = selectAll()
-        assertThat(filter.includeUsed()).isTrue()
-    }
-
-    @Test
-    fun equals() {
-        EqualsVerifier.forClass(MessageFilter::class.java).verify()
+        val filter = MessageFilter.selectAll()
+        assertThat(filter.includeUsed).isTrue()
     }
 }

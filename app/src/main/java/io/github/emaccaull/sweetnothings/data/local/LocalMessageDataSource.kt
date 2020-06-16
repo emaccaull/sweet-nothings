@@ -36,7 +36,7 @@ class LocalMessageDataSource internal constructor(private val messagesDatabase: 
 
     override fun fetchRandomMessage(filter: MessageFilter): Maybe<SweetNothing> {
         val dao = messageDao
-        val selection = if (filter.includeUsed()) dao.selectRandom() else dao.selectRandomUnused()
+        val selection = if (filter.includeUsed) dao.selectRandom() else dao.selectRandomUnused()
         return selection.map { message -> message.toSweetNothing() }
     }
 

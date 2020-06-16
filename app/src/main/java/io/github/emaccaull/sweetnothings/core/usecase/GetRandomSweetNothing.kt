@@ -19,7 +19,6 @@ import io.github.emaccaull.sweetnothings.core.SweetNothing
 import io.github.emaccaull.sweetnothings.core.UseCase
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter
-import io.github.emaccaull.sweetnothings.core.data.MessageFilter.Companion.builder
 import io.reactivex.Maybe
 import javax.inject.Inject
 
@@ -29,7 +28,7 @@ import javax.inject.Inject
 @UseCase
 class GetRandomSweetNothing @Inject constructor(private val dataSource: MessageDataSource) {
 
-    private val filter: MessageFilter = builder().includeUsed(false).build()
+    private val filter: MessageFilter = MessageFilter(includeUsed = false)
 
     fun apply(): Maybe<SweetNothing> {
         return dataSource.fetchRandomMessage(filter)
