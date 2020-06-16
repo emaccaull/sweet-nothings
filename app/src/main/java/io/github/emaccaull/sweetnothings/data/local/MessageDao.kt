@@ -13,68 +13,62 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.data.local
 
-package io.github.emaccaull.sweetnothings.data.local;
-
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import io.reactivex.Maybe;
-
-import java.util.List;
+import androidx.room.*
+import io.reactivex.Maybe
 
 /**
  * Local message store.
  */
 @Dao
-interface MessageDao {
-
+internal interface MessageDao {
     /**
      * Inserts a message into the table.
      *
      * @param message A new message.
      * @return the row ID of the inserted message.
      */
-    @SuppressWarnings("UnusedReturnValue")
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(Message message);
+    fun insert(message: Message): Long
 
     /**
      * Select a random sweet nothing from the db.
      */
-    @Query("SELECT * FROM " + Message.TABLE_NAME
-            + " WHERE id = (SELECT id FROM " + Message.TABLE_NAME + " ORDER BY RANDOM() LIMIT 1)")
-    Maybe<Message> selectRandom();
+    @Query(
+        "SELECT * FROM " + Message.TABLE_NAME
+                + " WHERE id = (SELECT id FROM " + Message.TABLE_NAME + " ORDER BY RANDOM() LIMIT 1)"
+    )
+    fun selectRandom(): Maybe<Message>
 
     /**
      * Select a random unused sweet nothing from the db.
      */
-    @Query("SELECT * FROM " + Message.TABLE_NAME
-            + " WHERE id = "
-            + "(SELECT id FROM " + Message.TABLE_NAME
-            + " WHERE is_used=0 ORDER BY RANDOM() LIMIT 1)")
-    Maybe<Message> selectRandomUnused();
+    @Query(
+        "SELECT * FROM " + Message.TABLE_NAME
+                + " WHERE id = "
+                + "(SELECT id FROM " + Message.TABLE_NAME
+                + " WHERE is_used=0 ORDER BY RANDOM() LIMIT 1)"
+    )
+    fun selectRandomUnused(): Maybe<Message>
 
     /**
      * Selects the Message for the given ID if it exists.
      *
      * @param id the UUID of the message to fetch.
-     * @return a {@link Message} if it exists.
+     * @return a [Message] if it exists.
      */
     @Query("SELECT * FROM " + Message.TABLE_NAME + " WHERE id = :id")
-    Maybe<Message> selectById(String id);
+    fun selectById(id: String): Maybe<Message>
 
     /**
-     * Searches for a Message with the given text {@code content}.
+     * Searches for a Message with the given text `content`.
      *
      * @param content the exact text of the message contents to fetch.
-     * @return a {@link Message} if it can be found.
+     * @return a [Message] if it can be found.
      */
     @Query("SELECT * FROM " + Message.TABLE_NAME + " WHERE content = :content")
-    Maybe<Message> selectByMessage(String content);
+    fun selectByMessage(content: String): Maybe<Message>
 
     /**
      * Retrieves all messages from the database.
@@ -82,7 +76,7 @@ interface MessageDao {
      * @return a list of all present messages.
      */
     @Query("SELECT * FROM " + Message.TABLE_NAME)
-    List<Message> selectAll();
+    fun selectAll(): List<Message>
 
     /**
      * Updates an existing message.
@@ -90,7 +84,6 @@ interface MessageDao {
      * @param message the data to replace.
      * @return the number of rows updated. Should always be one.
      */
-    @SuppressWarnings("UnusedReturnValue")
     @Update
-    int update(Message message);
+    fun update(message: Message): Int
 }
