@@ -78,8 +78,7 @@ class LocalMessageDataSource internal constructor(private val messagesDatabase: 
 
     public override fun add(sweetNothing: SweetNothing) {
         logger.debug("Inserting {}", sweetNothing)
-        val message = Message.fromSweetNothing(sweetNothing)
-        messageDao.insert(message)
+        messageDao.insert(Message(sweetNothing))
     }
 
     companion object {
