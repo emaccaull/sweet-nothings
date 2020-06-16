@@ -37,7 +37,7 @@ internal interface MessageDao {
      */
     @Query(
         "SELECT * FROM " + Message.TABLE_NAME
-                + " WHERE id = (SELECT id FROM " + Message.TABLE_NAME + " ORDER BY RANDOM() LIMIT 1)"
+                + " WHERE uuid = (SELECT uuid FROM " + Message.TABLE_NAME + " ORDER BY RANDOM() LIMIT 1)"
     )
     fun selectRandom(): Maybe<Message>
 
@@ -46,8 +46,8 @@ internal interface MessageDao {
      */
     @Query(
         "SELECT * FROM " + Message.TABLE_NAME
-                + " WHERE id = "
-                + "(SELECT id FROM " + Message.TABLE_NAME
+                + " WHERE uuid = "
+                + "(SELECT uuid FROM " + Message.TABLE_NAME
                 + " WHERE is_used=0 ORDER BY RANDOM() LIMIT 1)"
     )
     fun selectRandomUnused(): Maybe<Message>
@@ -55,11 +55,11 @@ internal interface MessageDao {
     /**
      * Selects the Message for the given ID if it exists.
      *
-     * @param id the UUID of the message to fetch.
+     * @param uuid the UUID of the message to fetch.
      * @return a [Message] if it exists.
      */
-    @Query("SELECT * FROM " + Message.TABLE_NAME + " WHERE id = :id")
-    fun selectById(id: String): Maybe<Message>
+    @Query("SELECT * FROM " + Message.TABLE_NAME + " WHERE uuid = :uuid")
+    fun selectById(uuid: String): Maybe<Message>
 
     /**
      * Searches for a Message with the given text `content`.

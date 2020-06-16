@@ -24,41 +24,49 @@ import io.github.emaccaull.sweetnothings.core.SweetNothing
  * Stored sweet nothing.
  */
 @Entity(tableName = Message.TABLE_NAME)
-internal class Message {
-    /** UUID of the Message.  */
-    @PrimaryKey
-    @ColumnInfo(index = true, name = "id")
-    lateinit var id: String
+internal data class Message(
+    /**
+     * Integer primary key (database ID).
+     */
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
 
-    /** The sharable contents of the message.  */
-    @ColumnInfo(name = "content")
-    lateinit var content: String
+    /**
+     * UUID of the Message.
+     */
+    @ColumnInfo(index = true, name = "uuid") val uuid: String,
 
-    @ColumnInfo(name = "is_blacklisted")
-    var blacklisted = false
+    /**
+     * The sharable contents of the message.
+     */
+    @ColumnInfo(name = "content") val content: String,
 
-    @ColumnInfo(name = "is_used")
-    var used = false
+    /**
+     * True when this message should not be automatically suggested.
+     */
+    @ColumnInfo(name = "is_blacklisted") val isBlacklisted: Boolean,
 
-    /** For Room. */
-    internal constructor()
+    /**
+     * True when this message has been sent.
+     */
+    @ColumnInfo(name = "is_used") val isUsed: Boolean
+) {
 
-    constructor(sweetNothing: SweetNothing) {
-        id = sweetNothing.id
-        content = sweetNothing.message
-        blacklisted = sweetNothing.isBlacklisted
-        used = sweetNothing.isUsed
+    fun toSweetNothing(): SweetNothing {
+        return SweetNothing.builder(uuid)
+            .message(content)
+            .used(isUsed)
+            .blacklisted(isBlacklisted)
+            .build()
     }
 
     companion object {
-        const val TABLE_NAME = "message"
+        const val TABLE_NAME: String = "message"
     }
 }
 
-internal fun Message.toSweetNothing(): SweetNothing {
-    return SweetNothing.builder(id)
-        .message(content)
-        .used(used)
-        .blacklisted(blacklisted)
-        .build()
-}
+internal fun messageOf(sweetNothing: SweetNothing): Message = Message(
+    uuid = sweetNothing.id,
+    content = sweetNothing.message,
+    isBlacklisted = sweetNothing.isBlacklisted,
+    isUsed = sweetNothing.isUsed
+)

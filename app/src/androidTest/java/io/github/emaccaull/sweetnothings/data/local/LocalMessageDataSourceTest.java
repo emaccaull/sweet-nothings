@@ -120,7 +120,7 @@ public class LocalMessageDataSourceTest {
         dataSource.add(added);
 
         // When marking that item as used
-        dataSource.markUsed("ABC123").subscribe();
+        dataSource.markUsed("ABC123").blockingAwait();
 
         // Then subsequent queries should see that item as used
         SweetNothing retrieved = dataSource.fetchMessage("ABC123").blockingGet();

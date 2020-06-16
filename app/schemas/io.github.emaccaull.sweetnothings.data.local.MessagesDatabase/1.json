@@ -2,15 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "042fc09528c0324232eba30050b3b5e8",
+    "identityHash": "1d57984d071039d34f2ee5fde0b8bcd9",
     "entities": [
       {
         "tableName": "message",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `content` TEXT NOT NULL, `is_blacklisted` INTEGER NOT NULL, `is_used` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `uuid` TEXT NOT NULL, `content` TEXT NOT NULL, `is_blacklisted` INTEGER NOT NULL, `is_used` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uuid",
+            "columnName": "uuid",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -21,13 +27,13 @@
             "notNull": true
           },
           {
-            "fieldPath": "blacklisted",
+            "fieldPath": "isBlacklisted",
             "columnName": "is_blacklisted",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "used",
+            "fieldPath": "isUsed",
             "columnName": "is_used",
             "affinity": "INTEGER",
             "notNull": true
@@ -37,16 +43,16 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
           {
-            "name": "index_message_id",
+            "name": "index_message_uuid",
             "unique": false,
             "columnNames": [
-              "id"
+              "uuid"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_message_id` ON `${TABLE_NAME}` (`id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_message_uuid` ON `${TABLE_NAME}` (`uuid`)"
           }
         ],
         "foreignKeys": []
@@ -55,7 +61,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '042fc09528c0324232eba30050b3b5e8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1d57984d071039d34f2ee5fde0b8bcd9')"
     ]
   }
 }

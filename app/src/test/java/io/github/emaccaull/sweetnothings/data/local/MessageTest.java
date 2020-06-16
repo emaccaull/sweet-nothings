@@ -27,11 +27,7 @@ public class MessageTest extends BaseTestFixture {
 
     @Test
     public void toSweetNothing() {
-        Message message = new Message();
-        message.id = "123";
-        message.content = "testing";
-        message.used = true;
-        message.blacklisted = true;
+        Message message = new Message("123", "testing", true, true);
 
         SweetNothing sweetNothing = message.toSweetNothing();
 
@@ -47,11 +43,11 @@ public class MessageTest extends BaseTestFixture {
                 .message("hello").blacklisted(true).used(true)
                 .build();
 
-        Message msg = Message.fromSweetNothing(sn);
+        Message msg = MessageKt.messageOf(sn);
 
-        assertThat(msg.id, is("foo"));
-        assertThat(msg.content, is("hello"));
-        assertThat(msg.blacklisted, is(true));
-        assertThat(msg.used, is(true));
+        assertThat(msg.getUuid(), is("foo"));
+        assertThat(msg.getContent(), is("hello"));
+        assertThat(msg.isBlacklisted(), is(true));
+        assertThat(msg.isUsed(), is(true));
     }
 }

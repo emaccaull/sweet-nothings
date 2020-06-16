@@ -22,7 +22,6 @@ import io.github.emaccaull.sweetnothings.core.data.MessageFilter
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import org.slf4j.LoggerFactory
-import java.util.*
 
 /**
  * Retrieves from and persists to local storage.
@@ -38,28 +37,25 @@ class LocalMessageDataSource internal constructor(private val messagesDatabase: 
     override fun fetchRandomMessage(filter: MessageFilter): Maybe<SweetNothing> {
         val dao = messageDao
         val selection = if (filter.includeUsed()) dao.selectRandom() else dao.selectRandomUnused()
-        return selection.map { obj: Message -> obj.toSweetNothing() }
+        return selection.map { message -> message.toSweetNothing() }
     }
 
     override fun fetchMessage(id: String): Maybe<SweetNothing> {
-        val dao = messageDao
-        return dao.selectById(id)
-            .map { obj: Message -> obj.toSweetNothing() }
+        return messageDao.selectById(id).map { message -> message.toSweetNothing() }
     }
 
     override fun search(exactMessage: String): Maybe<SweetNothing> {
-        val dao = messageDao
-        return dao.selectByMessage(exactMessage)
-            .map { obj: Message -> obj.toSweetNothing() }
+        return messageDao.selectByMessage(exactMessage)
+            .map { message -> message.toSweetNothing() }
     }
 
     override fun markUsed(id: String): Completable {
         val dao = messageDao
         return dao.selectById(id)
-            .flatMapCompletable { message: Message ->
+            .flatMapCompletable { message ->
                 Completable.fromAction {
-                    message.used = true
-                    if (dao.update(message) > 0) {
+                    val usedMessage = message.copy(isUsed = true)
+                    if (dao.update(usedMessage) > 0) {
                         logger.debug("Marked '{}' as used", id)
                     }
                 }
@@ -68,9 +64,8 @@ class LocalMessageDataSource internal constructor(private val messagesDatabase: 
 
     override val existingMessages: Set<String>
         get() {
-            val dao = messageDao
-            val texts: MutableSet<String> = HashSet()
-            for (message in dao.selectAll()) {
+            val texts = mutableSetOf<String>()
+            for (message in messageDao.selectAll()) {
                 texts.add(message.content)
             }
             return texts
@@ -78,7 +73,7 @@ class LocalMessageDataSource internal constructor(private val messagesDatabase: 
 
     public override fun add(sweetNothing: SweetNothing) {
         logger.debug("Inserting {}", sweetNothing)
-        messageDao.insert(Message(sweetNothing))
+        messageDao.insert(messageOf(sweetNothing))
     }
 
     companion object {
