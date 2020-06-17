@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.ui.ondemand
 
-package io.github.emaccaull.sweetnothings.ui.ondemand;
+import nl.jqno.equalsverifier.EqualsVerifier
+import org.junit.Test
 
-import io.github.emaccaull.sweetnothings.BaseTestFixture;
-import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
-
-public class ViewStateTest extends BaseTestFixture {
+class ViewStateTest {
 
     @Test
-    public void equals() {
-        EqualsVerifier.forClass(ViewState.class).verify();
+    fun equals() {
+        EqualsVerifier.forClass(ViewState::class.java).verify()
     }
 }
