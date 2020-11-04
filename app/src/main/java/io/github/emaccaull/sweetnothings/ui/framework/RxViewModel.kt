@@ -13,41 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.ui.framework
 
-package io.github.emaccaull.sweetnothings.ui.framework;
-
-import androidx.annotation.CallSuper;
-import androidx.lifecycle.ViewModel;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
+import androidx.annotation.CallSuper
+import androidx.lifecycle.ViewModel
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 /**
  * A ViewModel with built-in RxJava stream management.
  */
-public class RxViewModel extends ViewModel {
-
-    private final CompositeDisposable disposables = new CompositeDisposable();
+open class RxViewModel : ViewModel() {
+    private val disposables = CompositeDisposable()
 
     /**
-     * Adds a disposable to ViewModel scope. When this ViewModel is cleared, the given {@code
-     * disposable} will be disposed.
+     * Adds a disposable to ViewModel scope. When this ViewModel is cleared, the given `disposable` will be disposed.
      *
      * @return true if the disposable was added, false if this ViewModel was already cleared.
      */
-    protected final boolean add(Disposable disposable) {
+    protected fun add(disposable: Disposable?): Boolean {
         // Immediate disposal occurs if the ViewModel has already been cleared.
-        return disposables.add(disposable);
+        return disposables.add(disposable!!)
     }
 
-    /** @return the number of currently subscribed disposables. */
-    public final int subscriberCount() {
-        return disposables.size();
+    /**
+     * @return the number of currently subscribed disposables.
+     */
+    fun subscriberCount(): Int {
+        return disposables.size()
     }
 
     @CallSuper
-    @Override
-    protected void onCleared() {
-        disposables.dispose();
-        super.onCleared();
+    override fun onCleared() {
+        disposables.dispose()
+        super.onCleared()
     }
 }

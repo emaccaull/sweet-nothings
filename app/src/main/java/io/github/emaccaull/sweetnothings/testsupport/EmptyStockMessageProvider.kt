@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Emmanuel MacCaull
+ * Copyright (C) 2019 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.testsupport
 
-package io.github.emaccaull.sweetnothings.ui.framework;
-
-import androidx.lifecycle.ViewModel;
-import dagger.MapKey;
+import androidx.annotation.RestrictTo
+import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider
 
 /**
- * Use to bind a ViewModel to the Dagger graph in a way that the ViewModel can be created by
- * AppViewModelFactory.
+ * Stock message provider for testing that has no data.
  */
-@MapKey
-public @interface ViewModelKey {
-    Class<? extends ViewModel> value();
+@RestrictTo(RestrictTo.Scope.TESTS)
+class EmptyStockMessageProvider : StockMessageProvider {
+    override val messages: Array<String>
+        get() = arrayOf()
 }

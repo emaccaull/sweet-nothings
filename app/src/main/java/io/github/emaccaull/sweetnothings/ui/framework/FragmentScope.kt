@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.ui.framework
 
-package io.github.emaccaull.sweetnothings.ui.framework;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import javax.inject.Scope;
+import javax.inject.Scope
 
 /**
  * Denotes a component or object that exists for the lifetime of a single Fragment instance.
  */
 @Scope
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-public @interface FragmentScope {
-}
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+annotation class FragmentScope

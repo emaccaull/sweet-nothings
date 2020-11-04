@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Emmanuel MacCaull
+ * Copyright (C) 2020 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.glue
 
-package io.github.emaccaull.sweetnothings.init;
-
-import java.util.List;
+import javax.inject.Qualifier
 
 /**
- * Provides {@link StartupTask StartupTasks} to the application.
+ * Denotes the shared IO scheduler.
  */
-public interface StartupTasksExtensionPoint {
-
-    /** @return a list of tasks to run before any Activity is created. */
-    List<StartupTask> getTasks();
-}
+@Qualifier
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+annotation class IOScheduler

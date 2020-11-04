@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Emmanuel MacCaull
+ * Copyright (C) 2019 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.glue
 
-package io.github.emaccaull.sweetnothings.glue;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import javax.inject.Qualifier;
+import io.github.emaccaull.sweetnothings.core.SchedulerProvider
+import io.github.emaccaull.sweetnothings.core.data.MessageDataSource
 
 /**
- * Denotes the shared IO scheduler.
+ * Allows the application to configure the runtime behavior of the system.
  */
-@Qualifier
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-public @interface IOScheduler {
+interface Configuration {
+    /**
+     * @return a SchedulerProvider instance to share globally.
+     */
+    fun schedulerProvider(): SchedulerProvider
+
+    /**
+     * @return a MessageDataSource instance to share globally.
+     */
+    fun messageDataSource(): MessageDataSource
 }

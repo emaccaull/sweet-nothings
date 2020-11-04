@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Emmanuel MacCaull
+ * Copyright (C) 2019 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package io.github.emaccaull.sweetnothings.glue;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import javax.inject.Qualifier;
+package io.github.emaccaull.sweetnothings.init
 
 /**
- * Denotes the shared UI scheduler.
+ * Provides [StartupTasks][StartupTask] to the application.
  */
-@Qualifier
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-public @interface UIScheduler {
+interface StartupTasksExtensionPoint {
+    /**
+     * @return a list of tasks to run before any Activity is created.
+     */
+    val tasks: List<StartupTask>
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Emmanuel MacCaull
+ * Copyright (C) 2020 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.glue
 
-package io.github.emaccaull.sweetnothings.testsupport;
-
-import androidx.annotation.RestrictTo;
-import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider;
+import javax.inject.Qualifier
 
 /**
- * Stock message provider for testing that has no data.
+ * Denotes the shared UI scheduler.
  */
-@RestrictTo(RestrictTo.Scope.TESTS)
-public class EmptyStockMessageProvider implements StockMessageProvider {
-
-    @Override
-    public String[] getMessages() {
-        return new String[0];
-    }
-}
+@Qualifier
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
+annotation class UIScheduler

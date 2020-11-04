@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.init
 
-package io.github.emaccaull.sweetnothings.init;
-
-import dagger.Binds;
-import dagger.Module;
-import dagger.multibindings.IntoSet;
-import io.github.emaccaull.sweetnothings.data.init.DataSourceStartupTask;
-
-import javax.inject.Singleton;
+import dagger.Binds
+import dagger.Module
+import dagger.multibindings.IntoSet
+import io.github.emaccaull.sweetnothings.data.init.DataSourceStartupTask
+import javax.inject.Singleton
 
 /**
  * Makes startup tasks available to the task runner.
@@ -30,14 +28,14 @@ import javax.inject.Singleton;
  * @see StartupTasksExtensionPointImpl
  */
 @Module
-public abstract class StartupTasksModule {
-
+abstract class StartupTasksModule {
     @Binds
     @IntoSet
-    abstract StartupTask bindDataSourceInitializationTask(DataSourceStartupTask task);
+    abstract fun bindDataSourceInitializationTask(task: DataSourceStartupTask): StartupTask
 
     @Singleton
     @Binds
-    abstract StartupTasksExtensionPoint provideInitializationTasksPlugin(
-            StartupTasksExtensionPointImpl impl);
+    abstract fun provideInitializationTasksPlugin(
+        impl: StartupTasksExtensionPointImpl
+    ): StartupTasksExtensionPoint
 }

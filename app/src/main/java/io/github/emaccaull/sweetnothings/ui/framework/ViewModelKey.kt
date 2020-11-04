@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Emmanuel MacCaull
+ * Copyright (C) 2020 Emmanuel MacCaull
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.ui.framework
 
-package io.github.emaccaull.sweetnothings.glue;
-
-import io.github.emaccaull.sweetnothings.core.SchedulerProvider;
-import io.github.emaccaull.sweetnothings.core.data.MessageDataSource;
+import androidx.lifecycle.ViewModel
+import dagger.MapKey
+import kotlin.reflect.KClass
 
 /**
- * Allows the application to configure the runtime behavior of the system.
+ * Use to bind a ViewModel to the Dagger graph in a way that the ViewModel can be created by
+ * AppViewModelFactory.
  */
-public interface Configuration {
-
-    /** @return a SchedulerProvider instance to share globally. */
-    SchedulerProvider schedulerProvider();
-
-    /** @return a MessageDataSource instance to share globally. */
-    MessageDataSource messageDataSource();
-}
+@MapKey
+annotation class ViewModelKey(val value: KClass<out ViewModel>)

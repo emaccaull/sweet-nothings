@@ -13,54 +13,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.emaccaull.sweetnothings.app
+package io.github.emaccaull.sweetnothings.testsupport
 
 import android.app.Application
+import androidx.annotation.RestrictTo
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import io.github.emaccaull.sweetnothings.app.ExtModule
+import io.github.emaccaull.sweetnothings.app.ProdConfiguration
 import io.github.emaccaull.sweetnothings.core.SchedulerProvider
+import io.github.emaccaull.sweetnothings.core.TrampolineSchedulerProvider
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource
+import io.github.emaccaull.sweetnothings.data.InMemoryMessageDataSource
 import io.github.emaccaull.sweetnothings.data.init.StockMessageProvider
-import io.github.emaccaull.sweetnothings.data.local.LocalMessageDataSource
-import io.github.emaccaull.sweetnothings.glue.Configuration
 import io.github.emaccaull.sweetnothings.init.StartupTasksModule
-import io.github.emaccaull.sweetnothings.ui.ondemand.OnDemandBuilder.ParentComponent
 import javax.inject.Singleton
 
-/** Configuration used for production builds.  */
+/** Dependencies for instrumentation tests.  */
+@RestrictTo(RestrictTo.Scope.TESTS)
 @Singleton
-@Component(modules = [ProdConfiguration.ProdModule::class, ExtModule::class, StartupTasksModule::class])
-interface ProdConfiguration : Configuration, ParentComponent {
-
-    fun inject(app: SweetNothingsApp)
+@Component(modules = [TestConfiguration.TestModule::class, ExtModule::class, StartupTasksModule::class])
+interface TestConfiguration : ProdConfiguration {
 
     @Module
-    object ProdModule {
-        @Singleton
+    object TestModule {
         @Provides
-        fun provideSchedulerProvider(): SchedulerProvider {
-            return AppSchedulerProvider()
+        @Singleton
+        fun schedulerProvider(): SchedulerProvider {
+            // We're using an in-memory DB, so we don't need to run on a background thread.
+            return TrampolineSchedulerProvider
         }
 
-        @Singleton
         @Provides
-        fun provideMessageDataSource(application: Application): MessageDataSource {
-            return LocalMessageDataSource(application)
+        @Singleton
+        fun messageDataSource(): MessageDataSource {
+            return InMemoryMessageDataSource()
         }
 
-        @Singleton
         @Provides
-        fun provideStockMessageProvider(application: Application): StockMessageProvider {
-            return AppStockMessageProvider(application)
+        @Singleton
+        fun stockMessageProvider(): StockMessageProvider {
+            return EmptyStockMessageProvider()
         }
     }
 
     @Component.Builder
     interface Builder {
         @BindsInstance
-        fun application(application: Application): Builder
-        fun build(): ProdConfiguration
+        fun application(application: Application?): Builder
+        fun build(): TestConfiguration
     }
 }
