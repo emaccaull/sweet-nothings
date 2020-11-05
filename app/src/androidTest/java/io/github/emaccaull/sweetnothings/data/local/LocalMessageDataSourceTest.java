@@ -67,7 +67,7 @@ public class LocalMessageDataSourceTest {
         dataSource.add(added);
 
         // When selecting a random but excluding used
-        MessageFilter filter = MessageFilter.builder().includeUsed(false).build();
+        MessageFilter filter = new MessageFilter(false);
         SweetNothing message = dataSource.fetchRandomMessage(filter).blockingGet();
 
         // Then no sweet nothing should be found
