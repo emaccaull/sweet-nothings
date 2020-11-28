@@ -17,12 +17,12 @@ package io.github.emaccaull.sweetnothings.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import io.github.emaccaull.sweetnothings.R
 import io.github.emaccaull.sweetnothings.app.ProdConfiguration
 import io.github.emaccaull.sweetnothings.app.SweetNothingsApp
 import io.github.emaccaull.sweetnothings.ui.ondemand.GeneratorFragment
 import io.github.emaccaull.sweetnothings.ui.ondemand.GeneratorFragment.Companion.newInstance
-import io.github.emaccaull.sweetnothings.ui.util.FragmentUtils
 import org.slf4j.LoggerFactory
 
 class MainActivity : AppCompatActivity() {
@@ -39,11 +39,9 @@ class MainActivity : AppCompatActivity() {
     private fun showGeneratorFragment() {
         val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
         if (fragment !is GeneratorFragment) {
-            FragmentUtils.replace(
-                supportFragmentManager,
-                newInstance(),
-                R.id.fragment_container
-            )
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container, newInstance())
+            }
         }
     }
 
