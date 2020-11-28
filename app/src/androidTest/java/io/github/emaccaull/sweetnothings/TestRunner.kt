@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings
 
-package io.github.emaccaull.sweetnothings;
-
-import android.app.Application;
-import android.content.Context;
-import androidx.test.runner.AndroidJUnitRunner;
-
-import io.github.emaccaull.sweetnothings.app.TestSweetNothingsApp;
+import android.app.Application
+import android.content.Context
+import androidx.test.runner.AndroidJUnitRunner
+import io.github.emaccaull.sweetnothings.app.TestSweetNothingsApp
 
 /**
  * Custom configuration for Android instrumentation tests.
  */
-@SuppressWarnings("unused") // Registered in app/build.gradle
-public class TestRunner extends AndroidJUnitRunner {
+@Suppress("unused")  // Registered in app/build.gradle
+class TestRunner : AndroidJUnitRunner() {
 
-    @Override
-    public Application newApplication(ClassLoader cl, String className, Context context)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        return super.newApplication(cl, TestSweetNothingsApp.class.getName(), context);
+    @Throws(
+        InstantiationException::class,
+        IllegalAccessException::class,
+        ClassNotFoundException::class
+    )
+    override fun newApplication(cl: ClassLoader, className: String, context: Context): Application {
+        return super.newApplication(cl, TestSweetNothingsApp::class.java.name, context)
     }
 }
