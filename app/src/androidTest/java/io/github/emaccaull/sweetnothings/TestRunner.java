@@ -19,6 +19,7 @@ package io.github.emaccaull.sweetnothings;
 import android.app.Application;
 import android.content.Context;
 import androidx.test.runner.AndroidJUnitRunner;
+
 import io.github.emaccaull.sweetnothings.app.TestSweetNothingsApp;
 
 /**
