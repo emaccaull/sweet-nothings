@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.emaccaull.sweetnothings.app
 
-package io.github.emaccaull.sweetnothings.app;
-
-import io.github.emaccaull.sweetnothings.testsupport.DaggerTestConfiguration;
+import io.github.emaccaull.sweetnothings.testsupport.DaggerTestConfiguration
 
 /**
  * Perform common setup for Espresso tests.
  */
-public class TestSweetNothingsApp extends SweetNothingsApp {
+class TestSweetNothingsApp : SweetNothingsApp() {
 
-    @Override
-    protected ProdConfiguration createConfiguration() {
-        return DaggerTestConfiguration.builder().application(this).build();
+    override fun createConfiguration(): ProdConfiguration {
+        return DaggerTestConfiguration.builder().application(this).build()
     }
 }
