@@ -16,34 +16,28 @@
 package io.github.emaccaull.sweetnothings.core
 
 import com.google.common.truth.Truth.assertThat
-import io.github.emaccaull.sweetnothings.BaseTestFixture
-import io.github.emaccaull.sweetnothings.core.SweetNothing
-import io.github.emaccaull.sweetnothings.core.SweetNothing.Companion.builder
 import nl.jqno.equalsverifier.EqualsVerifier
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
-class SweetNothingTest : BaseTestFixture() {
+class SweetNothingTest {
 
     @Test
     fun message() {
-        val sn = builder("9923").message("hi").build()
+        val sn = SweetNothing.builder("9923").message("hi").build()
         assertThat(sn.message).isEqualTo("hi")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun builder_whenNullMessage_throwsException() {
         // When building a sweet nothing that doesn't have a message
-        builder("123").message(null).build()
+        SweetNothing.builder("123").message(null).build()
         // Then an exception should be thrown
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun builder_whenEmptyMessage_throwsException() {
         // When building a sweet nothing that doesn't have a message
-        builder("6473")
+        SweetNothing.builder("6473")
             .message("")
             .build()
         // Then an exception should be thrown
@@ -52,14 +46,14 @@ class SweetNothingTest : BaseTestFixture() {
     @Test
     fun builder_canCopyAllData() {
         // Given that there is an existing sweet nothing
-        val sn = builder("abc")
+        val sn = SweetNothing.builder("abc")
             .message("hi")
             .used(true)
             .blacklisted(true)
             .build()
 
         // When making a copy of the sweet nothing
-        val snCopy = builder(sn).build()
+        val snCopy = SweetNothing.builder(sn).build()
 
         // Then the two should be equal
         assertThat(snCopy).isEqualTo(sn)
@@ -68,7 +62,7 @@ class SweetNothingTest : BaseTestFixture() {
     @Test
     fun id() {
         // When constructing SweetNothing with a valid ID
-        val sn = builder("foobar").message("hello").build()
+        val sn = SweetNothing.builder("foobar").message("hello").build()
 
         // Then it should have that ID
         assertThat(sn.id).isEqualTo("foobar")
@@ -76,7 +70,7 @@ class SweetNothingTest : BaseTestFixture() {
 
     @Test
     fun isBlacklisted() {
-        val sn = builder("aaa")
+        val sn = SweetNothing.builder("aaa")
             .message("a")
             .blacklisted(true)
             .build()
@@ -85,7 +79,7 @@ class SweetNothingTest : BaseTestFixture() {
 
     @Test
     fun isUsed() {
-        val sn = builder("bbb")
+        val sn = SweetNothing.builder("bbb")
             .message("b")
             .used(true)
             .build()

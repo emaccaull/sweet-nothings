@@ -16,10 +16,9 @@
 package io.github.emaccaull.sweetnothings.core.concurrent
 
 import com.google.common.truth.Truth.assertThat
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import org.junit.Test
 
-class NamedThreadFactoryTest : BaseTestFixture() {
+class NamedThreadFactoryTest {
 
     @Test
     fun newThread() {

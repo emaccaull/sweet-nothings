@@ -16,11 +16,10 @@
 package io.github.emaccaull.sweetnothings.data.local
 
 import com.google.common.truth.Truth.assertThat
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.github.emaccaull.sweetnothings.core.SweetNothing.Companion.builder
 import org.junit.Test
 
-class MessageTest : BaseTestFixture() {
+class MessageTest {
 
     @Test
     fun toSweetNothing() {

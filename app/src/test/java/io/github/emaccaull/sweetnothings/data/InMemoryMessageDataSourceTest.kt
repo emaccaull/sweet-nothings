@@ -16,13 +16,12 @@
 package io.github.emaccaull.sweetnothings.data
 
 import com.google.common.truth.Truth.assertThat
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.github.emaccaull.sweetnothings.core.SweetNothing
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter
 import org.junit.Assert
 import org.junit.Test
 
-class InMemoryMessageDataSourceTest : BaseTestFixture() {
+class InMemoryMessageDataSourceTest {
     private val dataSource = InMemoryMessageDataSource()
 
     @Test

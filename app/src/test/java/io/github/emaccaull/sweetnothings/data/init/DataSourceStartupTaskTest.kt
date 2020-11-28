@@ -16,7 +16,6 @@
 package io.github.emaccaull.sweetnothings.data.init
 
 import android.app.Application
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource
 import io.mockk.every
 import io.mockk.mockk
@@ -25,7 +24,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.Test
 
-class DataSourceStartupTaskTest : BaseTestFixture() {
+class DataSourceStartupTaskTest {
     private val scheduler = Schedulers.trampoline()
 
     private val messageProvider = mockk<StockMessageProvider>()

@@ -16,11 +16,10 @@
 package io.github.emaccaull.sweetnothings.core
 
 import com.google.common.truth.Truth.assertThat
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.reactivex.schedulers.Schedulers
 import org.junit.Test
 
-class TrampolineSchedulerProviderTest : BaseTestFixture() {
+class TrampolineSchedulerProviderTest {
     private val schedulerProvider: SchedulerProvider = TrampolineSchedulerProvider
 
     @Test
