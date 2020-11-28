@@ -25,13 +25,24 @@ class RxViewModelTest : BaseTestFixture() {
 
     private val disposable = mockk<Disposable>(relaxed = true)
 
+    private class TestRxViewModel : RxViewModel() {
+        // Workaround since `manage` is protected and final.
+        fun manage_(disposable: Disposable): Boolean {
+            return super.manage(disposable)
+        }
+
+        public override fun onCleared() {
+            super.onCleared()
+        }
+    }
+
     @Test
     fun onCleared_compositeDisposable_isEmpty() {
         // Given
-        val vm = RxViewModel()
+        val vm = TestRxViewModel()
 
         // When
-        vm.add(disposable)
+        vm.manage_(disposable)
         vm.onCleared()
 
         // Then
@@ -41,10 +52,10 @@ class RxViewModelTest : BaseTestFixture() {
     @Test
     fun add_addsDisposable() {
         // Given
-        val vm = RxViewModel()
+        val vm = TestRxViewModel()
 
         // When
-        val r = vm.add(disposable)
+        val r = vm.manage_(disposable)
 
         // Then
         assertThat(r).isTrue()
@@ -54,11 +65,11 @@ class RxViewModelTest : BaseTestFixture() {
     @Test
     fun add_whenDisposed_doesNotAddDisposable() {
         // Given
-        val vm = RxViewModel()
+        val vm = TestRxViewModel()
         vm.onCleared()
 
         // When
-        val r = vm.add(disposable)
+        val r = vm.manage_(disposable)
 
         // Then
         assertThat(r).isFalse()

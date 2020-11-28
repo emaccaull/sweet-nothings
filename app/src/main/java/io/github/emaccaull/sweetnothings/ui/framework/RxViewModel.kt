@@ -23,17 +23,17 @@ import io.reactivex.disposables.Disposable
 /**
  * A ViewModel with built-in RxJava stream management.
  */
-open class RxViewModel : ViewModel() {
+abstract class RxViewModel : ViewModel() {
     private val disposables = CompositeDisposable()
 
     /**
-     * Adds a disposable to ViewModel scope. When this ViewModel is cleared, the given `disposable` will be disposed.
+     * Takes ownership of a disposable, disposing of it when the ViewModel is cleared.
      *
      * @return true if the disposable was added, false if this ViewModel was already cleared.
      */
-    protected fun add(disposable: Disposable?): Boolean {
+    protected fun manage(disposable: Disposable): Boolean {
         // Immediate disposal occurs if the ViewModel has already been cleared.
-        return disposables.add(disposable!!)
+        return disposables.add(disposable)
     }
 
     /**

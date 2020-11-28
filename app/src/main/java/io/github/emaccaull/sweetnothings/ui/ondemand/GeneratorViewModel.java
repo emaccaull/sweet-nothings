@@ -79,7 +79,7 @@ final class GeneratorViewModel extends RxViewModel {
                         }
                 );
 
-        add(d);
+        manage(d);
     }
 
     /**
@@ -92,7 +92,7 @@ final class GeneratorViewModel extends RxViewModel {
                 .subscribeOn(schedulerProvider.io())
                 .subscribe(this::resetViewState);
 
-        add(d);
+        manage(d);
     }
 
     void onShareFailed(String message) {
