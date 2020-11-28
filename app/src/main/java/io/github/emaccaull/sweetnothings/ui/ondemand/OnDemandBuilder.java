@@ -39,13 +39,6 @@ public final class OnDemandBuilder {
                 .inject(fragment);
     }
 
-    static void inject(GeneratorFragment fragment, ParentComponent dependencies) {
-        DaggerOnDemandBuilder_Component.builder()
-                .parentComponent(dependencies)
-                .build()
-                .inject(fragment);
-    }
-
     /** Describes how to add Generator* objects to the Dagger graph. */
     @dagger.Module
     abstract static class Module {

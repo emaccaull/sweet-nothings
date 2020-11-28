@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="sweet-nothings/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/emaccaull-sweet-nothings.iml" filepath="$PROJECT_DIR$/.idea/modules/emaccaull-sweet-nothings.iml" group="sweet-nothings" />
       <module fileurl="file://$PROJECT_DIR$/sweet-nothings.iml" filepath="$PROJECT_DIR$/sweet-nothings.iml" group="sweet-nothings" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/sweet-nothings-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/sweet-nothings-app.iml" group="sweet-nothings/app" />
     </modules>
   </component>
 </project>
