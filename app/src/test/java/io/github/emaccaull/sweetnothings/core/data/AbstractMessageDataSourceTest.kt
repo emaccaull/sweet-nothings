@@ -16,7 +16,6 @@
 package io.github.emaccaull.sweetnothings.core.data
 
 import com.google.common.truth.Truth.assertThat
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.github.emaccaull.sweetnothings.core.SweetNothing
 import io.mockk.every
 import io.mockk.mockk
@@ -25,7 +24,7 @@ import io.reactivex.Maybe
 import org.junit.Test
 import java.util.*
 
-class AbstractMessageDataSourceTest : BaseTestFixture() {
+class AbstractMessageDataSourceTest {
 
     private val ids = mockk<Ids>()
     private val dataSource = TestMessageDataSource(ids)

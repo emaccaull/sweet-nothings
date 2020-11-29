@@ -15,7 +15,6 @@
  */
 package io.github.emaccaull.sweetnothings.core
 
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.github.emaccaull.sweetnothings.core.SweetNothing.Companion.builder
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource
 import io.github.emaccaull.sweetnothings.core.data.MessageFilter
@@ -25,7 +24,7 @@ import io.mockk.mockk
 import io.reactivex.Maybe
 import org.junit.Test
 
-class GetRandomSweetNothingTest : BaseTestFixture() {
+class GetRandomSweetNothingTest {
 
     private val messageDataSource = mockk<MessageDataSource>()
     private var getRandomSweetNothing = GetRandomSweetNothing(messageDataSource)

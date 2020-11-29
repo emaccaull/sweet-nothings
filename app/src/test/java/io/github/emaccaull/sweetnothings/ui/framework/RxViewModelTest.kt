@@ -16,12 +16,11 @@
 package io.github.emaccaull.sweetnothings.ui.framework
 
 import com.google.common.truth.Truth.assertThat
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.mockk.mockk
 import io.reactivex.disposables.Disposable
 import org.junit.Test
 
-class RxViewModelTest : BaseTestFixture() {
+class RxViewModelTest {
 
     private val disposable = mockk<Disposable>(relaxed = true)
 

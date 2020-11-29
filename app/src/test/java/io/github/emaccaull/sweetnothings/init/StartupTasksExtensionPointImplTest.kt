@@ -16,11 +16,10 @@
 package io.github.emaccaull.sweetnothings.init
 
 import com.google.common.truth.Truth.assertThat
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.mockk.mockk
 import org.junit.Test
 
-class StartupTasksExtensionPointImplTest : BaseTestFixture() {
+class StartupTasksExtensionPointImplTest {
     private val tasks = mutableSetOf<StartupTask>()
 
     @Test

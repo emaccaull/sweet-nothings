@@ -16,10 +16,9 @@
 package io.github.emaccaull.sweetnothings.core.data
 
 import com.google.common.truth.Truth.assertThat
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import org.junit.Test
 
-class MessageFilterTest : BaseTestFixture() {
+class MessageFilterTest {
 
     @Test
     fun defaultIncludesAll() {

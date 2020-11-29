@@ -15,7 +15,6 @@
  */
 package io.github.emaccaull.sweetnothings.core.usecase
 
-import io.github.emaccaull.sweetnothings.BaseTestFixture
 import io.github.emaccaull.sweetnothings.core.SweetNothing.Companion.builder
 import io.github.emaccaull.sweetnothings.core.data.MessageDataSource
 import io.mockk.every
@@ -24,7 +23,7 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import org.junit.Test
 
-class MarkUsedTest : BaseTestFixture() {
+class MarkUsedTest {
     
     private val messageDataSource = mockk<MessageDataSource>()
     private val markUsed = MarkUsed(messageDataSource)
